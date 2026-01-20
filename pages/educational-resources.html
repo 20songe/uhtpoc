@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Educational Resources — POC Repository</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">◎</div>
+        <div class="brand__text">
+          <div class="brand__title">Educational Resources</div>
+          <div class="brand__subtitle">InterSystems IRIS for Health • POC enablement</div>
+        </div>
+      </div>
+
+      <nav class="quicklinks" aria-label="Quick links">
+        <a class="chip" href="../index.html#repository">Back to Repository</a>
+        <a class="chip" href="#important">Important</a>
+        <a class="chip" href="#install">Installation</a>
+        <a class="chip" href="#basics">IRIS Basics</a>
+        <a class="chip" href="#ex1">Exercise 1</a>
+        <a class="chip" href="#ex2">Exercise 2</a>
+        <a class="chip" href="#ex3">Exercise 3</a>
+        <a class="chip" href="#ex4">Exercise 4</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Educational materials & links</h1>
+      <p>
+        Use this page as the landing spot for enablement: docs, videos, courses, and exercises supporting the POC.
+        (Links open in a new tab where appropriate.)
+      </p>
+    </section>
+
+    <!-- Important Resources -->
+    <section id="important" class="section">
+      <div class="section__header">
+        <h2>Important Resources</h2>
+        <p class="muted">Core documentation and learning portals.</p>
+      </div>
+
+      <div class="list">
+        <a class="list__item" href="https://docs.intersystems.com/" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="list__title">InterSystems Documentation</div>
+            <div class="list__desc">Product documentation hub (IRIS, IRIS for Health, guides, references).</div>
+          </div>
+          <span class="pill">Docs</span>
+        </a>
+
+        <a class="list__item" href="https://www.intersystems.com/education/" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="list__title">InterSystems Learning Services</div>
+            <div class="list__desc">Entry point for training programs, learning options, and education resources.</div>
+          </div>
+          <span class="pill">Training</span>
+        </a>
+
+        <a class="list__item" href="https://www.intersystems.com/register-for-a-course/" target="_blank" rel="noopener noreferrer">
+          <div>
+            <div class="list__title">Register for a Course</div>
+            <div class="list__desc">Classroom/virtual registration page (when you want scheduled training).</div>
+          </div>
+          <span class="pill">Register</span>
+        </a>
+      </div>
+
+      <div class="card card--plain" style="margin-top: 12px;">
+        <details class="details">
+          <summary>Tip: videos/exercises listed below</summary>
+          <div class="details__content">
+            Many of the items labeled “Video”, “Course”, or “Exercise” are typically accessed through the InterSystems learning portal.
+            If an item doesn’t have a direct public URL, use Learning Services to locate it by title.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- IRIS Installation -->
+    <section id="install" class="section">
+      <div class="section__header">
+        <h2>IRIS Installation</h2>
+        <p class="muted">Pre-reqs and Linux installation guidance (IRIS for Health).</p>
+      </div>
+
+      <details class="details details--accent" open>
+        <summary>Installation documentation (Linux/UNIX)</summary>
+        <div class="details__content">
+          <div class="list">
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIUNIX_overview"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">UNIX/Linux/macOS Installation Overview</div>
+                <div class="list__desc">High-level flow for attended/unattended installs and next steps.</div>
+              </div>
+              <span class="pill">Docs</span>
+            </a>
+
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIUNIX_install"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Attended Linux Installation (initial steps)</div>
+                <div class="list__desc">Start here for attended installs; covers initial prompts and setup choices.</div>
+              </div>
+              <span class="pill">Docs</span>
+            </a>
+
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIUNIX_server"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Linux Server Installation (attended)</div>
+                <div class="list__desc">Server install steps after initial attended installation flow.</div>
+              </div>
+              <span class="pill">Docs</span>
+            </a>
+
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=ALL"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">All Documentation (IRIS for Health)</div>
+                <div class="list__desc">Browse everything by topic (install, web gateway, interoperability, FHIR, SQL, etc.).</div>
+              </div>
+              <span class="pill">Index</span>
+            </a>
+          </div>
+
+          <div class="card card--plain" style="margin-top: 12px;">
+            <div class="muted">
+              <strong>Installation steps checklist (from your resources list):</strong>
+              <ul class="bullets">
+                <li>Installation pre-requisites documentation</li>
+                <li>Install the Apache httpd web server</li>
+                <li>Determine owners and groups</li>
+                <li>Uncompress the installation kit</li>
+                <li>Check and install required dependencies</li>
+                <li>Attended Linux installation (select “Development” installation)</li>
+                <li>Linux development installation (select “normal” security settings)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- IRIS Basics -->
+    <section id="basics" class="section">
+      <div class="section__header">
+        <h2>IRIS Basics</h2>
+        <p class="muted">Foundational videos/exercises/courses to get productive quickly.</p>
+      </div>
+
+      <div class="card card--plain">
+        <ul class="bullets">
+          <li>Introduction to the Management Portal (video)</li>
+          <li>Installing VS Code and Configuring InterSystems Server Connections (exercise)</li>
+          <li>Creating Namespaces and Databases (video)</li>
+          <li>Integration Architecture (course)</li>
+          <li>InterSystems ObjectScript Tutorial (documentation/exercise)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Exercise One -->
+    <section id="ex1" class="section">
+      <div class="section__header">
+        <h2>Exercise One: HL7-to-SQL Pipeline</h2>
+        <p class="muted">HL7 v2 basics, routing rules, transformations, and SQL queries.</p>
+      </div>
+
+      <div class="card card--plain">
+        <ul class="bullets">
+          <li>Introduction to HL7 v2 Integrations in InterSystems IRIS for Health (video)</li>
+          <li>Getting Started with HL7 V2 Routing Rules (video)</li>
+          <li>Using the Expression Editor in Business Rules (video)</li>
+          <li>Building a Message Router (exercise)</li>
+          <li>Data Transformation Basics (course)</li>
+          <li>Building a Data Transformation (exercise)</li>
+          <li>Running Fast Queries with SQL in InterSystems IRIS (exercise)</li>
+          <li>Using InterSystems SQL (documentation)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Exercise Two -->
+    <section id="ex2" class="section">
+      <div class="section__header">
+        <h2>Exercise Two: FHIR-to-SQL Pipeline</h2>
+        <p class="muted">FHIR fundamentals and working with the FHIR resource repository.</p>
+      </div>
+
+      <div class="card card--plain">
+        <ul class="bullets">
+          <li>What is FHIR? (video)</li>
+          <li>FHIR: A Healthcare Data Standard Designed for the Future (video)</li>
+          <li>Getting Started with FHIR (course)</li>
+          <li>Working with the FHIR Resource Repository (exercise)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Exercise Three -->
+    <section id="ex3" class="section">
+      <div class="section__header">
+        <h2>Exercise Three: Intermediate Data Model Transformation Pipeline</h2>
+        <p class="muted">SDA concepts and transforming healthcare data models.</p>
+      </div>
+
+      <div class="card card--plain">
+        <ul class="bullets">
+          <li>What is SDA? (video)</li>
+          <li>Using SDA to Transform Healthcare Data (video)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Exercise Four -->
+    <section id="ex4" class="section">
+      <div class="section__header">
+        <h2>Exercise Four: FHIR SQL Builder</h2>
+        <p class="muted">Videos and official docs for setup and projection creation.</p>
+      </div>
+
+      <details class="details details--accent" open>
+        <summary>FHIR SQL Builder docs (official)</summary>
+        <div class="details__content">
+          <div class="list">
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIRFSB_installation"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Accessing FHIR SQL Builder (documentation)</div>
+                <div class="list__desc">Prereqs and how to open the Builder UI.</div>
+              </div>
+              <span class="pill">Docs</span>
+            </a>
+          </div>
+
+          <div class="card card--plain" style="margin-top: 12px;">
+            <ul class="bullets">
+              <li>What is the FHIR SQL Builder (video)</li>
+              <li>Making a Projection in the FHIR SQL Builder (video)</li>
+              <li>Performing an Analysis in the FHIR SQL Builder (video)</li>
+              <li>Analyze the FHIR Repository for SQL Builder (documentation)</li>
+              <li>Creating a New Transformation Specification for FHIR SQL Builder (documentation)</li>
+              <li>Create the Projection for FHIR SQL Builder (documentation)</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">Educational Resources</span>
+      <span class="muted">Static site • No backend required</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
