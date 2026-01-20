@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exercise 1 — POC Specification</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">◎</div>
+        <div class="brand__text">
+          <div class="brand__title">Exercise 1 — POC Spec</div>
+          <div class="brand__subtitle">Measures of success + checklist</div>
+        </div>
+      </div>
+
+      <nav class="quicklinks" aria-label="Quick links">
+        <a class="chip" href="../index.html#poc-specs">Back to Specs</a>
+        <a class="chip" href="../index.html#repository">Repository</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="section__header">
+        <h1 class="h1">POC Specification</h1>
+        <p class="muted">Use this page to track progress for the exercise.</p>
+      </div>
+
+      <!-- Measures of success at the top, expandable -->
+      <details class="details details--accent" open>
+        <summary>Measures of Success</summary>
+        <div class="details__content">
+          <ul class="bullets">
+            <li>Success metric #1 (e.g., endpoint responds with expected payload).</li>
+            <li>Success metric #2 (e.g., performance threshold met).</li>
+            <li>Success metric #3 (e.g., logging/monitoring validated).</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <section class="section">
+      <div class="section__header">
+        <h2>Checklist</h2>
+        <p class="muted">Progress is saved automatically in your browser.</p>
+      </div>
+
+      <div class="card card--plain">
+        <!-- data-checklist-id MUST be unique per page -->
+        <form class="checklist" data-checklist-id="exercise-1">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>Confirm prerequisites (access, credentials, network, tooling)</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>Deploy required components for this exercise</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>Configure settings and validate connectivity</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>Run test workflow and capture outputs</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>Verify measures of success and document results</span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>
+              Reset checklist
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">Exercise 1</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

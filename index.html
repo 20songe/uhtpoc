@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>POC Repository</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">◎</div>
+        <div class="brand__text">
+          <div class="brand__title">POC Repository</div>
+          <div class="brand__subtitle">Specs • Docs • FAQs • Lessons Learned</div>
+        </div>
+      </div>
+
+      <nav class="quicklinks" aria-label="Quick links">
+        <a class="chip" href="#repository">Repository</a>
+        <a class="chip" href="#poc-specs">POC Specs</a>
+        <a class="chip" href="#faqs">FAQs</a>
+        <a class="chip" href="#lessons">Lessons Learned</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Central hub for POC documentation</h1>
+      <p>
+        Browse reference materials, exercise-specific POC specifications, FAQs, and lessons learned.
+        POC specification pages include interactive checklists to track completion.
+      </p>
+    </section>
+
+    <section id="repository" class="section">
+      <div class="section__header">
+        <h2>Repository</h2>
+        <p class="muted">Quick access to core content areas.</p>
+      </div>
+
+      <div class="grid">
+        <a class="card" href="#">
+          <div class="card__title">References & Documentation</div>
+          <div class="card__desc">Architecture, environment setup, runbooks, and reference links.</div>
+          <div class="card__meta">Collection</div>
+        </a>
+
+        <a class="card" href="#poc-specs">
+          <div class="card__title">POC Specifications</div>
+          <div class="card__desc">Exercise-by-exercise specs with success measures and step checklists.</div>
+          <div class="card__meta">Specs</div>
+        </a>
+
+        <a class="card" href="#faqs">
+          <div class="card__title">FAQs</div>
+          <div class="card__desc">Common questions and troubleshooting notes.</div>
+          <div class="card__meta">Help</div>
+        </a>
+
+        <a class="card" href="#lessons">
+          <div class="card__title">Lessons Learned</div>
+          <div class="card__desc">What worked, what didn’t, and what to improve next time.</div>
+          <div class="card__meta">Insights</div>
+        </a>
+      </div>
+    </section>
+
+    <section id="poc-specs" class="section">
+      <div class="section__header">
+        <h2>POC Specifications</h2>
+        <p class="muted">Start with an exercise page. Add more exercises by duplicating the template.</p>
+      </div>
+
+      <div class="list">
+        <a class="list__item" href="pages/poc-exercise-1.html">
+          <div>
+            <div class="list__title">Exercise 1 — Example Spec Page</div>
+            <div class="list__desc">Measures of success + checklist with saved progress.</div>
+          </div>
+          <span class="pill">Spec</span>
+        </a>
+
+        <!-- Add more exercises here -->
+        <!-- <a class="list__item" href="pages/poc-exercise-2.html">...</a> -->
+      </div>
+    </section>
+
+    <section id="faqs" class="section">
+      <div class="section__header">
+        <h2>FAQs</h2>
+        <p class="muted">Add your questions here or link to a dedicated page.</p>
+      </div>
+
+      <div class="card card--plain">
+        <details class="details">
+          <summary>Where should we store environment setup steps?</summary>
+          <div class="details__content">
+            Put setup steps in “References & Documentation” and link from each exercise spec.
+          </div>
+        </details>
+
+        <details class="details">
+          <summary>Do checklists persist after refresh?</summary>
+          <div class="details__content">
+            Yes—progress is saved in your browser via LocalStorage.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="lessons" class="section">
+      <div class="section__header">
+        <h2>Lessons Learned</h2>
+        <p class="muted">Capture patterns, gotchas, and improvements.</p>
+      </div>
+
+      <div class="card card--plain">
+        <ul class="bullets">
+          <li>Document prerequisites per exercise to reduce rework.</li>
+          <li>Track success measures explicitly and verify at the end.</li>
+          <li>Keep FAQs updated as blockers are discovered.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">Static site • No backend required</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
