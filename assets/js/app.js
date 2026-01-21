@@ -90,25 +90,34 @@
         const pre = codeEl.parentElement;
         if (!pre) return;
     
-        // Only enhance code blocks inside checklist items
+        // Only enhance code blocks inside checklist items (keep if you want this restriction)
         const item = pre.closest(".checklist__item");
         if (!item) return;
     
-        // Prevent duplicates per PRE (not per checklist item)
+        // Prevent duplicates per <pre>
         if (pre.dataset.copyEnhanced === "1") return;
         pre.dataset.copyEnhanced = "1";
     
-        // Ensure the <pre> is the positioning context (button lives inside it)
-        pre.classList.add("has-copy-btn");
+        // Ensure <pre> is wrapped in .codeblock (required if your CSS uses .codeblock:hover)
+        let wrapper = pre.closest(".codeblock");
+        if (!wrapper) {
+          wrapper = document.createElement("div");
+          wrapper.className = "codeblock";
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+        }
     
-        // Create the copy button (copies the whole <code> content)
+        // Make <pre> a positioning context so the button is "inside" the highlighted box
+        pre.style.position = pre.style.position || "relative";
+    
+        // Create button
         const btn = makeCopyButton(() => codeEl.innerText);
         btn.classList.add("copy-btn--block");
     
-        // Put the button INSIDE the highlighted <pre> box (top-right)
+        // Put the button INSIDE the <pre> (top-right)
         pre.appendChild(btn);
       });
-    }
+    }    
     
     
       
