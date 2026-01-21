@@ -144,9 +144,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
             <span>
-              <strong>7.</strong> Upload the IRIS install kit to the VM:
+              <strong>7.</strong> From your local directory containing the install kit, upload the IRIS install kit to the VM:
               <div class="muted" style="margin-top:6px;">
-                <pre><code>scp &lt;VM_EXTERNAL_IP&gt;:~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz</code></pre>
+                <pre><code>gcloud compute scp IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz &lt;USERNAME&gt;@&lt;VM_EXTERNAL_IP&gt;:/home/&lt;USERNAME&gt; --zone &lt;ZONE&gt;</code></pre>
               </div>
             </span>
           </label>
@@ -154,9 +154,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
             <span>
-              <strong>8.</strong> Copy the license key file to the VM:
+              <strong>8.</strong> From your local directory containing the license key, copy the license key file to the VM:
               <div class="muted" style="margin-top:8px;">
-                <pre><code>scp iris.key &lt;VM_EXTERNAL_IP&gt;:~/</code></pre>
+                <pre><code>gcloud compute scp iris.key &lt;USERNAME&gt;@&lt;VM_EXTERNAL_IP&gt;:/home/&lt;USERNAME&gt; --zone &lt;ZONE&gt;</code></pre>
               </div>
             </span>
           </label>
