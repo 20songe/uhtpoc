@@ -12,13 +12,19 @@
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   
-    // Checklist persistence for any form with data-checklist-id
+    // === CHECKLISTS: persistence + progress (X of Y) ===
     const checklistForms = document.querySelectorAll("form.checklist[data-checklist-id]");
     checklistForms.forEach((form) => {
       const listId = form.getAttribute("data-checklist-id");
       const storageKey = `poc-checklist:${listId}`;
-  
       const checkboxes = Array.from(form.querySelectorAll('input[type="checkbox"][data-step]'));
+  
+      // Inject progress UI (top of form)
+      const progressEl = document.createElement("div");
+      progressEl.className = "checklist__progress";
+      progressEl.setAttribute("role", "status");
+      progressEl.setAttribute("aria-live", "polite");
+      form.insertBefore(progressEl, form.firstChild);
   
       // Load saved state
       try {
@@ -31,7 +37,9 @@
         // ignore malformed storage
       }
   
-      // Save on change
+      renderProgress();
+  
+      // Save on change + update progress
       form.addEventListener("change", (e) => {
         const cb = e.target.closest('input[type="checkbox"][data-step]');
         if (!cb) return;
@@ -40,6 +48,8 @@
         const saved = safeRead(storageKey);
         saved[step] = cb.checked;
         localStorage.setItem(storageKey, JSON.stringify(saved));
+  
+        renderProgress();
       });
   
       // Reset button
@@ -48,7 +58,15 @@
         resetBtn.addEventListener("click", () => {
           checkboxes.forEach((cb) => (cb.checked = false));
           localStorage.setItem(storageKey, JSON.stringify({}));
+          renderProgress();
         });
+      }
+  
+      function renderProgress() {
+        const total = checkboxes.length;
+        const done = checkboxes.filter((cb) => cb.checked).length;
+        const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+        progressEl.textContent = `${done} of ${total} completed (${pct}%)`;
       }
     });
   
@@ -58,6 +76,89 @@
       } catch {
         return {};
       }
+    }
+  
+    // === COPY TO CLIPBOARD FOR CODE ===
+    // Adds a copy button beside <code> snippets and to <pre><code> blocks.
+    initCopyButtons();
+  
+    function initCopyButtons() {
+      // 1) <pre><code> blocks (if you add them later)
+      const preCodes = document.querySelectorAll("pre > code");
+      preCodes.forEach((codeEl) => {
+        const pre = codeEl.parentElement;
+        if (!pre || pre.dataset.copyEnhanced === "1") return;
+        pre.dataset.copyEnhanced = "1";
+  
+        const wrapper = document.createElement("div");
+        wrapper.className = "codeblock";
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+  
+        const btn = makeCopyButton(() => codeEl.innerText);
+        btn.classList.add("copy-btn--block");
+        wrapper.appendChild(btn);
+      });
+  
+      // 2) standalone <code> (your page has many of these)
+      const codes = document.querySelectorAll("code");
+      codes.forEach((codeEl) => {
+        if (codeEl.closest("pre")) return; // already handled above
+        if (codeEl.dataset.copyEnhanced === "1") return;
+  
+        codeEl.dataset.copyEnhanced = "1";
+  
+        const wrap = document.createElement("span");
+        wrap.className = "codewrap";
+  
+        codeEl.parentNode.insertBefore(wrap, codeEl);
+        wrap.appendChild(codeEl);
+  
+        const btn = makeCopyButton(() => codeEl.innerText);
+        wrap.appendChild(btn);
+      });
+    }
+  
+    function makeCopyButton(getText) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      btn.setAttribute("aria-label", "Copy code to clipboard");
+  
+      btn.addEventListener("click", async () => {
+        const text = (getText() || "").trim();
+        if (!text) return;
+  
+        const prev = btn.textContent;
+        btn.disabled = true;
+  
+        try {
+          await navigator.clipboard.writeText(text);
+          btn.textContent = "Copied";
+        } catch {
+          try {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+            btn.textContent = "Copied";
+          } catch {
+            btn.textContent = "Failed";
+          }
+        } finally {
+          setTimeout(() => {
+            btn.textContent = prev;
+            btn.disabled = false;
+          }, 900);
+        }
+      });
+  
+      return btn;
     }
   })();
   

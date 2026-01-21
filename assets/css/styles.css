@@ -195,3 +195,46 @@
     .card { grid-column: span 12; }
   }
   
+  /* Checklist progress label */
+.checklist__progress {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  
+  /* Copy-to-clipboard UI for code */
+  .codewrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+  }
+  
+  .copy-btn {
+    appearance: none;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+  }
+  .copy-btn:hover { background: rgba(255, 255, 255, 0.10); }
+  .copy-btn:disabled { opacity: 0.65; cursor: default; }
+  
+  .codeblock {
+    position: relative;
+  }
+  .copy-btn--block {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  
