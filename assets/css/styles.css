@@ -163,18 +163,6 @@
   position: relative;
 }
 
-/* Only add top padding when the item has a code block + button */
-.checklist__item.has-code {
-  padding-top: 40px; /* room for the button */
-}
-
-/* Copy button positioned inside checklist item (top-right) */
-.copy-btn--item {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
 /* Ensure the content column can expand fully */
 .checklist__item > span {
   flex: 1;
@@ -239,7 +227,6 @@
   .codewrap {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* right justify button */
     gap: 10px;
     width: 100%;
     position: relative;
