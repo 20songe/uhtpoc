@@ -83,27 +83,33 @@
     initCopyButtons();
   
     function initCopyButtons() {
-        // ONLY add copy buttons to <pre><code> blocks
-        const preCodes = document.querySelectorAll("pre > code");
-      
-        preCodes.forEach((codeEl) => {
-          const pre = codeEl.parentElement;
-          if (!pre || pre.dataset.copyEnhanced === "1") return;
-      
-          pre.dataset.copyEnhanced = "1";
-      
-          // Wrap <pre> in a positioning container
-          const wrapper = document.createElement("div");
-          wrapper.className = "codeblock";
-          pre.parentNode.insertBefore(wrapper, pre);
-          wrapper.appendChild(pre);
-      
-          // Create copy button (icon-based)
-          const btn = makeCopyButton(() => codeEl.innerText);
-          btn.classList.add("copy-btn--block");
-          wrapper.appendChild(btn);
-        });
-      }
+      // ONLY add copy buttons to <pre><code> blocks
+      const preCodes = document.querySelectorAll("pre > code");
+    
+      preCodes.forEach((codeEl) => {
+        const pre = codeEl.parentElement;
+        if (!pre) return;
+    
+        // Find the checklist item this code block belongs to
+        const item = pre.closest(".checklist__item");
+        if (!item) return; // only add inside checklist items
+    
+        // Prevent duplicates (per checklist item)
+        if (item.dataset.copyEnhanced === "1") return;
+        item.dataset.copyEnhanced = "1";
+    
+        // Mark this item so CSS can add top padding for the button
+        item.classList.add("has-code");
+    
+        // Create a copy button that copies the entire code block content
+        const btn = makeCopyButton(() => codeEl.innerText);
+        btn.classList.add("copy-btn--item");
+    
+        // Add button inside the checklist item (top-right)
+        item.appendChild(btn);
+      });
+    }
+    
       
   
     function makeCopyButton(getText) {

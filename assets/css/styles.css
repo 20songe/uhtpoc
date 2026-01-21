@@ -158,27 +158,43 @@
   .bullets li { margin: 6px 0; }
   
   .checklist { display: grid; gap: 10px; }
-  .checklist__item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.03);
-  }
-  /* Let the checklist text column (span) fill the row width */
-.checklist__item > span {
-  flex: 1;
-  min-width: 0; /* important: allows children like <pre> to size/scroll correctly */
+  /* Make checklist items a positioning context */
+.checklist__item {
+  position: relative;
 }
 
-/* Ensure <pre> can actually take full available width inside the row */
+/* Only add top padding when the item has a code block + button */
+.checklist__item.has-code {
+  padding-top: 40px; /* room for the button */
+}
+
+/* Copy button positioned inside checklist item (top-right) */
+.copy-btn--item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Ensure the content column can expand fully */
+.checklist__item > span {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Make pre/code blocks behave nicely within checklist items */
 .checklist__item pre {
   display: block;
   width: 100%;
   max-width: 100%;
+  margin: 10px 0 0;
+  overflow-x: auto;
+  white-space: pre;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 14px 16px;
 }
+
 
   .checklist__item input { margin-top: 3px; }
   .checklist__actions { margin-top: 6px; display: flex; gap: 10px; }
@@ -287,13 +303,6 @@
   border: 1px solid var(--border);
   font-size: 13px;
   line-height: 1.55;
-}
-
-/* Copy button pinned top-right */
-.copy-btn--block {
-  position: absolute;
-  top: 8px;
-  right: 8px;
 }
 
   
