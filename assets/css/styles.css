@@ -148,6 +148,7 @@
     line-height: 1.6;
   }
   .details--accent {
+    margin-top: 6px;
     border-color: rgba(124, 92, 255, 0.35);
     background: rgba(124, 92, 255, 0.10);
   }
