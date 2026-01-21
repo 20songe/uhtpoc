@@ -175,7 +175,7 @@
       </div>
 
       <details class="details details--accent" open>
-        <summary>HL7, SQL, and Interoperability</summary>
+        <summary>HL7, SQL, and Interoperability Overview</summary>
         <div class="details__content">
           <div class="list">
 
@@ -263,7 +263,7 @@
       </div>
 
       <details class="details details--accent" open>
-        <summary>HL7, SQL, and Interoperability</summary>
+        <summary>FHIR Overview</summary>
         <div class="details__content">
           <div class="list">
 
@@ -312,15 +312,35 @@
     <section id="ex3" class="section">
       <div class="section__header">
         <h2>Exercise Three: Intermediate Data Model Transformation Pipeline</h2>
-        <p class="muted">SDA concepts and transforming healthcare data models.</p>
+        <p class="muted">Simplifying transformation of healthcare data models through an intermediary.</p>
       </div>
 
-      <div class="card card--plain">
-        <ul class="bullets">
-          <li>What is SDA? (video)</li>
-          <li>Using SDA to Transform Healthcare Data (video)</li>
-        </ul>
-      </div>
+      <details class="details details--accent" open>
+        <summary>Summary Document Architecture (SDA) Overview</summary>
+        <div class="details__content">
+          <div class="list">
+
+          <a class="list__item" href="https://learning.intersystems.com/course/view.php?id=2128"
+          target="_blank" rel="noopener noreferrer">
+         <div>
+           <div class="list__title">What is SDA?</div>
+           <div class="list__desc">Overview of the summary document architecture (SDA) internal data model.</div>
+         </div>
+         <span class="pill">Video</span>
+        </a>
+
+        <a class="list__item" href="https://learning.intersystems.com/course/view.php?id=2182"
+          target="_blank" rel="noopener noreferrer">
+         <div>
+           <div class="list__title">Using SDA to Transform Healthcare Data</div>
+           <div class="list__desc">Simplified healthcare data transformation via an intermediary data model.</div>
+         </div>
+         <span class="pill">Video</span>
+        </a>
+
+        </div>
+        </div>
+        </details>
     </section>
 
     <!-- Exercise Four -->
@@ -331,28 +351,71 @@
       </div>
 
       <details class="details details--accent" open>
-        <summary>FHIR SQL Builder docs (official)</summary>
+        <summary>FHIR SQL Builder Overview</summary>
         <div class="details__content">
           <div class="list">
+            <a class="list__item" href="https://learning.intersystems.com/course/view.php?name=FHIRSQLBuilderOverview"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">What is the FHIR SQL Builder?</div>
+                <div class="list__desc">Understanding SQL projections on FHIR.</div>
+              </div>
+              <span class="pill">Video</span>
+            </a>
+
+            <a class="list__item" href="https://learning.intersystems.com/course/view.php?id=2153"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Making a Projection in the FHIR SQL Builder</div>
+                <div class="list__desc">Configuring SQL projections.</div>
+              </div>
+              <span class="pill">Video</span>
+            </a>
+
+            <a class="list__item" href="https://learning.intersystems.com/course/view.php?id=2155"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Performing an Analysis in the FHIR SQL Builder</div>
+                <div class="list__desc">Analyzing FHIR respository resources before SQL projection.</div>
+              </div>
+              <span class="pill">Video</span>
+            </a>
+
             <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIRFSB_installation"
                target="_blank" rel="noopener noreferrer">
               <div>
-                <div class="list__title">Accessing FHIR SQL Builder (documentation)</div>
-                <div class="list__desc">Prereqs and how to open the Builder UI.</div>
+                <div class="list__title">Accessing FHIR SQL Builder</div>
+                <div class="list__desc">Pre-requisites for using FHIR SQL Builder.</div>
               </div>
-              <span class="pill">Docs</span>
+              <span class="pill">Documentation</span>
             </a>
-          </div>
 
-          <div class="card card--plain" style="margin-top: 12px;">
-            <ul class="bullets">
-              <li>What is the FHIR SQL Builder (video)</li>
-              <li>Making a Projection in the FHIR SQL Builder (video)</li>
-              <li>Performing an Analysis in the FHIR SQL Builder (video)</li>
-              <li>Analyze the FHIR Repository for SQL Builder (documentation)</li>
-              <li>Creating a New Transformation Specification for FHIR SQL Builder (documentation)</li>
-              <li>Create the Projection for FHIR SQL Builder (documentation)</li>
-            </ul>
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIRFSB_analyze-repo"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Analyze the FHIR Repository for SQL Builder</div>
+                <div class="list__desc">Analyzing FHIR respository resources before SQL projection.</div>
+              </div>
+              <span class="pill">Documentation</span>
+            </a>
+
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIRFSB_create-trans-spec"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Creating a New Transformation Specification for FHIR SQL Builder</div>
+                <div class="list__desc">Configure tables and columns of SQL projection.</div>
+              </div>
+              <span class="pill">Documentation</span>
+            </a>
+
+            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIRFSB_create-projection"
+               target="_blank" rel="noopener noreferrer">
+              <div>
+                <div class="list__title">Create the Projection for FHIR SQL Builder</div>
+                <div class="list__desc">Starting the SQL projection mapping process.</div>
+              </div>
+              <span class="pill">Documentation</span>
+            </a>
           </div>
         </div>
       </details>
