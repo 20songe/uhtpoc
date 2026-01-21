@@ -167,6 +167,19 @@
     border: 1px solid var(--border);
     background: rgba(255, 255, 255, 0.03);
   }
+  /* Let the checklist text column (span) fill the row width */
+.checklist__item > span {
+  flex: 1;
+  min-width: 0; /* important: allows children like <pre> to size/scroll correctly */
+}
+
+/* Ensure <pre> can actually take full available width inside the row */
+.checklist__item pre {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
   .checklist__item input { margin-top: 3px; }
   .checklist__actions { margin-top: 6px; display: flex; gap: 10px; }
   
