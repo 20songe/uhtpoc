@@ -120,45 +120,61 @@
     }
   
     function makeCopyButton(getText) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "copy-btn";
-      btn.textContent = "Copy";
-      btn.setAttribute("aria-label", "Copy code to clipboard");
-  
-      btn.addEventListener("click", async () => {
-        const text = (getText() || "").trim();
-        if (!text) return;
-  
-        const prev = btn.textContent;
-        btn.disabled = true;
-  
-        try {
-          await navigator.clipboard.writeText(text);
-          btn.textContent = "Copied";
-        } catch {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "copy-btn";
+        btn.setAttribute("aria-label", "Copy code to clipboard");
+        btn.innerHTML = copyIcon(); // icon only by default
+      
+        btn.addEventListener("click", async () => {
+          const text = (getText() || "").trim();
+          if (!text) return;
+      
+          btn.disabled = true;
+          const originalHTML = btn.innerHTML;
+      
           try {
-            const ta = document.createElement("textarea");
-            ta.value = text;
-            ta.style.position = "fixed";
-            ta.style.left = "-9999px";
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand("copy");
-            document.body.removeChild(ta);
+            await navigator.clipboard.writeText(text);
             btn.textContent = "Copied";
           } catch {
-            btn.textContent = "Failed";
+            try {
+              const ta = document.createElement("textarea");
+              ta.value = text;
+              ta.style.position = "fixed";
+              ta.style.left = "-9999px";
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              document.body.removeChild(ta);
+              btn.textContent = "Copied";
+            } catch {
+              btn.textContent = "Failed";
+            }
+          } finally {
+            setTimeout(() => {
+              btn.innerHTML = originalHTML;
+              btn.disabled = false;
+            }, 900);
           }
-        } finally {
-          setTimeout(() => {
-            btn.textContent = prev;
-            btn.disabled = false;
-          }, 900);
-        }
-      });
-  
-      return btn;
-    }
+        });
+      
+        return btn;
+      }
+      
+      function copyIcon() {
+        return `
+          <svg xmlns="http://www.w3.org/2000/svg"
+               width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4
+                     a2 2 0 0 1 2-2h9
+                     a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        `;
+      }
+      
   })();
   
