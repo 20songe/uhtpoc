@@ -110,26 +110,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
-            <span>
-              <strong>4.</strong> (If applicable) Ensure apt sources don’t reference a CD-ROM. Open the sources.list file:
-              <div class="muted" style="margin-top:8px;">
-                <pre><code>sudo nano /etc/apt/sources.list</code></pre> <br/>
-              </div>
-              <div class="muted" style="margin-top:6px">
-                Comment out any <code>cdrom</code> lines.
-              </div>
-              <div class="muted" style="margin-top:6px;">
-                Then re-run: 
-                <pre><code>sudo apt update</code></pre>
-              </div>
-            </span>
-          </label>
-
-          <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-              <strong>5.</strong> Install Apache Web Server:
+              <strong>4.</strong> Install Apache Web Server:
               <div class="muted" style="margin-top:8px;">
                 <pre><code>sudo apt install apache2 -y</code></pre>
               </div>
@@ -139,7 +122,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-              <strong>6.</strong> Verify Apache Web Server is running:
+              <strong>5.</strong> Verify Apache Web Server is running:
               <div class="muted" style="margin-top:8px;">
                 <pre><code>sudo systemctl status apache2</code></pre>
               </div>
@@ -149,7 +132,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
             <span>
-              <strong>7.</strong> Verify inbound access to Apache on port 80:
+              <strong>6.</strong> Verify inbound access to Apache on port 80:
               <ul class="bullets" style="margin-top:8px;">
                 <li>Confirm GCE firewall/VPC rule allows <strong>TCP:80</strong> to the VM</li>
                 <li>Confirm Ubuntu firewall (if enabled) allows port 80</li>
@@ -161,7 +144,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
             <span>
-              <strong>8.</strong> Upload the IRIS install kit to the VM:
+              <strong>7.</strong> Upload the IRIS install kit to the VM:
               <div class="muted" style="margin-top:6px;">
                 <pre><code>scp &lt;VM_EXTERNAL_IP&gt;:~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz</code></pre>
               </div>
@@ -171,7 +154,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
             <span>
-              <strong>9.</strong> Copy the license key file to the VM:
+              <strong>8.</strong> Copy the license key file to the VM:
               <div class="muted" style="margin-top:8px;">
                 <pre><code>scp iris.key &lt;VM_EXTERNAL_IP&gt;:~/</code></pre>
               </div>
