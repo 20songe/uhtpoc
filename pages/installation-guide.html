@@ -46,7 +46,7 @@
           <ul class="bullets">
             <li>
               IRIS Installer:
-              <code>~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar</code>
+              <code>~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz</code>
             </li>
             <li>
               IRIS License Key:
@@ -106,8 +106,9 @@
             <span>
               <strong>3.</strong> Update the OS packages:
               <div class="muted" style="margin-top:8px;">
-                <code>sudo apt update && sudo apt upgrade -y</code><br/>
-                <code>sudo snap refresh</code>
+                <pre><code>sudo apt update && sudo apt upgrade -y</code><br/>
+                    <code>sudo snap refresh</code>
+                </pre>
               </div>
             </span>
           </label>
@@ -115,12 +116,16 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4.</strong> (If applicable) Ensure apt sources don’t reference a CD-ROM:
+              <strong>4.</strong> (If applicable) Ensure apt sources don’t reference a CD-ROM. Open the sources.list file:
               <div class="muted" style="margin-top:8px;">
-                <code>sudo nano /etc/apt/sources.list</code> and comment out any <code>cdrom</code> lines.
+                <pre><code>sudo nano /etc/apt/sources.list</code></pre> <br/>
+              </div>
+              <div class="muted" style="margin-top:6px">
+                Comment out any <code>cdrom</code> lines.
               </div>
               <div class="muted" style="margin-top:6px;">
-                Then re-run: <code>sudo apt update</code>
+                Then re-run: 
+                <pre><code>sudo apt update</code></pre>
               </div>
             </span>
           </label>
@@ -131,11 +136,19 @@
               <strong>5.</strong> Install Apache Web Server:
               <div class="muted" style="margin-top:8px;">
                 <pre>
-                    <code>sudo apt update<br/>
-                    sudo dpkg --configure -a<br/>
-                    sudo apt -f install<br/>
-                    sudo apt install apache2 -y<br/>
-                    sudo systemctl status apache2</code>
+                    <code>sudo apt install apache2 -y</code>
+                </pre>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>6.</strong> Verify Apache Web Server is running:
+              <div class="muted" style="margin-top:8px;">
+                <pre>
+                    <code>sudo systemctl status apache2</code>
                 </pre>
               </div>
             </span>
@@ -144,7 +157,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
             <span>
-              <strong>6.</strong> Verify inbound access to Apache on port 80:
+              <strong>7.</strong> Verify inbound access to Apache on port 80:
               <ul class="bullets" style="margin-top:8px;">
                 <li>Confirm GCE firewall/VPC rule allows <strong>TCP:80</strong> to the VM</li>
                 <li>Confirm Ubuntu firewall (if enabled) allows port 80</li>
@@ -156,14 +169,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
             <span>
-              <strong>7.</strong> Upload the IRIS install kit to the VM (GCE adaptation of “mount shared folder”):
-              <ul class="bullets" style="margin-top:8px;">
-                <li>Option A: Upload via Cloud Console SSH file upload (if available)</li>
-                <li>Option B: Use <code>gcloud compute scp</code> from your workstation</li>
-                <li>Option C: Download from an internal artifact repo (if permitted)</li>
-              </ul>
+              <strong>8.</strong> Upload the IRIS install kit to the VM:
               <div class="muted" style="margin-top:6px;">
-                Place the installer at: <code>~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar</code>
+                <pre><code>scp &lt;VM_EXTERNAL_IP&gt;:~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz</code></pre>
               </div>
             </span>
           </label>
@@ -171,9 +179,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
             <span>
-              <strong>8.</strong> Ensure the license key file is present:
+              <strong>9.</strong> Copy the license key file to the VM:
               <div class="muted" style="margin-top:8px;">
-                <code>~/iris.key</code>
+                <pre><code>scp iris.key &lt;VM_EXTERNAL_IP&gt;:~/</code></pre>
               </div>
             </span>
           </label>
@@ -200,9 +208,12 @@
             <span>
               <strong>1.</strong> Create a temporary kit directory:
               <div class="muted" style="margin-top:8px;">
-                <code>sudo mkdir /tmp/iriskit</code><br/>
-                <code>sudo chmod og+rx /tmp/iriskit</code><br/>
-                <code>umask 022</code>
+                <pre>
+                    <code>sudo mkdir /tmp/iriskit</code><br/>
+                    <code>sudo chmod og+rx /tmp/iriskit</code><br/>
+                    <code>umask 022</code>
+                </pre>
+                
               </div>
             </span>
           </label>
@@ -212,10 +223,7 @@
             <span>
               <strong>2.</strong> Unpack the install kit into <code>/tmp/iriskit</code>:
               <div class="muted" style="margin-top:8px;">
-                <code>tar -xf ~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar -C /tmp/iriskit</code>
-              </div>
-              <div class="muted" style="margin-top:6px;">
-                (If your kit is <code>.tar.gz</code>, use: <code>tar -xzf ...</code>)
+                <pre><code>gunzip -c ~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz| ( cd /tmp/iriskit ; tar xf - )</code></pre>
               </div>
             </span>
           </label>
@@ -225,7 +233,7 @@
             <span>
               <strong>3.</strong> Run the pre-checker:
               <div class="muted" style="margin-top:8px;">
-                <code>sudo /tmp/iriskit/irisinstall --prechecker</code>
+                <pre><code>sudo /tmp/iriskit/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64/irisinstall --prechecker</code></pre>
               </div>
               <div class="muted" style="margin-top:6px;">
                 Install any missing dependencies as reported (e.g., openssl, zlib1g, CPU instruction support).
@@ -246,7 +254,7 @@
             <span>
               <strong>5.</strong> Start the installer:
               <div class="muted" style="margin-top:8px;">
-                <code>sudo /tmp/iriskit/irisinstall</code>
+                <pre><code>sudo /tmp/iriskit/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64/irisinstall</code></pre>
               </div>
             </span>
           </label>
@@ -256,32 +264,20 @@
             <span>
               <strong>6.</strong> Installer prompts (recommended selections for this POC):
               <ul class="bullets" style="margin-top:8px;">
-                <li>Instance name: press Enter (default <code>IRISHEALTH</code>)</li>
-                <li>Directory: <code>/isc/IRISHEALTH</code> → Enter to create</li>
-                <li>Installation type: Enter (1) Development</li>
-                <li>Security mode: type <code>2</code> for Normal security</li>
-                <li>Owner user: choose your system user (e.g., <code>superuser</code>)</li>
-                <li>Set shared passwords: _SYSTEM/Admin/SuperUser/superuser</li>
-                <li>Set CSPSystem password</li>
-                <li>Start/stop group: select your desired group</li>
-                <li>Unicode Support: Enter (Yes)</li>
-                <li>Use existing web server: Enter (Yes)</li>
-                <li>License key file: Enter (No license key file at install time)</li>
-                <li>Confirm install: Enter (Yes)</li>
+                <li>Instance name: press <strong>Enter</strong> to accept default (<code>IRISHEALTH</code>)</li>
+                <li>Directory: press <strong>Enter</strong> to accept default (<code>/isc/IRISHEALTH</code>)</li>
+                <li>Installation type: press <strong>Enter</strong> to accept default (&lt;1&gt; Development)</li>
+                <li>Initial security settings: select <code>2</code> for Normal security</li>
+                <li>What user should be the owner of this instance?: choose your system user</li>
+                <li>Please enter the common password for _SYSTEM/Admin/SuperUser/superuser: enter and confirm your password</li>
+                <li>Please enter the password for CSPSystem: enter and confirm your password</li>
+                <li>What group should be allowed to start and stop this instance? : select your desired group</li>
+                <li>Unicode Support: press <strong>Enter</strong> to accept default (Yes)</li>
+                <li>Use existing web server to connect to installation: press <strong>Enter</strong> to accept default (Yes)</li>
+                <li>Do you want to enter a license key?: select <code>Yes</code></li>
+                <li>License key file: <code>~/iris.key</code></li>
+                <li>Confirm InterSystems IRIS installation: press <strong>Enter</strong> to accept default (Yes)</li>
               </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="7" />
-            <span>
-              <strong>7.</strong> Verify the Management Portal is reachable:
-              <div class="muted" style="margin-top:8px;">
-                <code>http://&lt;VM_EXTERNAL_IP&gt;/csp/sys/UtilHome.csp</code>
-              </div>
-              <div class="muted" style="margin-top:6px;">
-                If you are using HTTPS or a different web gateway config, adjust the URL accordingly.
-              </div>
             </span>
           </label>
 
@@ -292,64 +288,38 @@
       </div>
     </section>
 
-    <!-- License -->
+    <!-- Verify Management Portal -->
     <section id="license" class="section">
       <div class="section__header">
-        <h2>Activate the License Key</h2>
-        <p class="muted">Upload/activate <code>iris.key</code> in the Management Portal.</p>
+        <h2>Verify Installation</h2>
+        <p class="muted">Verify access by logging into the Management Portal.</p>
       </div>
 
       <div class="card card--plain">
         <form class="checklist" data-checklist-id="iris-install-gce-license">
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="1" />
+            
+        <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
             <span>
-              <strong>1.</strong> Confirm <code>iris.key</code> is on the VM:
-              <div class="muted" style="margin-top:8px;">
-                <code>ls -l ~/iris.key</code>
-              </div>
+                <strong>1.</strong> Open the Management Portal:
+                <div class="muted" style="margin-top:8px;">
+                <pre><code>http://&lt;VM_EXTERNAL_IP&gt;/csp/sys/UtilHome.csp</code></pre>
+                </div>
             </span>
-          </label>
+        </label>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="2" />
-            <span>
-              <strong>2.</strong> Open the Management Portal:
-              <div class="muted" style="margin-top:8px;">
-                <code>http://&lt;VM_EXTERNAL_IP&gt;/csp/sys/UtilHome.csp</code>
-              </div>
-            </span>
-          </label>
+        <label class="checklist__item">
+        <input type="checkbox" data-step="3" />
+        <span>
+            <strong>2.</strong> Login as <code>superuser</code> / &lt;your chosen password&gt;.
+        </span>
+        </label>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="3" />
-            <span>
-              <strong>3.</strong> Login as <code>superuser</code> / your chosen password.
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
-            <span>
-              <strong>4.</strong> Navigate to:
-              <div class="muted" style="margin-top:8px;">
-                <code>System Administration → Licensing → License Key</code>
-              </div>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
-            <span>
-              <strong>5.</strong> Click <em>Activate New Key</em> → <em>Browse</em> → select <code>iris.key</code> → <em>Apply</em> → <em>Activate</em>.
-            </span>
-          </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
             <span>
-              <strong>6.</strong> Confirm license status shows as active and valid.
+              <strong>3.</strong> Confirm license status on the homepage says the instance is licensed to Unity Health Toronto.
             </span>
           </label>
 
