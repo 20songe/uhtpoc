@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>POC Hub - Installation Guide</title>
+  <title>Exercises - Installation Guide</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
 <body>
@@ -19,246 +19,360 @@
 
       <nav class="quicklinks" aria-label="Quick links">
         <a class="chip" href="../index.html">Back to Home</a>
-        <!-- <a class="chip" href="#important">Important</a>
-        <a class="chip" href="#install">Installation</a>
-        <a class="chip" href="#basics">IRIS Basics</a> -->
-        <!-- <a class="chip" href="#ex1">Exercise 1</a>
-        <a class="chip" href="#ex2">Exercise 2</a>
-        <a class="chip" href="#ex3">Exercise 3</a>
-        <a class="chip" href="#ex4">Exercise 4</a> -->
       </nav>
     </div>
   </header>
 
   <main class="container">
     <section class="hero">
-      <h1>Installation Guide</h1>
+      <h1>IRIS for Health – Installation Checklist (GCE)</h1>
       <p>
-        This guide assumes installation of InterSystems IRIS on a GCP Ubuntu 22.04 environment.
+        Track setup and installation steps for InterSystems IRIS for Health on a Google Compute Engine VM.
+        Checklist state is saved automatically in your browser.
       </p>
     </section>
 
-    <!-- Important Resources -->
-    <section id="important" class="section">
+    <!-- Prerequisites -->
+    <section id="prereqs" class="section">
       <div class="section__header">
-        <h2>Important Resources</h2>
-        <p class="muted">Core documentation and learning portals.</p>
+        <h2>System Prerequisites</h2>
+        <p class="muted">Verify all requirements before starting installation.</p>
       </div>
 
-      <div class="list">
-        <a class="list__item" href="https://docs.intersystems.com/" target="_blank" rel="noopener noreferrer">
-          <div>
-            <div class="list__title">InterSystems Documentation</div>
-            <div class="list__desc">Product documentation hub (IRIS, IRIS for Health, guides, references).</div>
-          </div>
-          <span class="pill">Docs</span>
-        </a>
+      <details class="details details--accent" open>
+        <summary>Prerequisites</summary>
+        <div class="details__content">
+          <h4>Required Files</h4>
+          <ul class="bullets">
+            <li>
+              IRIS Installer:
+              <code>~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar</code>
+            </li>
+            <li>
+              IRIS License Key:
+              <code>~/iris.key</code>
+            </li>
+          </ul>
 
-        <a class="list__item" href="https://www.intersystems.com/education/" target="_blank" rel="noopener noreferrer">
-          <div>
-            <div class="list__title">InterSystems Learning Services</div>
-            <div class="list__desc">Entry point for training programs, learning options, and education resources.</div>
-          </div>
-          <span class="pill">Training</span>
-        </a>
+          <h4>System Requirements</h4>
+          <ul class="bullets">
+            <li>Ubuntu Linux 22.04 on Google Compute Engine</li>
+            <li>Root or sudo access</li>
+            <li>Network connectivity</li>
+            <li>Inbound firewall rule allowing TCP port <strong>80</strong> (and optionally <strong>443</strong>)</li>
+          </ul>
 
-        <a class="list__item" href="https://www.intersystems.com/register-for-a-course/" target="_blank" rel="noopener noreferrer">
-          <div>
-            <div class="list__title">Register for a Course</div>
-            <div class="list__desc">Classroom/virtual registration page (when you want scheduled training).</div>
-          </div>
-          <span class="pill">Register</span>
-        </a>
+          <h4>Recommended (GCE)</h4>
+          <ul class="bullets">
+            <li>Enable “Allow HTTP traffic” on the VM or create a VPC firewall rule for TCP:80</li>
+            <li>Ensure VM has an external IP (or use IAP / bastion) for access</li>
+          </ul>
+        </div>
+      </details>
+    </section>
+
+    <!-- Pre-install -->
+    <section id="preinstall" class="section">
+      <div class="section__header">
+        <h2>Pre-install</h2>
+        <p class="muted">Provision the VM, update Ubuntu, install Apache, and upload the IRIS install kit.</p>
       </div>
 
-      <div class="card card--plain" style="margin-top: 12px;">
+      <div class="card card--plain">
+        <form class="checklist" data-checklist-id="iris-install-gce-preinstall">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Create a Google Compute Engine VM:
+              <ul class="bullets" style="margin-top:8px;">
+                <li>Image: <strong>Ubuntu 22.04 LTS</strong></li>
+                <li>Machine type sized for your POC</li>
+                <li>Disk: adequate space for install + data</li>
+                <li>Enable <strong>Allow HTTP traffic</strong> (or ensure a firewall rule exists for TCP:80)</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Connect to the VM (SSH via Google Cloud Console or your SSH client).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Update the OS packages:
+              <div class="muted" style="margin-top:8px;">
+                <code>sudo apt update && sudo apt upgrade -y</code><br/>
+                <code>sudo snap refresh</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> (If applicable) Ensure apt sources don’t reference a CD-ROM:
+              <div class="muted" style="margin-top:8px;">
+                <code>sudo nano /etc/apt/sources.list</code> and comment out any <code>cdrom</code> lines.
+              </div>
+              <div class="muted" style="margin-top:6px;">
+                Then re-run: <code>sudo apt update</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Install Apache Web Server:
+              <div class="muted" style="margin-top:8px;">
+                <code>sudo apt update</code><br/>
+                <code>sudo dpkg --configure -a</code><br/>
+                <code>sudo apt -f install</code><br/>
+                <code>sudo apt install apache2 -y</code><br/>
+                <code>sudo systemctl status apache2</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Verify inbound access to Apache on port 80:
+              <ul class="bullets" style="margin-top:8px;">
+                <li>Confirm GCE firewall/VPC rule allows <strong>TCP:80</strong> to the VM</li>
+                <li>Confirm Ubuntu firewall (if enabled) allows port 80</li>
+                <li>Test by browsing: <code>http://&lt;VM_EXTERNAL_IP&gt;/</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> Upload the IRIS install kit to the VM (GCE adaptation of “mount shared folder”):
+              <ul class="bullets" style="margin-top:8px;">
+                <li>Option A: Upload via Cloud Console SSH file upload (if available)</li>
+                <li>Option B: Use <code>gcloud compute scp</code> from your workstation</li>
+                <li>Option C: Download from an internal artifact repo (if permitted)</li>
+              </ul>
+              <div class="muted" style="margin-top:6px;">
+                Place the installer at: <code>~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+              <strong>8.</strong> Ensure the license key file is present:
+              <div class="muted" style="margin-top:8px;">
+                <code>~/iris.key</code>
+              </div>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Install -->
+    <section id="install" class="section">
+      <div class="section__header">
+        <h2>Install IRIS</h2>
+        <p class="muted">Unpack, run pre-checker, then run the installer with your chosen owner/group.</p>
+      </div>
+
+      <div class="card card--plain">
+        <form class="checklist" data-checklist-id="iris-install-gce-install">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Create a temporary kit directory:
+              <div class="muted" style="margin-top:8px;">
+                <code>sudo mkdir /tmp/iriskit</code><br/>
+                <code>sudo chmod og+rx /tmp/iriskit</code><br/>
+                <code>umask 022</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Unpack the install kit into <code>/tmp/iriskit</code>:
+              <div class="muted" style="margin-top:8px;">
+                <code>tar -xf ~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar -C /tmp/iriskit</code>
+              </div>
+              <div class="muted" style="margin-top:6px;">
+                (If your kit is <code>.tar.gz</code>, use: <code>tar -xzf ...</code>)
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Run the pre-checker:
+              <div class="muted" style="margin-top:8px;">
+                <code>sudo /tmp/iriskit/irisinstall --prechecker</code>
+              </div>
+              <div class="muted" style="margin-top:6px;">
+                Install any missing dependencies as reported (e.g., openssl, zlib1g, CPU instruction support).
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Confirm your user can <code>sudo</code> (or <code>su</code> to root),
+              and decide the instance <strong>owner</strong> + <strong>group</strong> (cannot be changed after install).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Start the installer:
+              <div class="muted" style="margin-top:8px;">
+                <code>sudo /tmp/iriskit/irisinstall</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Installer prompts (recommended selections for this POC):
+              <ul class="bullets" style="margin-top:8px;">
+                <li>Instance name: press Enter (default <code>IRISHEALTH</code>)</li>
+                <li>Directory: <code>/isc/IRISHEALTH</code> → Enter to create</li>
+                <li>Installation type: Enter (1) Development</li>
+                <li>Security mode: type <code>2</code> for Normal security</li>
+                <li>Owner user: choose your system user (e.g., <code>superuser</code>)</li>
+                <li>Set shared passwords: _SYSTEM/Admin/SuperUser/superuser</li>
+                <li>Set CSPSystem password</li>
+                <li>Start/stop group: select your desired group</li>
+                <li>Unicode Support: Enter (Yes)</li>
+                <li>Use existing web server: Enter (Yes)</li>
+                <li>License key file: Enter (No license key file at install time)</li>
+                <li>Confirm install: Enter (Yes)</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> Verify the Management Portal is reachable:
+              <div class="muted" style="margin-top:8px;">
+                <code>http://&lt;VM_EXTERNAL_IP&gt;/csp/sys/UtilHome.csp</code>
+              </div>
+              <div class="muted" style="margin-top:6px;">
+                If you are using HTTPS or a different web gateway config, adjust the URL accordingly.
+              </div>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- License -->
+    <section id="license" class="section">
+      <div class="section__header">
+        <h2>Activate the License Key</h2>
+        <p class="muted">Upload/activate <code>iris.key</code> in the Management Portal.</p>
+      </div>
+
+      <div class="card card--plain">
+        <form class="checklist" data-checklist-id="iris-install-gce-license">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Confirm <code>iris.key</code> is on the VM:
+              <div class="muted" style="margin-top:8px;">
+                <code>ls -l ~/iris.key</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Open the Management Portal:
+              <div class="muted" style="margin-top:8px;">
+                <code>http://&lt;VM_EXTERNAL_IP&gt;/csp/sys/UtilHome.csp</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Login as <code>superuser</code> / your chosen password.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Navigate to:
+              <div class="muted" style="margin-top:8px;">
+                <code>System Administration → Licensing → License Key</code>
+              </div>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Click <em>Activate New Key</em> → <em>Browse</em> → select <code>iris.key</code> → <em>Apply</em> → <em>Activate</em>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Confirm license status shows as active and valid.
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card card--plain" style="margin-top:12px;">
         <details class="details">
-          <summary>Tip: videos/exercises listed below</summary>
+          <summary>Congratulations 🎉</summary>
           <div class="details__content">
-            Many of the items labeled “Video”, “Course”, or “Exercise” are typically accessed through the InterSystems learning portal.
-            If an item doesn’t have a direct public URL, use Learning Services to locate it by title.
+            IRIS for Health is installed and licensed on your Google Compute Engine VM.
+            Capture final notes in Lessons Learned and update FAQs with any blockers you encountered.
           </div>
         </details>
       </div>
-    </section>
-
-    <!-- IRIS Installation -->
-    <section id="install" class="section">
-      <div class="section__header">
-        <h2>IRIS Installation</h2>
-        <p class="muted">Pre-reqs and Linux installation guidance (IRIS for Health).</p>
-      </div>
-
-      <details class="details details--accent" open>
-        <summary>Installation documentation (Linux/UNIX)</summary>
-        <div class="details__content">
-          <div class="list">
-            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIUNIX_overview"
-               target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="list__title">UNIX/Linux/macOS Installation Overview</div>
-                <div class="list__desc">High-level flow for attended/unattended installs and next steps.</div>
-              </div>
-              <span class="pill">Docs</span>
-            </a>
-
-            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIUNIX_install"
-               target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="list__title">Attended Linux Installation (initial steps)</div>
-                <div class="list__desc">Start here for attended installs; covers initial prompts and setup choices.</div>
-              </div>
-              <span class="pill">Docs</span>
-            </a>
-
-            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=GIUNIX_server"
-               target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="list__title">Linux Server Installation (attended)</div>
-                <div class="list__desc">Server install steps after initial attended installation flow.</div>
-              </div>
-              <span class="pill">Docs</span>
-            </a>
-
-            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=ALL"
-               target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="list__title">All Documentation (IRIS for Health)</div>
-                <div class="list__desc">Browse everything by topic (install, web gateway, interoperability, FHIR, SQL, etc.).</div>
-              </div>
-              <span class="pill">Docs</span>
-            </a>
-          </div>
-
-          <div class="card card--plain" style="margin-top: 12px;">
-            <div class="muted">
-              <strong>Installation steps checklist (from your resources list):</strong>
-              <ul class="bullets">
-                <li>Installation pre-requisites documentation</li>
-                <li>Install the Apache httpd web server</li>
-                <li>Determine owners and groups</li>
-                <li>Uncompress the installation kit</li>
-                <li>Check and install required dependencies</li>
-                <li>Attended Linux installation (select “Development” installation)</li>
-                <li>Linux development installation (select “normal” security settings)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </details>
-    </section>
-
-    <!-- IRIS Basics -->
-    <section id="basics" class="section">
-      <div class="section__header">
-        <h2>IRIS Basics</h2>
-        <p class="muted">Foundational videos/exercises/courses to get productive quickly.</p>
-      </div>
-
-      <div class="card card--plain">
-        <ul class="bullets">
-          <li>Introduction to the Management Portal (video)</li>
-          <li>Installing VS Code and Configuring InterSystems Server Connections (exercise)</li>
-          <li>Creating Namespaces and Databases (video)</li>
-          <li>Integration Architecture (course)</li>
-          <li>InterSystems ObjectScript Tutorial (documentation/exercise)</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Exercise One -->
-    <section id="ex1" class="section">
-      <div class="section__header">
-        <h2>Exercise One: HL7-to-SQL Pipeline</h2>
-        <p class="muted">HL7 v2 basics, routing rules, transformations, and SQL queries.</p>
-      </div>
-
-      <div class="card card--plain">
-        <ul class="bullets">
-          <li>Introduction to HL7 v2 Integrations in InterSystems IRIS for Health (video)</li>
-          <li>Getting Started with HL7 V2 Routing Rules (video)</li>
-          <li>Using the Expression Editor in Business Rules (video)</li>
-          <li>Building a Message Router (exercise)</li>
-          <li>Data Transformation Basics (course)</li>
-          <li>Building a Data Transformation (exercise)</li>
-          <li>Running Fast Queries with SQL in InterSystems IRIS (exercise)</li>
-          <li>Using InterSystems SQL (documentation)</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Exercise Two -->
-    <section id="ex2" class="section">
-      <div class="section__header">
-        <h2>Exercise Two: FHIR-to-SQL Pipeline</h2>
-        <p class="muted">FHIR fundamentals and working with the FHIR resource repository.</p>
-      </div>
-
-      <div class="card card--plain">
-        <ul class="bullets">
-          <li>What is FHIR? (video)</li>
-          <li>FHIR: A Healthcare Data Standard Designed for the Future (video)</li>
-          <li>Getting Started with FHIR (course)</li>
-          <li>Working with the FHIR Resource Repository (exercise)</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Exercise Three -->
-    <section id="ex3" class="section">
-      <div class="section__header">
-        <h2>Exercise Three: Intermediate Data Model Transformation Pipeline</h2>
-        <p class="muted">SDA concepts and transforming healthcare data models.</p>
-      </div>
-
-      <div class="card card--plain">
-        <ul class="bullets">
-          <li>What is SDA? (video)</li>
-          <li>Using SDA to Transform Healthcare Data (video)</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Exercise Four -->
-    <section id="ex4" class="section">
-      <div class="section__header">
-        <h2>Exercise Four: FHIR SQL Builder</h2>
-        <p class="muted">Videos and official docs for setup and projection creation.</p>
-      </div>
-
-      <details class="details details--accent" open>
-        <summary>FHIR SQL Builder docs (official)</summary>
-        <div class="details__content">
-          <div class="list">
-            <a class="list__item" href="https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIRFSB_installation"
-               target="_blank" rel="noopener noreferrer">
-              <div>
-                <div class="list__title">Accessing FHIR SQL Builder (documentation)</div>
-                <div class="list__desc">Prereqs and how to open the Builder UI.</div>
-              </div>
-              <span class="pill">Docs</span>
-            </a>
-          </div>
-
-          <div class="card card--plain" style="margin-top: 12px;">
-            <ul class="bullets">
-              <li>What is the FHIR SQL Builder (video)</li>
-              <li>Making a Projection in the FHIR SQL Builder (video)</li>
-              <li>Performing an Analysis in the FHIR SQL Builder (video)</li>
-              <li>Analyze the FHIR Repository for SQL Builder (documentation)</li>
-              <li>Creating a New Transformation Specification for FHIR SQL Builder (documentation)</li>
-              <li>Create the Projection for FHIR SQL Builder (documentation)</li>
-            </ul>
-          </div>
-        </div>
-      </details>
     </section>
   </main>
 
   <footer class="footer">
     <div class="container footer__inner">
-      <span class="muted">Educational Resources</span>
-      <span class="muted">Static site • No backend required</span>
+      <span class="muted">IRIS Installation Checklist — GCE</span>
+      <span class="muted">Progress saved locally</span>
     </div>
   </footer>
 
