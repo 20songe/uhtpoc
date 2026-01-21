@@ -83,41 +83,28 @@
     initCopyButtons();
   
     function initCopyButtons() {
-      // 1) <pre><code> blocks (if you add them later)
-      const preCodes = document.querySelectorAll("pre > code");
-      preCodes.forEach((codeEl) => {
-        const pre = codeEl.parentElement;
-        if (!pre || pre.dataset.copyEnhanced === "1") return;
-        pre.dataset.copyEnhanced = "1";
-  
-        const wrapper = document.createElement("div");
-        wrapper.className = "codeblock";
-        pre.parentNode.insertBefore(wrapper, pre);
-        wrapper.appendChild(pre);
-  
-        const btn = makeCopyButton(() => codeEl.innerText);
-        btn.classList.add("copy-btn--block");
-        wrapper.appendChild(btn);
-      });
-  
-      // 2) standalone <code> (your page has many of these)
-      const codes = document.querySelectorAll("code");
-      codes.forEach((codeEl) => {
-        if (codeEl.closest("pre")) return; // already handled above
-        if (codeEl.dataset.copyEnhanced === "1") return;
-  
-        codeEl.dataset.copyEnhanced = "1";
-  
-        const wrap = document.createElement("span");
-        wrap.className = "codewrap";
-  
-        codeEl.parentNode.insertBefore(wrap, codeEl);
-        wrap.appendChild(codeEl);
-  
-        const btn = makeCopyButton(() => codeEl.innerText);
-        wrap.appendChild(btn);
-      });
-    }
+        // ONLY add copy buttons to <pre><code> blocks
+        const preCodes = document.querySelectorAll("pre > code");
+      
+        preCodes.forEach((codeEl) => {
+          const pre = codeEl.parentElement;
+          if (!pre || pre.dataset.copyEnhanced === "1") return;
+      
+          pre.dataset.copyEnhanced = "1";
+      
+          // Wrap <pre> in a positioning container
+          const wrapper = document.createElement("div");
+          wrapper.className = "codeblock";
+          pre.parentNode.insertBefore(wrapper, pre);
+          wrapper.appendChild(pre);
+      
+          // Create copy button (icon-based)
+          const btn = makeCopyButton(() => codeEl.innerText);
+          btn.classList.add("copy-btn--block");
+          wrapper.appendChild(btn);
+        });
+      }
+      
   
     function makeCopyButton(getText) {
         const btn = document.createElement("button");
