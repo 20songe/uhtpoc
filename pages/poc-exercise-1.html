@@ -96,6 +96,143 @@
         </form>
       </div>
     </section>
+
+        <!-- PostgreSQL Export -->
+        <section class="section">
+          <div class="section__header">
+            <h2>PostgreSQL Export</h2>
+            <p class="muted">Install PostgreSQL, create schema, create user, install JDBC driver, and validate connectivity.</p>
+          </div>
+          <details class="details" open>
+            <summary>Deployment Context</summary>
+            <div class="details__content">
+              <ul class="bullets">
+                <li>PostgreSQL and InterSystems IRIS run on the <strong>same Google Compute Engine VM</strong></li>
+                <li>PostgreSQL listens on <code>localhost:5432</code></li>
+                <li>No GCE firewall rule is required for PostgreSQL</li>
+                <li>Only port <strong>80</strong> (and optionally <strong>443</strong>) must be exposed externally for IRIS</li>
+                <li>JDBC connections from IRIS use the local loopback interface</li>
+              </ul>
+            </div>
+          </details>          
+    
+          <details class="details details--accent" open>
+            <summary>Connection Details</summary>
+            <div class="details__content">
+              <ul class="bullets">
+                <li><strong>Host:</strong> <code>localhost</code></li>
+                <li><strong>Port:</strong> <code>5432</code></li>
+                <li><strong>Database:</strong> <code>uht</code></li>
+                <li><strong>Username:</strong> <code>superuser</code></li>
+                <li><strong>Password:</strong> <code>SYS</code></li>
+                <li><strong>Driver Path:</strong> <code>/usr/share/java/postgresql-42.3.3.jar</code></li>
+                <li><strong>Driver Class:</strong> <code>org.postgresql.Driver</code></li>
+                <li><strong>JDBC URL:</strong> <code>jdbc:postgresql://localhost:5432/uht</code></li>
+                <li><strong>Connection String:</strong> <code>postgresql://superuser:SYS@localhost:5432/uht</code></li>
+              </ul>
+            </div>
+          </details>
+    
+          <div class="card card--plain">
+            <!-- Unique ID for this checklist -->
+            <form class="checklist" data-checklist-id="exercise-1-postgres-export">
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="1" />
+                <span>
+                  <strong>1) Install PostgreSQL</strong>
+                  <pre><code>sudo apt-get update
+    sudo apt-get install -y postgresql</code></pre>
+                </span>
+              </label>
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="2" />
+                <span>
+                  <strong>2) Start PostgreSQL service</strong>
+                  <pre><code>sudo service postgresql start</code></pre>
+                </span>
+              </label>
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="3" />
+                <span>
+                  <strong>3) Create database and tables</strong>
+                  <pre><code># Create the UHT database
+    sudo -u postgres psql -c "CREATE DATABASE uht;"
+    
+    # Create the Patient table
+    sudo -u postgres psql -d uht -c "
+    CREATE TABLE patient (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
+        date_of_birth DATE,
+        email VARCHAR(255),
+        phone VARCHAR(20),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );"
+    
+    # Create the HL7Messages table
+    sudo -u postgres psql -d uht -c "
+    CREATE TABLE HL7Messages (
+        id SERIAL PRIMARY KEY,
+        Message TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );"</code></pre>
+                </span>
+              </label>
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="4" />
+                <span>
+                  <strong>4) Create PostgreSQL superuser and grant DB privileges</strong>
+                  <pre><code>sudo -u postgres psql -c "CREATE USER superuser WITH SUPERUSER PASSWORD 'SYS';"
+    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE uht TO superuser;"</code></pre>
+                </span>
+              </label>
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="5" />
+                <span>
+                  <strong>5) Install PostgreSQL JDBC driver</strong>
+                  <pre><code>sudo apt-get install -y libpostgresql-jdbc-java</code></pre>
+                  <div class="muted" style="margin-top:8px;">
+                    Driver location: <code>/usr/share/java/postgresql-42.3.3.jar</code>
+                  </div>
+                </span>
+              </label>
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="6" />
+                <span>
+                  <strong>6) Test connection</strong>
+                  <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uht -c "SELECT 1;"</code></pre>
+                </span>
+              </label>
+    
+              <label class="checklist__item">
+                <input type="checkbox" data-step="7" />
+                <span>
+                  <strong>7) Example queries (optional)</strong>
+                  <pre><code>-- Select all patients
+    SELECT * FROM patient;
+    
+    -- Select latest HL7 message
+    SELECT * FROM HL7Messages ORDER BY id DESC LIMIT 1;
+    
+    -- Insert HL7 message
+    INSERT INTO HL7Messages (Message) VALUES (?);</code></pre>
+                </span>
+              </label>
+    
+              <div class="checklist__actions">
+                <button class="btn" type="button" data-reset-checklist>Reset checklist</button>
+              </div>
+            </form>
+          </div>
+        </section>
+    
   </main>
 
   <footer class="footer">
