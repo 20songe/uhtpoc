@@ -274,36 +274,57 @@
     cursor: default;
   }
   
-  /* Make <pre> blocks span nearly full container width */
-.codeblock {
-  width: 100%;
-}
-
 .card--plain .codeblock pre {
   margin-left: -4px;
   margin-right: -4px;
 }
 
+/* Code block wrapper */
+.codeblock {
+  position: relative;
+  width: 100%;
+}
 
-/* Expand the actual code area */
+/* Preformatted code styling */
 .codeblock pre {
   width: 100%;
   max-width: 100%;
-  margin: 12px 0;
+  margin: 10px 0 0;
 
-  /* Visual polish */
-  padding: 36px 16px 16px; /* top padding accounts for copy button */
+  /* NORMAL padding – no header band */
+  padding: 14px 44px 14px 16px; /* right padding makes room for button */
+
   overflow-x: auto;
-
-  /* Optional but recommended */
   white-space: pre;
-  border-radius: 14px;
 
-  background: rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
   border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.35);
+
   font-size: 13px;
-  line-height: 1.55;
+  line-height: 1.55; /* IMPORTANT: defines alignment */
 }
+
+/* Copy button aligned with first line of code */
+.copy-btn--block {
+  position: absolute;
+  top: 14px;              /* matches pre's top padding */
+  right: 12px;
+
+  height: calc(1em * 1.55); /* same height as first code line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.codeblock:hover .copy-btn--block {
+  opacity: 1;
+}
+
+
 
   
   
