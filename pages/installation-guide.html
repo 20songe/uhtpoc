@@ -78,7 +78,9 @@
         <p class="muted">Provision the VM, update Ubuntu, install Apache, and upload the IRIS install kit.</p>
       </div>
 
-      <div class="card card--plain">
+      <details class="details details--accent" open>
+        <summary>Pre-install</summary>
+        <br/>
         <form class="checklist" data-checklist-id="iris-install-gce-preinstall">
 
           <label class="checklist__item">
@@ -166,7 +168,7 @@ sudo snap refresh</code></pre>
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
         </form>
-      </div>
+      </details>
     </section>
 
     <!-- Install -->
@@ -176,7 +178,9 @@ sudo snap refresh</code></pre>
         <p class="muted">Unpack, run pre-checker, then run the installer with your chosen owner/group.</p>
       </div>
 
-      <div class="card card--plain">
+      <details class="details details--accent" open>
+        <summary>IRIS Installation</summary>
+        <br/>
         <form class="checklist" data-checklist-id="iris-install-gce-install">
 
           <label class="checklist__item">
@@ -259,7 +263,7 @@ umask 022</code></pre>
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
         </form>
-      </div>
+      </details>
     </section>
 
     <!-- Verify Management Portal -->
@@ -269,7 +273,9 @@ umask 022</code></pre>
         <p class="muted">Verify access by logging into the Management Portal.</p>
       </div>
 
-      <div class="card card--plain">
+      <details class="details details--accent" open>
+        <summary>Verification</summary>
+        <br/>
         <form class="checklist" data-checklist-id="iris-install-gce-license">
             
         <label class="checklist__item">
@@ -301,17 +307,19 @@ umask 022</code></pre>
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
         </form>
-      </div>
+      </details>
 
-      <div class="card card--plain" style="margin-top:12px;">
-        <details class="details">
-          <summary>Congratulations 🎉</summary>
-          <div class="details__content">
-            IRIS for Health is installed and licensed on your Google Compute Engine VM.
-          </div>
-        </details>
-      </div>
     </section>
+
+
+    <section id="license" class="section">
+      <div class="section__header">
+        <h2>Congratulations 🎉</h2>
+        </div>
+        <p>
+          IRIS for Health is installed and licensed on your Google Compute Engine VM.
+        </p>
+      </section>
   </main>
 
   <footer class="footer">
