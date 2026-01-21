@@ -268,18 +268,19 @@
 
 /* Code block wrapper */
 .codeblock {
-  position: relative;
   width: 100%;
 }
 
-/* Preformatted code styling */
+
+/* The highlighted box is the PRE, so make PRE the positioning context */
 .codeblock pre {
+  position: relative;        /* <-- IMPORTANT */
   width: 100%;
   max-width: 100%;
   margin: 10px 0 0;
 
-  /* NORMAL padding – no header band */
-  padding: 14px 44px 14px 16px; /* right padding makes room for button */
+  /* give room for the button on the right */
+  padding: 14px 44px 14px 16px;
 
   overflow-x: auto;
   white-space: pre;
@@ -289,28 +290,25 @@
   background: rgba(0, 0, 0, 0.35);
 
   font-size: 13px;
-  line-height: 1.55; /* IMPORTANT: defines alignment */
+  line-height: 1.55;
 }
 
-/* Copy button aligned with first line of code */
+/* Put the button inside the pre box, top-right */
 .copy-btn--block {
   position: absolute;
-  top: 14px;              /* matches pre's top padding */
-  right: 12px;
-
-  height: calc(1em * 1.55); /* same height as first code line */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 10px;
+  right: 10px;             /* keep to the right */
+  z-index: 2;
 
   opacity: 0;
   transition: opacity 120ms ease;
 }
 
+/* Show on hover */
+.codeblock pre:hover .copy-btn--block,
 .codeblock:hover .copy-btn--block {
   opacity: 1;
 }
-
 
 
   
