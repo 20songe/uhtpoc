@@ -93,6 +93,7 @@
     gap: 12px;
   }
   .card {
+    margin-top: 6px;
     grid-column: span 6;
     padding: 16px;
     border-radius: 16px;
