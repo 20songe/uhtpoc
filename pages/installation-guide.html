@@ -104,7 +104,8 @@
             <span>
               <strong>3.</strong> Update the OS packages:
               <div class="muted" style="margin-top:8px;">
-                <pre><code>sudo apt update && sudo apt upgrade -y</code><br/><code>sudo snap refresh</code></pre>
+                <pre><code>sudo apt update && sudo apt upgrade -y
+sudo snap refresh</code></pre>
               </div>
             </span>
           </label>
@@ -144,9 +145,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
             <span>
-              <strong>7.</strong> From your local directory containing the install kit, upload the IRIS install kit to the VM:
+              <strong>7.</strong> From your local directory containing the install kit, upload the IRIS install kit to the VM (assuming you have the gcloud SDK):
               <div class="muted" style="margin-top:6px;">
-                <pre><code>gcloud compute scp IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz &lt;USERNAME&gt;@&lt;VM_EXTERNAL_IP&gt;:/home/&lt;USERNAME&gt; --zone &lt;ZONE&gt;</code></pre>
+                <pre><code>gcloud compute scp IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz &lt;USERNAME&gt;@&lt;VM_NAME&gt;:/home/&lt;USERNAME&gt; --zone &lt;ZONE&gt;</code></pre>
               </div>
             </span>
           </label>
@@ -154,9 +155,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
             <span>
-              <strong>8.</strong> From your local directory containing the license key, copy the license key file to the VM:
+              <strong>8.</strong> From your local directory containing the license key, copy the license key file to the VM (assuming you have the gcloud SDK):
               <div class="muted" style="margin-top:8px;">
-                <pre><code>gcloud compute scp iris.key &lt;USERNAME&gt;@&lt;VM_EXTERNAL_IP&gt;:/home/&lt;USERNAME&gt; --zone &lt;ZONE&gt;</code></pre>
+                <pre><code>gcloud compute scp iris.key &lt;USERNAME&gt;@&lt;VM_NAME&gt;:/home/&lt;USERNAME&gt; --zone &lt;ZONE&gt;</code></pre>
               </div>
             </span>
           </label>
@@ -181,11 +182,11 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="1" />
             <span>
-              <strong>1.</strong> Create a temporary kit directory:
+              <strong>1.</strong> SSH into the GCP VM. Then, create a temporary kit directory:
               <div class="muted" style="margin-top:8px;">
-                <pre><code>sudo mkdir /tmp/iriskit</code><br/><code>sudo chmod og+rx /tmp/iriskit</code><br/><code>umask 022</code>
-                </pre>
-                
+                <pre><code>mkdir /tmp/iriskit
+chmod og+rx /tmp/iriskit
+umask 022</code></pre>
               </div>
             </span>
           </label>
@@ -195,7 +196,7 @@
             <span>
               <strong>2.</strong> Unpack the install kit into <code>/tmp/iriskit</code>:
               <div class="muted" style="margin-top:8px;">
-                <pre><code>gunzip -c ~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz| ( cd /tmp/iriskit ; tar xf - )</code></pre>
+                <pre><code>gunzip -c ~/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64.tar.gz | ( cd /tmp/iriskit ; tar xf - )</code></pre>
               </div>
             </span>
           </label>
@@ -205,7 +206,7 @@
             <span>
               <strong>3.</strong> Run the pre-checker:
               <div class="muted" style="margin-top:8px;">
-                <pre><code>sudo /tmp/iriskit/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64/irisinstall --prechecker</code></pre>
+                <pre><code>/tmp/iriskit/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64/irisinstall --prechecker</code></pre>
               </div>
               <div class="muted" style="margin-top:6px;">
                 Install any missing dependencies as reported (e.g., openssl, zlib1g, CPU instruction support).
@@ -226,7 +227,7 @@
             <span>
               <strong>5.</strong> Start the installer:
               <div class="muted" style="margin-top:8px;">
-                <pre><code>sudo /tmp/iriskit/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64/irisinstall</code></pre>
+                <pre><code>/tmp/iriskit/IRISHealth-2025.1.2.374.0-lnxubuntu2204x64/irisinstall</code></pre>
               </div>
             </span>
           </label>
@@ -236,18 +237,19 @@
             <span>
               <strong>6.</strong> Installer prompts (recommended selections for this POC):
               <ul class="bullets" style="margin-top:8px;">
-                <li>Instance name: press <strong>Enter</strong> to accept default (<code>IRISHEALTH</code>)</li>
-                <li>Directory: press <strong>Enter</strong> to accept default (<code>/isc/IRISHEALTH</code>)</li>
-                <li>Installation type: press <strong>Enter</strong> to accept default (&lt;1&gt; Development)</li>
-                <li>Initial security settings: select <code>2</code> for Normal security</li>
+                <li>Enter instance name: press <strong>Enter</strong> to accept default (<code>IRISHEALTH</code>)</li>
+                <li>Directory: /isc/IRISHEALTH</li>
+                <li>Do you want to create it? press <strong>Enter</strong> to accept default (Yes)</li>
+                <li>Setup type: press <strong>Enter</strong> to accept default (1 Development)</li>
+                <li>Initial security settings: select 2 for Normal security</li>
                 <li>What user should be the owner of this instance?: choose your system user</li>
                 <li>Please enter the common password for _SYSTEM/Admin/SuperUser/superuser: enter and confirm your password</li>
                 <li>Please enter the password for CSPSystem: enter and confirm your password</li>
                 <li>What group should be allowed to start and stop this instance? : select your desired group</li>
-                <li>Unicode Support: press <strong>Enter</strong> to accept default (Yes)</li>
-                <li>Use existing web server to connect to installation: press <strong>Enter</strong> to accept default (Yes)</li>
-                <li>Do you want to enter a license key?: select <code>Yes</code></li>
-                <li>License key file: <code>~/iris.key</code></li>
+                <li>Do you want to install IRISHealth Unicode support?: press <strong>Enter</strong> to accept default (Yes)</li>
+                <li>Would you like to use the web server to connect to installation: press <strong>Enter</strong> to accept default (Yes)</li>
+                <li>Do you want to enter a license key?: select Yes</li>
+                <li>License key file: <code>/home/&lt;USERNAME&gt;/iris.key</code></li>
                 <li>Confirm InterSystems IRIS installation: press <strong>Enter</strong> to accept default (Yes)</li>
               </ul>
             </span>

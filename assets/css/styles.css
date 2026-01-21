@@ -159,9 +159,21 @@
   
   .checklist { display: grid; gap: 10px; }
   /* Make checklist items a positioning context */
-.checklist__item {
-  position: relative;
-}
+  .checklist__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  
+    padding: 14px 16px;
+    border-radius: 14px;
+  
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  
+    transition: background 140ms ease, transform 140ms ease;
+  }
+  
 
 /* Ensure the content column can expand fully */
 .checklist__item > span {
@@ -315,5 +327,4 @@ pre:hover .copy-btn--block {
 }
 
 
-  
   
