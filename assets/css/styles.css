@@ -245,14 +245,35 @@
     cursor: default;
   }
   
-  /* Code block wrapper */
+  /* Make <pre> blocks span nearly full container width */
 .codeblock {
-  position: relative;
+  width: 100%;
 }
 
-/* Add space so copy button doesn't overlap code */
+.card--plain .codeblock pre {
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+
+/* Expand the actual code area */
 .codeblock pre {
-  padding-top: 36px; /* room for the button */
+  width: 100%;
+  max-width: 100%;
+  margin: 12px 0;
+
+  /* Visual polish */
+  padding: 36px 16px 16px; /* top padding accounts for copy button */
+  overflow-x: auto;
+
+  /* Optional but recommended */
+  white-space: pre;
+  border-radius: 14px;
+
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 /* Copy button pinned top-right */
