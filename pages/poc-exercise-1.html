@@ -35,67 +35,226 @@
         <summary>Measures of Success</summary>
         <div class="details__content">
           <ul class="bullets">
-            <li>Success metric #1 (e.g., endpoint responds with expected payload).</li>
-            <li>Success metric #2 (e.g., performance threshold met).</li>
-            <li>Success metric #3 (e.g., logging/monitoring validated).</li>
+            <li>#1 (e.g., endpoint responds with expected payload).</li>
+            <li>#2 (e.g., performance threshold met).</li>
+            <li>#3 (e.g., logging/monitoring validated).</li>
           </ul>
         </div>
       </details>
 
       <details class="details details--accent" open>
-        <summary>Exercise 1 Details</summary>
+        <summary>Exercise 1 Overview</summary>
         <div class="details__content">
-          <ul class="bullets">
-            <li>Success metric #1 (e.g., endpoint responds with expected payload).</li>
-            <li>Success metric #2 (e.g., performance threshold met).</li>
-            <li>Success metric #3 (e.g., logging/monitoring validated).</li>
-          </ul>
+          <p>
+            Unity Health Toronto is seeking to ingest HL7v2 messages directly into SQL tables stored in IRIS
+            that can be exposed externally for downstream analytics and research.
+          </p>
+          <p>
+            In this exercise, InterSystems will demonstrate how IRIS can ingest HL7v2 messages, extract data,
+            and store the data as a SQL table within the solution’s native database.
+          </p>
+          <p>
+            We will build the interoperability pipeline and mappings between HL7v2 and the SQL table through
+            intuitive, graphical tools in IRIS’s web-based Management Portal.
+          </p>
+          <p>
+            The data will be viewed through the native SQL engine within IRIS and accessed externally through
+            PostgreSQL using DBeaver.
+          </p>
         </div>
       </details>
-    </section>
+      
+    
+      <section class="section">
+        <div class="section__header">
+          <h2>Pre-installation</h2>
+        </div>
+      
+        <div class="card card--plain">
+          <form class="checklist" data-checklist-id="exercise-1-preinstall">
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="1" />
+              <span>Install Visual Studio Code, Postman, and DBeaver Community outside of the Google VM.</span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="2" />
+              <span>
+                Install PostgreSQL:
+                <pre><code>sudo apt install postgresql -y</code></pre>
+              </span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="3" />
+              <span>
+                Install Java runtime environment:
+                <pre><code>sudo apt install default-jre</code></pre>
+              </span>
+            </label>
+      
+          </form>
+        </div>
+      </section>
 
-    <section class="section">
-      <div class="section__header">
-        <h2>Step-by-Step Instructions</h2>
-        <p class="muted">Progress is saved automatically in your browser.</p>
-      </div>
 
-      <div class="card card--plain">
-        <!-- data-checklist-id MUST be unique per page -->
-        <form class="checklist" data-checklist-id="exercise-1">
-          <label class="checklist__item">
-            <input type="checkbox" data-step="1" />
-            <span>Confirm prerequisites (access, credentials, network, tooling)</span>
-          </label>
+      <section class="section">
+        <div class="section__header">
+          <h2>Namespace Creation</h2>
+        </div>
+      
+        <div class="card card--plain">
+          <form class="checklist" data-checklist-id="exercise-1-namespace">
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="1" />
+              <span>From the Management Portal home page, click Health.</span>
+            </label>
+      
+            <details class="details">
+              <summary>Hint: Management Portal navigation</summary>
+              <div class="details__content">
+                <img src="../assets/images/ex1-health-click.png" alt="Click Health in Management Portal" />
+              </div>
+            </details>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="2" />
+              <span>In the top right corner, click Installer Wizard.</span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="3" />
+              <span>On the Installer Wizard page, click Configure Foundation.</span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="4" />
+              <span>
+                In the Configure Foundation pop-up, configure the following:
+                <ul class="bullets">
+                  <li>Local Name: UNITY</li>
+                  <li>The rest of the required fields should populate automatically</li>
+                </ul>
+              </span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="5" />
+              <span>Click Save.</span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="6" />
+              <span>Click Activate on the right side of the screen for the UNITY namespace.</span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="7" />
+              <span>Click Start in the pop-up and wait for the namespace configuration to complete.</span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="8" />
+              <span>Click Close, then click Home to return to the Management Portal home.</span>
+            </label>
+      
+          </form>
+        </div>
+      </section>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="2" />
-            <span>Deploy required components for this exercise</span>
-          </label>
+      
+      <section class="section">
+        <div class="section__header">
+          <h2>SQL Table Creation</h2>
+        </div>
+      
+        <div class="card card--plain">
+          <form class="checklist" data-checklist-id="exercise-1-sql">
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="1" />
+              <span>
+                From the Management Portal home page, navigate to System Explorer → SQL.
+              </span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="2" />
+              <span>
+                Enter the following SQL statement and click Execute:
+                <pre><code>CREATE TABLE uhtpoc.Patient (
+        mrn VARCHAR(20),
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
+        date_of_birth DATE,
+        gender VARCHAR(10),
+        phone VARCHAR(20)
+      )</code></pre>
+              </span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="3" />
+              <span>
+                Verify the table by executing:
+                <pre><code>SELECT * FROM uhtpoc.Patient</code></pre>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="3" />
-            <span>Configure settings and validate connectivity</span>
-          </label>
+                <details class="hint">
+                  <summary>Hint</summary>
+                  <div class="hint__content">
+                    <img src="../assets/images/ex1-sql-verify.png" alt="SQL verification screen" />
+                  </div>
+                </details>
+              </span>
+            </label>
+    
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="4" />
+              <span>
+                Download the class <code>uhtpoc.Encounter.cls</code> and upload it to
+                <code>/home/&lt;USERNAME&gt;</code> on the Google VM.
+              </span>
+              <a
+                href="../assets/downloads/Encounter.cls"
+                download
+                class="btn btn--icon"
+                aria-label="Download Encounter.cls"
+                title="Download Encounter.cls"
+                target="_blank"
+              >
+                <img
+                  src="../assets/images/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
-            <span>Run test workflow and capture outputs</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
-            <span>Verify measures of success and document results</span>
-          </label>
-
-          <div class="checklist__actions">
-            <button class="btn" type="button" data-reset-checklist>
-              Reset checklist
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="5" />
+              <span>
+                Navigate to System Explorer → Classes, click Import, browse for the file,
+                and click Import.
+              </span>
+            </label>
+      
+            <label class="checklist__item">
+              <input type="checkbox" data-step="6" />
+              <span>
+                Verify the table by executing:
+                <pre><code>SELECT * FROM uhtpoc.Encounter</code></pre>
+              </span>
+            </label>
+      
+          </form>
+        </div>
+      </section>
+      
+      
 
         <!-- PostgreSQL Export -->
         <section class="section">

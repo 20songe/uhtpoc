@@ -326,5 +326,54 @@ pre:hover .copy-btn--block {
   opacity: 1;
 }
 
+/* Inline checklist hints (no border, no card look) */
+.checklist__item .hint {
+  margin-top: 8px;
+}
 
-  
+.checklist__item .hint summary {
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--muted);
+  list-style: none;
+}
+
+.checklist__item .hint summary::-webkit-details-marker {
+  display: none;
+}
+
+.checklist__item .hint summary::before {
+  content: "▸ ";
+}
+
+.checklist__item .hint[open] summary::before {
+  content: "▾ ";
+}
+
+.checklist__item .hint__content {
+  margin-top: 8px;
+}
+
+.checklist__item .hint__content img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+
+/* Icon-only buttons */
+.btn--icon {
+  padding: 8px;
+  min-width: auto;
+  line-height: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* SVG/img icon sizing */
+.btn--icon img {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
