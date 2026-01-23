@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2025.1 (Build 223U)" ts="2026-01-22 02:05:37">
-<Class name="DEVPKG.DTL.ADTtoSQLPatient">
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2025.1 (Build 223U)" ts="2026-01-22 23:39:10">
+<Class name="UNITYPKG.DTL.ADTtoSQLPatient">
 <Super>Ens.DataTransformDTL</Super>
-<TimeChanged>67592,6751.8455197</TimeChanged>
+<TimeChanged>67592,84414.0901376</TimeChanged>
 <TimeCreated>67592,6625.9676883</TimeCreated>
 <DependsOn>EnsLib.HL7.Message,uhtpoc.Patient</DependsOn>
 
@@ -29,14 +29,13 @@
 <assign value='source.{PID:PatientName().FamilyName}' property='target.lastname' action='set' />
 <assign value='source.{PID:PatientName().GivenName}' property='target.firstname' action='set' />
 <assign value='source.{PID:PatientID.IDNumber}' property='target.mrn' action='set' />
-<assign value='source.{PID:DateTimeofBirth}' property='target.dateofbirth' action='set' />
 </transform>
 ]]></Data>
 </XData>
 </Class>
 
 
-<Class name="DEVPKG.Rule.HL7Router">
+<Class name="UNITYPKG.Rule.HL7Router">
 <Description>
 </Description>
 <Super>Ens.Rule.Definition</Super>
@@ -50,7 +49,7 @@
 <XData name="RuleDefinition">
 <XMLNamespace>http://www.intersystems.com/rule</XMLNamespace>
 <Data><![CDATA[
-<ruleDefinition alias="" context="EnsLib.HL7.MsgRouter.RoutingEngine" production="DEVPKG.FoundationProduction">
+<ruleDefinition alias="" context="EnsLib.HL7.MsgRouter.RoutingEngine" production="UNITYPKG.FoundationProduction">
 <ruleSet name="" effectiveBegin="" effectiveEnd="">
 <rule name="">
 </rule>
@@ -61,42 +60,75 @@
 </Class>
 
 
-<Project name="EnsExportItem_2026-01-22 02-04-25_302-5" LastModified="2026-01-22 02:05:37.8922663">
-  <ProjectDescription>Studio Project generated starting from Production Configuration Item 'DEVPKG.FoundationProduction : HL7Router' at 2026-01-22 07:04:25.302 UTC</ProjectDescription>
+<Class name="UNITYPKG.FoundationProduction">
+<ProcedureBlock>0</ProcedureBlock>
+<Super>Ens.Production</Super>
+<TimeChanged>67592,84885.8542362</TimeChanged>
+<TimeCreated>67535,40075.0062955</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="UNITYPKG.FoundationProduction" LogGeneralTraceEvents="false">
+  <Description></Description>
+  <ActorPoolSize>1</ActorPoolSize>
+  <Item Name="HL7Router" Category="Exercise 1" ClassName="EnsLib.HL7.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BusinessRuleName">UNITYPKG.Rule.HL7Router</Setting>
+  </Item>
+  <Item Name="JavaGatewayService" Category="Exercise 1" ClassName="EnsLib.JavaGateway.Service" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="PostgreSQLPatient" Category="Exercise 1" ClassName="EnsLib.SQL.Operation.GenericOperation" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="PostgreSQLEncounter" Category="Exercise 1" ClassName="EnsLib.SQL.Operation.GenericOperation" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="JGService">JavaGatewayService</Setting>
+    <Setting Target="Host" Name="InputParameters">*mrn,*date,*encounterNum,*encounterType</Setting>
+    <Setting Target="Host" Name="Query">INSERT INTO Encounter (mrn, encounter_date, encounter_number, encounter_type) VALUES (?,?,?,?)</Setting>
+    <Setting Target="Host" Name="RequestClass">uhtpoc.Encounter</Setting>
+    <Setting Target="Host" Name="ParamSQLTypes">SQL_VARCHAR,SQL_DATE,SQL_INTEGER,SQL_VARCHAR</Setting>
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Project name="EnsExportProduction_2026-01-22 23-36-29_839-5" LastModified="2026-01-22 23:39:10.772046">
+  <ProjectDescription>Studio Project generated from Production 'UNITYPKG.FoundationProduction' at 2026-01-23 04:36:29.839 UTC</ProjectDescription>
   <Items>
-    <ProjectItem name="DEVPKG.DTL.ADTtoSQLPatient" type="CLS"></ProjectItem>
-    <ProjectItem name="DEVPKG.Rule.HL7Router" type="CLS"></ProjectItem>
-    <ProjectItem name="Settings:HL7Router.PTD" type="PTD"></ProjectItem>
-    <ProjectItem name="EnsExportNotes.EnsExportItem_2026-01-22 02-04-25_302-5.PTD" type="PTD"></ProjectItem>
+    <ProjectItem name="UNITYPKG.DTL.ADTtoSQLPatient" type="CLS"></ProjectItem>
+    <ProjectItem name="UNITYPKG.Rule.HL7Router" type="CLS"></ProjectItem>
+    <ProjectItem name="UNITYPKG.FoundationProduction" type="CLS"></ProjectItem>
+    <ProjectItem name="Settings:PostgreSQLEncounter.PTD" type="PTD"></ProjectItem>
+    <ProjectItem name="EnsExportNotes.EnsExportProduction_2026-01-22 23-36-29_839-5.PTD" type="PTD"></ProjectItem>
   </Items>
 </Project>
 
 
-<Document name="EnsExportNotes.EnsExportItem_2026-01-22 02-04-25_302-5.PTD"><ProjectTextDocument name="EnsExportNotes.EnsExportItem_2026-01-22 02-04-25_302-5" description="Export Notes for export EnsExportItem_2026-01-22 02-04-25_302-5">
+<Document name="EnsExportNotes.EnsExportProduction_2026-01-22 23-36-29_839-5.PTD"><ProjectTextDocument name="EnsExportNotes.EnsExportProduction_2026-01-22 23-36-29_839-5" description="Export Notes for export EnsExportProduction_2026-01-22 23-36-29_839-5">
 <![CDATA[<Deployment>
 <Creation>
 <Machine>USP5570ESONG.ISCINTERNAL.COM</Machine>
 <Instance>IRISHEALTH20251</Instance>
-<Namespace>DEV</Namespace>
-<SourceProduction>DEVPKG.FoundationProduction</SourceProduction>
+<Namespace>EPA</Namespace>
+<SourceProduction>UNITYPKG.FoundationProduction</SourceProduction>
 <Username>SuperUser</Username>
-<UTC>2026-01-22 07:05:37.886</UTC>
+<UTC>2026-01-23 04:39:10.769</UTC>
 </Creation>
 <Notes>
 </Notes>
 <Contents>
-<ExportProject>EnsExportItem_2026-01-22 02-04-25_302-5</ExportProject>
-<Item num="1">DEVPKG.DTL.ADTtoSQLPatient.CLS</Item>
-<Item num="2">DEVPKG.Rule.HL7Router.CLS</Item>
-<Item num="3">Settings:HL7Router.PTD</Item>
+<ExportProject>EnsExportProduction_2026-01-22 23-36-29_839-5</ExportProject>
+<Item num="1">UNITYPKG.DTL.ADTtoSQLPatient.CLS</Item>
+<Item num="2">UNITYPKG.Rule.HL7Router.CLS</Item>
+<Item num="3">UNITYPKG.FoundationProduction.CLS</Item>
+<Item num="4">Settings:PostgreSQLEncounter.PTD</Item>
 </Contents>
-<ProductionClassInExport></ProductionClassInExport>
+<ProductionClassInExport>UNITYPKG.FoundationProduction</ProductionClassInExport>
 </Deployment>
 
 ]]></ProjectTextDocument>
 </Document>
 
-<Document name="Settings:HL7Router.PTD"><ProjectTextDocument name="Settings:HL7Router" description="Settings for HL7Router in Production DEVPKG.FoundationProduction">
-<![CDATA[<Item Name="HL7Router" Category="Exercise 1" ClassName="EnsLib.HL7.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule=""><Setting Target="Host" Name="BusinessRuleName">DEVPKG.Rule.HL7Router</Setting></Item>
+<Document name="Settings:PostgreSQLEncounter.PTD"><ProjectTextDocument name="Settings:PostgreSQLEncounter" description="Settings for PostgreSQLEncounter in Production UNITYPKG.FoundationProduction">
+<![CDATA[<Item Name="PostgreSQLEncounter" Category="Exercise 1" ClassName="EnsLib.SQL.Operation.GenericOperation" PoolSize="1" Enabled="false" Foreground="false" Comment="" LogTraceEvents="false" Schedule=""><Setting Target="Adapter" Name="JGService">JavaGatewayService</Setting><Setting Target="Host" Name="InputParameters">*mrn,*date,*encounterNum,*encounterType</Setting><Setting Target="Host" Name="Query">INSERT INTO Encounter (mrn, encounter_date, encounter_number, encounter_type) VALUES (?,?,?,?)</Setting><Setting Target="Host" Name="RequestClass">uhtpoc.Encounter</Setting><Setting Target="Host" Name="ParamSQLTypes">SQL_VARCHAR,SQL_DATE,SQL_INTEGER,SQL_VARCHAR</Setting></Item>
 ]]></ProjectTextDocument>
 </Document></Export>
