@@ -28,7 +28,7 @@
 <transform sourceClass='EnsLib.HL7.Message' targetClass='uhtpoc.Patient' sourceDocType='2.5.1:ADT_A01' create='new' language='objectscript' >
 <assign value='source.{PID:PatientName().FamilyName}' property='target.lastname' action='set' />
 <assign value='source.{PID:PatientName().GivenName}' property='target.firstname' action='set' />
-<assign value='source.{PID:PatientID.IDNumber}' property='target.mrn' action='set' />
+<assign value='source.{PID:PatientIdentifierList(1).IDNumber}' property='target.mrn' action='set' />
 </transform>
 ]]></Data>
 </XData>
