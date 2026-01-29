@@ -1,0 +1,1269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exercise 1 Guide</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <img class="brand__mark" src="../assets/images/logo.svg" alt="POC Hub"/>
+        <div class="brand__text">
+          <div class="brand__title">POC Hub</div>
+          <div class="brand__subtitle">InterSystems IRIS for Health • Exercise 2</div>
+        </div>
+      </div>
+
+      <nav class="quicklinks" aria-label="Quick links">
+        <a class="chip" href="../index.html">Back to Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO (matches installation guide structure) -->
+    <section class="hero">
+      <h1>POC Exercise 2: FHIR-to-SQL</h1>
+      <p>
+        Use the instructions on this page to complete the exercise. The checklists can track progress (saved in browser).
+      </p>
+    </section>
+
+    <!-- OVERVIEW / SUCCESS -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Exercise Overview</h2>
+        <p class="muted">Unity Health Toronto is seeking to ingest FHIR resources directly into SQL tables stored in IRIS that can be exposed externally for downstream analytics and research.</p>
+        <br/>
+        <p class="muted">In this exercise, we will demonstrate how IRIS simplifies FHIR server creation and efficiently maps FHIR data into a SQL table. We will leverage the same built-in IRIS tools from Exercise One to create this FHIR-to-SQL pipeline. We will examine the data through a combination of IRIS tools and external tools (SQL client and REST client).
+          </p>
+        <br/>
+      </div>
+
+      <details class="details details--accent" >
+        <summary>Measures of Success</summary>
+        <div class="details__content">
+          <ul class="bullets">
+            <li>Successful ingestion and transformation of FHIR R4 Patient Resources into a SQL table.</li>
+            <li>Successful access to the tabular data</li>
+            <li>Successful data query through a FHIR endpoint.</li>
+          </ul>
+          <p class="muted" style="margin-top:10px;">
+            Validation of this success will be accomplished using tools available through IRIS (Visual Trace, SQL Engine), an external SQL database (PostgreSQL), and an external REST client (Postman) at the end of this exercise
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <!-- PRE-REQUISITES -->
+    <section id="prereqs" class="section">
+      <div class="section__header">
+        <h2>Pre-requisites</h2>
+        <p class="muted">Complete these prerequisites before building the interoperability pipeline.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Pre-requisites</summary>
+        <br/>
+
+        <form class="checklist" data-checklist-id="exercise-1-prereqs">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>1.</strong> Install Postman on your local machine (outside of the Google VM).</code></pre>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+    </section>
+
+    <!-- FHIR Endpoint Setup -->
+    <section id="fhir" class="section">
+      <div class="section__header">
+        <h2>FHIR Server Setup</h2>
+        <p class="muted">Configure a new interoperability-enabled FHIR server and endpoint.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>FHIR Server Configuration</summary>
+
+        <div class="details__content">
+          <p class="muted">We will configure a new FHIR server and its corresponding endpoint in your namespace.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>1.</strong> From the homepage of the Management Portal, select your namespace (i.e. <code>UNITY</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>2.</strong> On the left-side menu, click <code>Health.</code> This pulls up the page for healthcare tool management, such as FHIR server configuration.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>3.</strong> From the Health page, click <code>FHIR Server Management.</code>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>4.</strong> Click the <code>Add new server</code> button.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>5.</strong> Configure as follows:
+              <ul class="bullets">
+                <li><strong>Namespace:</strong> &lt;Select your namespace (i.e. <code>UNITY</code>)&gt;</li>
+                <li><strong>Name:</strong> &lt;Name of your namespace (i.e. <code>UNITY</code>, but can be anything)&gt;</li>
+                <li><strong>FHIR Version:</strong> FHIR R4</li>
+                <li><strong>URL:</strong> &lt;Keep the default (i.e. <code>/csp/healthshare/dev/fhir/r4</code>)&gt;</li>
+                <li><strong>Custom Packages:</strong> hl7.fhir.us.core@3.1.0</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>6.</strong> Click <code>Create</code>. The FHIR server and endpoint creation may take a couple of minutes.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>7.</strong> Once FHIR server and endpoint creation is done, click the <code>Home</code> link in the top right corner to return to the Management Portal Home page.
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>FHIR Interoperability Configuration</summary>
+
+        <div class="details__content">
+          <p class="muted">We will create interoperability components that accept FHIR requests and pass all FHIR requests and responses through the interoperability production created in Exercise 1.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>1.</strong> On the Management Portal home page, make sure we are in your POC namespace (i.e. <code>UNITY</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>2.</strong> Navigate to Interoperability → Configure → Production. This should open the production we built last week.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Create a new business service with the following configurations:
+              <ul class="bullets">
+                <li></li>
+              </ul>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+    </section>
+
+    <!-- FHIR-to-SQL DATA TRANSFORMATION -->
+    <section id="dtl" class="section">
+      <div class="section__header">
+        <h2>Build an HL7-to-SQL Data Transformation</h2>
+        <p class="muted">Deploy the production export and update the data transformation.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Build an HL7-to-SQL Data Transformation</summary>
+        <br/>
+
+        <div class="details__content">
+          <p class="muted">We will learn how to import existing interoperability components, including data transformations, into IRIS. We will then edit the data transformation class to map all the expected patient demographics fields into our SQL table. Note that in IRIS, SQL table rows and persistent objects can be used to access the same data interchangeably. We leverage this capability to map from each instance of an HL7v2 message into a persistent object and thus a SQL table. While this exercise focuses on importing and editing an existing data transformation, we will create a data transformation from scratch in a future exercise (unless you decide to do the bonus activity for this exercise!).</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>1.</strong> Download the production export here: exercise1-export.xml
+          
+              <a
+                href="../assets/downloads/exercise1-export.xml"
+                download
+                target="_blank"
+                class="btn btn--icon"
+                aria-label="Download exercise1-export.xml"
+                title="Download exercise1-export.xml"
+              >
+                <img
+                  src="../assets/images/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a>
+            </span>
+          </label>
+          
+          
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span><strong>2.</strong> From the Management Portal home page, navigate to Interoperability → Manage → Deployment Change → Deploy.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span><strong>3.</strong> At the top of the page, click Open Local Deployment.</span>
+          </label>
+
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>4.</strong> Use the file explorer to find and select the <code>exercise1-export.xml</code> file you downloaded in the first step.
+            </span>
+          </label>
+
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span><strong>5.</strong> Under Select Target, verify that the selected target production is UNITYPKG.FoundationProduction.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span><strong>6.</strong> At the top of the page, click Deploy. A pop-up will ask you to confirm this action. Click OK.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span><strong>7.</strong> Optionally, you can click the refresh button on the top right of the page to monitor progress.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="9" />
+            <span><strong>8.</strong> Return to the home page.</span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">Now that we have imported part of the interoperability interface, we will examine the production and create the data transformation for HL7v2 to the Patient SQL table.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="10" />
+            <span><strong>9.</strong> Navigate to Interoperability → Configure → Production.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="11" />
+            <span><strong>10.</strong> Verify that there is an HL7 message router in the Processes column of your interoperability production.
+            
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/15-production.png" alt="Production page" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="12" />
+            <span><strong>11.</strong> Return to the Management Portal home page.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="13" />
+            <span><strong>12.</strong> Navigate to Interoperability → Build → Data Transformations.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="14" />
+            <span><strong>13.</strong> In the top left corner, click Open.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/16-open-dtl.png" alt="Open DTL" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="15" />
+            <span><strong>14.</strong> Select the data transformation we just imported at UNITYPKG → DTL → ADTtoSQLPatient. Click OK.
+              
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/17-open-dtl.png" alt="Open DTL" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="16" />
+            <span><strong>15.</strong> First, we'll edit an existing action. Click on the last action item in the list at the bottom of the page (this should be a set action with Property of <code>target.mrn</code> and Value of <code>source.{PID:PatientIdentifierList(1).IDNumber}</code>).
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/18-set.png" alt="Edit set" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="17" />
+            <span><strong>16.</strong> The configuration for this action is in the panel on the right side of the screen. Click the magnifying glass next to the Value field.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/19-edit-set.png" alt="Edit set" />
+                </div>
+              </details>
+            
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="18" />
+            <span><strong>17.</strong> In the pop-up, select <code>ToUpper()</code> from the Function dropdown. Click OK.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/20-utility.png" alt="Utility function" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="20" />
+            <span><strong>18.</strong> Click Compile at the top of the page to save and compile the data transformation. You can also click Save to save the transformation without compiling. Remember to save/compile throughout the build process.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="21" />
+            <span><strong>19.</strong> To add a new set action, click the Add Action dropdown at the top of the page and select set.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="22" />
+            <span><strong>20.</strong> Double click dateofbirth on the right side under uhtpoc.Patient (target message). Notice that this fills the Property field of the configuration panel on the right side of the screen.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/21-double-click.png" alt="Drag and drop" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="23" />
+            <span><strong>22.</strong> In the settings panel on the right, copy-paste the following into the Value field: 
+              <pre><code>$System.SQL.TODATE(source.{PID:DateTimeofBirth.Time},"YYYYMMDD")</code></pre>
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/22-value.png" alt="Drag and drop" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="24" />
+            <span><strong>23.</strong> Click the Add Action dropdown at the top of the page and select set. In the settings panel on the right, copy-paste in the following configurations:
+              <ul class="bullets">
+                <li>Property: <pre><code>target.gender</code></pre></li>
+                <li>Value: <pre><code>source.{PID:AdministrativeSex}</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="27" />
+            <span><strong>24.</strong> Examine the graphical representation of the transformation. There should be new lines connecting the source and target messages for the date of birth and gender fields.
+            
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/23-lines.png" alt="Drag and drop" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="28" />
+            <span><strong>25.</strong> Next, we will add some conditional branching logic. From the Add Action dropdown, select the if action.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="29" />
+            <span><strong>26.</strong> In settings panel on the right, configure the following:
+              <ul class="bullets">
+                <li>Condition: <pre><code>source.{PID:PhoneNumberHome(1).TelephoneNumber}</code></pre></li>
+                </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="31" />
+            <span><strong>27.</strong> From the Add Action dropdown, select set. Configure the following in the settings panel:
+              <ul class="bullets">
+                <li>Property: <pre><code>target.phone</code></pre></li>
+                <li>Value: <pre><code>source.{PID:PhoneNumberHome(1).TelephoneNumber}</code></pre></li>
+                </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="34" />
+            <span><strong>28.</strong> In the actions list at the bottom of the page, click on the else item.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/24-else.png" alt="Drag and drop" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="35" />
+            <span><strong>29.</strong> From the Add Action dropdown, select set. Configure the following in the settings panel:
+              <ul class="bullets">
+                <li>Property: <pre><code>target.phone</code></li>
+                <li>Value: <pre><code>source.{PID:PhoneNumberBusiness(1).TelephoneNumber}</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="38" />
+            <span><strong>30.</strong> In the actions list at the bottom of the page, click on the endif item to insert a new action below it.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="39" />
+            <span><strong>31.</strong> From the Add Action dropdown, select sql. Copy-paste the following query into the SQL text box: 
+            <pre><code>INSERT INTO uhtpoc.Patient (mrn,
+first_name,
+last_name,
+date_of_birth,
+gender, phone)
+VALUES (target.mrn, 
+  target.firstname,
+  target.lastname,
+  target.dateofbirth,
+  target.gender,
+  target.phone)</code></pre></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="40" />
+            <span><strong>32.</strong> Click Compile to save and compile the transformation.</span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">We also have another data transformation from HL7 ADTs to an encounter table. </p>
+              
+             <p>You can choose to download this file and import the transformation (the same way you imported Encounter.cls): <a
+              href="../assets/downloads/encounter-dtl.xml"
+              download
+              target="_blank"
+              class="btn btn--icon"
+              aria-label="Download encounter-dtl.xml"
+              title="Download encounter-dtl.xml"
+            >
+              <img
+                src="../assets/images/download.svg"
+                alt=""
+                aria-hidden="true"
+              />
+            </a></p> 
+              
+              <p>You can also OPTIONALLY build it out yourself as a bonus exercise (see steps below).</p>
+            </p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="42" />
+            <span><strong>33.</strong> Click New in the top left corner.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="43" />
+            <span><strong>34.</strong> In the Data Transformation Wizard pop-up, configure the following:
+              <ul class="bullets">
+                <li>Package: UNITYPKG.DTL</li>
+                <li>Name: ADTtoSQLEncounter</li>
+                <li>Source Type:
+                  <div>
+                    <ul class="bullets">
+                      <li>Select HL7.</li>
+                      <li>Click the magnifying glass next to the Source Document Type box.</li>
+                      <li>In the pop-up, select 2.5.1 → ADT_A01 (for our purposes, this should also allow the transformation to work for ADT_A02 and ADT_A03 messages).</li>
+                    </ul>
+                  </div>
+                </li>
+                <li>Target Class:
+                  <div>
+                    <ul class="bullets">
+                      <li>Select All Messages.</li>
+                      <li>Click the magnifying glass next to the Target Class text box.</li>
+                      <li>In the pop-up, select Persistent Classes from the left-most panel.</li>
+                      <li>Select uhtpoc → Encounter.</li>
+                    </ul>
+                  </div>
+                </li>
+                <li>Click OK.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="56" />
+            <span><strong>35.</strong> The new transformation should now be pulled up in the data transformation editor.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="57" />
+            <span><strong>36.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
+            <ul class="bullets">
+              <li>Property: <pre><code>target.mrn</code></pre></li>
+              <li>Value: <pre><code>source.{PID:PatientIdentifierList(1).IDNumber}</code></pre></li>
+            </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="60" />
+            <span><strong>37.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
+              <ul class="bullets">
+                <li>Property: <pre><code>target.date</code></pre></li>
+                <li>Value: <pre><code>$System.SQL.TODATE(source.{EVN:RecordedDateTime.Time},"YYYYMMDD")</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="63" />
+            <span><strong>38.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
+              <ul class="bullets">
+                <li>Property: <pre><code>target.encounterNum</code></pre></li>
+                <li>Value: <pre><code>source.{PV1:VisitNumber.IDNumber}</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="66" />
+            <span><strong>38.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
+              <ul class="bullets">
+                <li>Property: <pre><code>target.encounterType</code></pre></li>
+                <li>Value: <pre><code>source.{PV1:PatientClass}</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="69" />
+            <span><strong>39.</strong> From the Add Action dropdown, select the sql action. Enter the following SQL statement into the configuration panel:
+              <pre><code>INSERT INTO uhtpoc.Encounter (mrn,
+date,
+encounterNum,
+encounterType) VALUES (target.mrn,
+  target.date,
+  target.encounterNum,
+  target.encounterType)</code></pre>
+</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="70" />
+            <span><strong>40.</strong> Click Compile.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="70" />
+            <span><strong>41.</strong> Return to the Management Portal home page.</span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">
+              Congrats on completing the data transformations for this exercise! 
+              </p></div>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+    </section>
+
+    <!-- HL7v2 BUSINESS RULES AND ROUTING -->
+    <section id="routing" class="section">
+      <div class="section__header">
+        <h2>HL7v2 Business Rules and Routing</h2>
+        <p class="muted">Configure the HL7 file service and routing rules.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>HL7v2 Business Rules and Routing</summary>
+        <br/>
+
+        <div class="details__content">
+          <p class="muted">
+            We will configure data ingestion, business rules, and routing for our HL7v2 messages.
+          </p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-1-routing">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span><strong>1.</strong> From the home page, navigate to Interoperability → Configure → Production.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span><strong>2.</strong> We will create a new business service to ingest HL7 files. This simulates an HL7 TCP connection, which is typical for real HL7v2 interoperability productions. Click on the small plus icon next to Services at the top of the production page.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/25-service.png" alt="Create HL7 service" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>4.</strong> In the pop-up, select the HL7 Input tab. Select File. Configure the following:
+            <ul class="bullets">
+              <li>HL7 Service Name: HL7FileIn</li>
+              <li>Display Category: Exercise 1</li>
+              <li>Enable Now: checked</li>
+              <li>HL7 Service Target: Choose From List</li>
+              <li>Target: HL7Router</li>
+              <li>HL7 Schema Category: 2.5.1</li>
+              <li>File Path: /isc/MessageIn/HL7/</li>
+            </ul>
+            
+            Click OK.
+
+            <details class="hint">
+              <summary>Hint</summary>
+              <div class="hint__content">
+                <img src="../assets/images/exercise1/26-business-service-wizard.png" alt="Create HL7 service" />
+              </div>
+            </details>
+          </span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">
+              Next, we'll edit the business rule to apply the transformations we built to our message.
+            </p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="14" />
+            <span><strong>4.</strong> Under the Processes section in the center of the production configuration page, click on the existing HL7Router component.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="15" />
+            <span><strong>5.</strong> In the settings panel on the right, scroll to Basic Settings. Click the magnifying glass next to the Business Rule Name setting. This opens the rule editor.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="16" />
+            <span><strong>6.</strong> Double click on the rule. In the pop-up, configure the following:
+              <ul class="bullets">
+                <li>Name: HL7toSQLPatient</li>
+                <li>Source: HL7FileIn</li>
+                <li>Schema Category: 2.5.1</li>
+                <li>Document Name: ADT_A01, ADT_A02, ADT_A03</li>
+              </ul>
+
+              Click OK.
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/27-rule-config.png" alt="Rule configuration" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="22" />
+            <span><strong>7.</strong> Click on the +condition button to the right of the rule.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/28-condition.png" alt="Condition" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="23" />
+            <span><strong>8.</strong> Double click on the newly added condition item.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/29-condition.png" alt="Condition" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="24" />
+            <span><strong>8.</strong> In the pop-up, set Value to 
+              
+              <pre><code>HL7.{PID:PatientIdentifierList(1).IDNumber} StartsWith "123" </code></pre>
+              
+              Click OK.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/30-edit-expression.png" alt="Condition" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="25" />
+            <span><strong>9.</strong> Click on the <code>then</code> or the <code>actions</code> button inside the rule.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/31-then-action.png" alt="Condition" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="26" />
+            <span><strong>10.</strong> Click on the +send button to the right of the new then action item.
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/32-send.png" alt="Condition" />
+                </div>
+              </details></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="27" />
+            <span><strong>11.</strong> Double click on the newly added send action.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="28" />
+            <span><strong>12.</strong> In the Edit Send pop-up, configure the following:
+              <ul class="bullets">
+                <li>Target: <pre><code>PostgreSQLPatient</code></pre></li>
+                <li>Transform: <pre><code>UNITYPKG.DTL.ADTtoSQLPatient</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="31" />
+            <span><strong>13.</strong> Click Compile.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="32" />
+            <span><strong>14.</strong> Next, we'll add a second rule to work with the encounter data. Click on the rule and then click on the +rule button.
+            
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/33-rule.png" alt="Condition" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="33" />
+            <span><strong>15.</strong> Double click on the new rule to edit it. In the pop-up, configure the following:
+            <ul class="bullets">
+              <li>Name: HL7toSQLEncounter</li>
+              <li>Source: HL7FileIn</li>
+              <li>Doc Category: 2.5.1</li>
+              <li>Doc Name: ADT_A01, ADT_A02, ADT_A03</li>
+            </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="38" />
+            <span><strong>16.</strong> Click on the +condition button next to the new rule.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="39" />
+            <span><strong>17.</strong> Double click on the new condition to edit it.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="40" />
+            <span><strong>18.</strong> In the Value text box, enter 1. Click OK.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="41" />
+            <span><strong>19.</strong> Click on the <code>then</code> or <code>actions</code> button inside the rule to bring up additional actions we can add. Click the +send to the RIGHT of the new then action item.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="42" />
+            <span><strong>20.</strong> Double click on the newly added send action.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="43" />
+            <span><strong>21.</strong> In the Edit Send pop-up, configure the following:
+              <ul class="bullets">
+                <li>Target: PostgreSQLEncounter</li>
+                <li>Transform: UNITYPKG.DTL.ADTtoSQLEncounter</li>
+              </ul>
+
+              Click Compile.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="47" />
+            <span><strong>22.</strong> Compile the transformation.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="47" />
+            <span><strong>23.</strong> Return to the home page.</span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+    </section>
+
+    <!-- CONFIGURE POSTGRESQL EXPORT -->
+    <section id="pgexport" class="section">
+      <div class="section__header">
+        <h2>Configure PostgreSQL Export</h2>
+        <p class="muted">Enable external language servers and configure SQL Gateway + production operations.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Configure PostgreSQL Export</summary>
+        <br/>
+
+        <div class="details__content">
+          <p class="muted">In this section, we will set up IRIS for exporting SQL data to a PostgreSQL database on the Google VM. First, we will make sure the JDBC Server and Java language servers are running so that we can make a JDBC connection between IRIS and PostgreSQL.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-1-routing">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span><strong>1. </strong>From the home page, navigate to System Administration → Configuration → Connectivity → External Language Servers.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span><strong>2. </strong>Click Start next to %JDBC Server if the server is not yet started. Click OK and wait for the server to start. Click Done when finished.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span><strong>3. </strong>Click Start next to %Java Server if the server is not yet started. Click OK and wait for the server to start. Click Done when finished.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span><strong>4. </strong>Write down the port for the %Java Server entry (you will need this in a later step).</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>5. </strong>Return to the home page.</span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">Next, we will set up the SQL Gateway in IRIS to connect to your PostgreSQL database.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span><strong>6. </strong>From the home page, navigate to System Administration → Configuration → Connectivity → SQL Gateway Connections.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="9" />
+            <span><strong>7. </strong>Click Create New Connection.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="10" />
+            <span><strong>8. </strong>Configure the connection as follows:
+              <ul class="bullets">
+                <li>Type of connection: JDBC</li>
+                <li>Connection name: postgresql</li>
+                <li>User: superuser</li>
+                <li>Password: &lt;your superuser password&gt;</li>
+                <li>Driver name: org.postgresql.Driver</li>
+                <li>URL: jdbc:postgresql://localhost:5432/uhtpoc</li>
+                <li>Class path: /usr/share/java/postgresql-42.3.3.jar</li>
+                <li>Click Test Connection to make sure your configuration is valid.</li>
+                <li>Click Save.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="20" />
+            <span><strong>9. </strong>Return to the home page.</span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">We will edit the interoperability production to work with these newly enabled components of IRIS for our PostgreSQL connection.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="22" />
+            <span><strong>10. </strong>Return to the home page. Ensure you are in the <code>UNITY</code> namespace. Then f the home page, navigate to Interoperability → Configure → Production.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="23" />
+            <span><strong>11. </strong>Under Services, click on JavaGatewayService. In the right-side settings panel, configure the following under Basic Settings:
+              <ul class="bullets">
+                <li>Enabled: check</li>
+                <li>External Language Server Name: %Java Server</li>
+                <li>Address: 127.0.0.1 (should be default)</li>
+                <li>Port: &lt;port from step 4 earlier&gt;</li>
+                <li>Click Apply at the top of the panel to save these settings.</li>
+                </ul>
+
+                <details class="hint">
+                  <summary>Hint</summary>
+                  <div class="hint__content">
+                    <img src="../assets/images/exercise1/34-java-gateway.png" alt="Java Gateway config" />
+                  </div>
+                </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="29" />
+            <span><strong>12. </strong>Under Operations, click on PostgreSQLPatient. In the right-side settings panel, configure the following under Basic Settings:
+
+              <ul class="bullets">
+                <li>Enabled: check</li>
+                <li>DSN: postgresql (type this into the text box)</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="32" />
+            <span><strong>13. </strong>Scroll down and under Connection Settings, configure the following:
+            <ul class="bullets">
+              <li>Java Gateway Service: JavaGatewayService</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="34" />
+            <span><strong>14. </strong>Scroll down and under Data in the settings, configure the following:
+              <ul class="bullets">
+                <li>Query: <pre><code>INSERT INTO Patient (mrn, first_name, last_name, date_of_birth, gender, phone) VALUES (?, ?, ?, ?, ?, ?)</code></pre></li>
+                <li>RequestClass: uthpoc.Patient</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="37" />
+            <span><strong>15. </strong>Still in the Data section, we can configure the input parameters as follows:
+            <ul class="bullets">
+              <li>Input Parameters:
+                <ul>
+                  <li>Click the plus icon next to Add.</li>
+                  <li>Click the Table icon (next to the red X).</li>
+                  <li>In the popup, select *mrn from the dropdown.</li>
+                  <li>Click OK.</li>
+                  <li>Repeat steps i-iv for the rest of the parameters in the following order: *firstname, *lastname, *dateofbirth, *gender, *phone</li>
+                </ul>
+              </li>
+              <li>Parameters' SQL data types: 
+                <pre><code>SQL_VARCHAR,SQL_VARCHAR,SQL_VARCHAR,SQL_DATE,SQL_VARCHAR,SQL_VARCHAR</code></pre></li>
+
+                <li>Click Apply at the top of the panel to save these settings.</li>
+            </ul></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="46" />
+            <span><strong>16. </strong>Under Operations, click on PostgreSQLEncounter. In the right-side settings panel, configure the following under Basic Settings:
+            <ul class="bullets">
+              <li>Enabled: check</li>
+              <li>DSN: postgresql</li>
+              <li>All of the other settings should be configured for you. Feel free to verify the SQL query to make sure it is valid for the table you created in PostgreSQL.</li>
+            </ul></span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">You should have all the components necessary for export to PostgreSQL ready now. Time to test!</p>
+          </div>
+  
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          
+        </form>
+      </details>
+    </section>
+
+    <!-- DATA INGESTION AND VALIDATION -->
+    <section id="validate" class="section">
+      <div class="section__header">
+        <h2>Data Ingestion and Validation</h2>
+        <p class="muted">Feed data through the production and validate IRIS + PostgreSQL tables.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Data Ingestion and Validation</summary>
+        <br/>
+
+        <form class="checklist" data-checklist-id="exercise-1-validate">
+
+          <div class="details__content">
+            <p class="muted">In this section, we will feed data through the interoperability production and validate that it has populated our tables.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span><strong>1. </strong>At the top of the production page, click Start. Click OK.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <!-- TODO: make these folders -->
+            <span><strong>2. </strong>Download these HL7v2 messages: 
+              <ul>
+                <li>ADT_A01.hl7.txt  <a
+                  href="../assets/downloads/ADT_A01.hl7.txt"
+                  download
+                  target="_blank"
+                  class="btn btn--icon"
+                  aria-label="Download ADT^A01.hl7.txt"
+                  title="Download ADT^A01.hl7.txt"
+                >
+                  <img
+                    src="../assets/images/download.svg"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </a></li>
+
+              <li>ADT_A02.hl7.txt  <a
+                href="../assets/downloads/ADT_A02.hl7.txt"
+                download
+                target="_blank"
+                class="btn btn--icon"
+                aria-label="Download ADT^A02.hl7.txt"
+                title="Download ADT^A02.hl7.txt"
+              >
+                <img
+                  src="../assets/images/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a></li>
+              <li>ADT_A03.hl7.txt <a
+                href="../assets/downloads/ADT_A03.hl7.txt"
+                download
+                target="_blank"
+                class="btn btn--icon"
+                aria-label="Download ADT^A03.hl7.txt"
+                title="Download ADT^A03.hl7.txt"
+              >
+                <img
+                  src="../assets/images/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a></li>
+              </ul></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span><strong>3. </strong>Upload these files to your Google VM (in the <code>/home/&lt;USERNAME&gt;</code> directory).</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4. </strong>From your home directory, copy these files into the <code>/isc/MessageIn/HL7</code> folder, where our interoperability production will ingest the messages:
+              <pre><code>cp ADT_A01.hl7.txt /isc/MessageIn/HL7
+
+cp ADT_A02.hl7.txt /isc/MessageIn/HL7
+
+cp ADT_A03.hl7.txt /isc/MessageIn/HL7</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>5. </strong>Click on the Messages tab in the right-side settings panel to see messages that flowed through the production. Click on a Session ID to open a visual trace.
+              
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/35-messages.png" alt="Messages" />
+                </div>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise1/36-visual-trace.png" alt="Visual Trace" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">
+              We will validate successful data ingestion by querying the data through a built-in SQL engine in IRIS. This will surface data stored in InterSystems IRIS's embedded database.
+            </p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span><strong>6. </strong>From the Home page of the Management Portal, navigate to System Explorer → SQL.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span><strong>7. </strong>In the text box at the center of the page, enter the following query: 
+              <pre><code>SELECT * FROM uhtpoc.Patient</code></pre></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span><strong>8. </strong>Click the Execute button above the query text box.
+
+              You should see that 2 of the 3 patients are now stored in this table (on of them was filtered out by the business rule condition we configured earlier).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="9" />
+            <span><strong>9. </strong>In the text box at the center of the page, enter the following query: 
+              <pre><code>SELECT * FROM uhtpoc.Encounter</code></pre>
+          </span>
+
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="10" />
+            <span><strong>10. </strong>Click the Execute button above the query text box.
+            
+              You should see that all 3 encounters are in this table.
+          </label>
+
+          <div class="details__content">
+            <p class="muted">Next, we will connect to the external PostgreSQL database to query this data outside of IRIS.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="12" />
+            <span><strong>11. </strong>In your VM terminal, run: 
+              <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Patient;"</code></pre></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="13" />
+            <span><strong>12. </strong>In your VM terminal, run: 
+            <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Encounter;"</code></pre></span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">Exercise 1</span>
+      <span class="muted">Progress saved locally</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

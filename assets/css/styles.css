@@ -379,3 +379,131 @@ pre:hover .copy-btn--block {
   height: 16px;
   display: block;
 }
+
+/* Adapted checkbox-wrapper-13 for .checklist__item markup */
+/* Uses modern appearance: none and draws checkmark with input:after */
+
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  .checklist__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+  }
+
+  /* Style the native checkbox control itself (visible box) */
+  .checklist__item input[type="checkbox"] {
+    --active: #275EFE;
+    --active-inner: #fff;
+    --focus: 2px rgba(39, 94, 254, .18);
+    --border: rgba(255,255,255,0.12);
+    --border-hover: #275EFE;
+    --background: transparent;
+    --disabled: #F6F8FF;
+    --disabled-inner: #E1E6F9;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+    border: 1px solid var(--bc, var(--border));
+    background: var(--b, var(--background));
+    border-radius: 7px;
+    transition: background 0.28s, border-color 0.28s, box-shadow 0.18s, transform 0.18s;
+    box-sizing: border-box;
+  }
+
+  /* Checkmark pseudo inside the input */
+  .checklist__item input[type="checkbox"]::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 4px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    transform: rotate(var(--r, 20deg)) scale(var(--s, 0.9));
+    opacity: var(--o, 0);
+    transition: transform var(--d-t, 0.28s) var(--d-t-e, ease), opacity var(--d-o, 0.18s);
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  /* Checked state styles */
+  .checklist__item input[type="checkbox"]:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: .28s;
+    --d-t: .45s;
+    --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+    transform: translateY(-1px);
+  }
+  .checklist__item input[type="checkbox"]:checked::after {
+    --o: 1;
+    --r: 43deg;
+    --s: 1;
+  }
+
+  /* Hover & focus */
+  .checklist__item input[type="checkbox"]:hover:not(:disabled) {
+    --bc: var(--border-hover);
+  }
+  .checklist__item input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 var(--focus);
+  }
+
+  /* Disabled */
+  .checklist__item input[type="checkbox"]:disabled {
+    --b: var(--disabled);
+    cursor: not-allowed;
+    opacity: 0.95;
+  }
+  .checklist__item input[type="checkbox"]:disabled:checked {
+    --b: var(--disabled-inner);
+    --bc: var(--border);
+  }
+
+  /* Label text positioning: reserve space for the visual checkbox */
+  .checklist__item input[type="checkbox"] + span {
+    display: block;
+    padding-left: 0; /* we use inline checkbox, so no need for large left padding */
+    min-width: 0;
+  }
+
+  /* If you used the previous pseudo-element approach (span::before),
+     keep enough left padding for that pattern; otherwise this keeps
+     the text aligned with the checkbox naturally. */
+
+  /* Small-screen adjustments */
+  @media (max-width: 520px) {
+    .checklist__item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+    .checklist__item input[type="checkbox"]::after {
+      left: 6px;
+      top: 3px;
+      width: 4px;
+      height: 7px;
+      border-width: 2px;
+    }
+  }
+}
+
+/* Fallback for browsers that don't support appearance none:
+   keep the native checkbox but still align text nicely */
+.checklist__item input[type="checkbox"] {
+  box-sizing: border-box;
+}
