@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Exercise 1 Guide</title>
+  <title>Exercise 2 Guide</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
 </head>
 <body>
@@ -279,13 +279,6 @@
             </span>
           </label>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="3"/>
-            <span>
-              <strong>13.</strong> Return to the Management Portal home page.
-            </span>
-          </label>
-
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
@@ -294,19 +287,97 @@
 
     </section>
 
-    <!-- FHIR-to-SQL DATA TRANSFORMATION -->
-    <section id="dtl" class="section">
+    <section id="test-fhir" class="section">
       <div class="section__header">
-        <h2>Build an HL7-to-SQL Data Transformation</h2>
-        <p class="muted">Deploy the production export and update the data transformation.</p>
+        <h2>(Optional) Test the New FHIR Endpoint</h2>
+        <p class="muted">We will test our connection to the newly created FHIR endpoint.</p>
       </div>
 
       <details class="details details--accent">
-        <summary>Build an HL7-to-SQL Data Transformation</summary>
-        <br/>
+        <summary>Test a Connection to the FHIR Endpoint</summary>
 
         <div class="details__content">
-          <p class="muted">We will learn how to import existing interoperability components, including data transformations, into IRIS. We will then edit the data transformation class to map all the expected patient demographics fields into our SQL table. Note that in IRIS, SQL table rows and persistent objects can be used to access the same data interchangeably. We leverage this capability to map from each instance of an HL7v2 message into a persistent object and thus a SQL table. While this exercise focuses on importing and editing an existing data transformation, we will create a data transformation from scratch in a future exercise (unless you decide to do the bonus activity for this exercise!).</p>
+          <p class="muted">We will practice making FHIR REST calls to the IRIS FHIR Server through Postman.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>1.</strong> On the FHIR Server Management page, copy the URL from your FHIR endpoint's card.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> If the production in your namespace is not yet running, go to the Home page and then in your namespace, navigate to Interoperability → Configure → Production. Click <code>Start.</code>
+            </span>
+          </label>
+
+          <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
+            <label class="checklist__item">
+              <input type="checkbox" data-step="2" />
+              <span>
+                <strong>3.</strong> Within Postman, create a new GET request.
+              </span>
+            </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>4.</strong> For the URL, enter: <code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/metadata</code>
+
+              Run the request. You should see a capability statement that displays valid interactions and operations for the IRIS FHIR Server.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>5.</strong> Change the Postman request method to <code>POST</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>6.</strong> For the URL, enter: http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/Patient
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>7.</strong> In Postman, navigate to the <code>Authorization</code> tab. Select <code>Basic Auth</code> for the Auth Type. Enter your credentials for logging into IRIS (such as SuperUser).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>8.</strong> Run the request. You should see a response saying no Patients are found.
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+    </section>
+
+    <!-- FHIR-to-SQL DATA TRANSFORMATION -->
+    <section id="dtl" class="section">
+      <div class="section__header">
+        <h2>Build a FHIR-to-SQL Data Transformation</h2>
+        <p class="muted">Create a business process and data transformation for transforming from a FHIR Patient resource into the SQL tables from Exercise 1.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Build a FHIR-to-SQL Data Transformation</summary>
+
+        <div class="details__content">
+          <p class="muted">We will practice creating a rule router and data transformation from scratch.</p>
         </div>
 
         <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
