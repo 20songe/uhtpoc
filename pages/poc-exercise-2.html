@@ -187,10 +187,102 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="3" />
             <span>
-              <strong>3.</strong> Create a new business service with the following configurations:
+              <strong>3.</strong> Create a new business service with the following configurations (on the <code>All Services</code> tab):
               <ul class="bullets">
-                <li></li>
+                <li><strong>Service Class:</strong> HS.FHIRServer.Interop.Server</li>
+                <li><strong>Service Name:</strong> FHIRIn</li>
+                <li><strong>Display Category:</strong> Exercise 2 (you will likely need to type this in)</li>
+                <li><strong>Enable Now:</strong> Checked</li>
+                <li>Click <code>OK.</code></li>
               </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>4.</strong> Create a new business operation with the following configurations (on the <code>All Services</code>):
+              <ul class="bullets">
+                <li><strong>Operation Class:</strong> HS.FHIRServer.Interop.Operation</li>
+                <li><strong>Operation Name:</strong> FHIROut</li>
+                <li><strong>Display Category:</strong> Exercise 2</li>
+                <li><strong>Enable Now:</strong> checked</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>5.</strong> Create a new business operation with the following configurations (on the <code>All Services</code>):
+              <ul class="bullets">
+                <li><strong>Operation Class:</strong> HS.FHIRServer.Interop.Operation</li>
+                <li><strong>Operation Name:</strong> FHIROut</li>
+                <li><strong>Display Category:</strong> Exercise 2</li>
+                <li><strong>Enable Now:</strong> checked</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>6.</strong> Click on the <code>FHIRIn</code> business service we created previously. In the settings panel, configure the following under the Basic Settings section:
+              <ul class="bullets">
+                <li><strong>Target Config Name:</strong> FHIROut</li>
+                <li>Click Apply at the top of the settings panel to save this setting.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>7.</strong> Return to the home page of the Management Portal.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>8.</strong> Click <code>Health.</code> Then, on the Health page, click <code>FHIR Server Management.</code>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>9.</strong> Click the three horizontal bars on the top right of the card for your FHIR server/endpoint (i.e. UNITY).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>10.</strong> On the menu that pops up, click <code>Edit</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>11.</strong> Expand the <code>FHIR Server Service Configuration</code> setting.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>12.</strong> Under <code>Service Config Name</code>, use the dropdown to select <code>FHIRIn.</code> Click <code>Save</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3"/>
+            <span>
+              <strong>13.</strong> Return to the Management Portal home page.
             </span>
           </label>
 
@@ -267,7 +359,7 @@
 
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
-            <span><strong>6.</strong> At the top of the page, click Deploy. A pop-up will ask you to confirm this action. Click OK.</span>
+            <span><strong>6.</strong> At the top of the page, click Deploy. A pop-up will ask you to confirm this action. Click <code>OK</code>.</span>
           </label>
 
           <label class="checklist__item">
@@ -326,7 +418,7 @@
 
           <label class="checklist__item">
             <input type="checkbox" data-step="15" />
-            <span><strong>14.</strong> Select the data transformation we just imported at UNITYPKG → DTL → ADTtoSQLPatient. Click OK.
+            <span><strong>14.</strong> Select the data transformation we just imported at UNITYPKG → DTL → ADTtoSQLPatient. Click <code>OK</code>.
               
               <details class="hint">
                 <summary>Hint</summary>
