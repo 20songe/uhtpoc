@@ -639,7 +639,7 @@ target.phone)</code></pre>
 
             <label class="checklist__item">
               <input type="checkbox" data-step="4" />
-              <span><strong>2a.</strong> Create a new business process with the following configuration:
+              <span><strong>2.</strong> Create a new business process with the following configuration:
               <ul class="bullets">
                 <li><strong>Business Process Class: </strong>EnsLib.MsgRouter.RoutingEngine</li>
                 <li><strong>Auto-Create Rule:</strong> Checked</li>
@@ -653,25 +653,32 @@ target.phone)</code></pre>
 
             <label class="checklist__item">
               <input type="checkbox" data-step="5" />
-              <span><strong>2b.</strong> Click on FHIRRouter and in the settings panel, scroll to Additional Settings. Configure the following:
+              <span><strong>3.</strong> Click on FHIRRouter and in the settings panel, scroll to Additional Settings. Configure the following:
               <ul class="bullets">
                 <li><strong>Response From:</strong> FHIROut</li>
               </ul> 
             
               <br/>
               This enables the router to return responses that come from this specific downstream operation.
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise2/7-response-from.png" alt="FHIRRouter response from setting" />
+                </div>
+              </details>
             </span>
             </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="5" />
-              <span><strong>3.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule. </span>
+              <span><strong>4.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule. </span>
             </label>
   
   
             <label class="checklist__item">
               <input type="checkbox" data-step="6" />
-              <span><strong>4.</strong> Configure a new rule as follows:
+              <span><strong>5.</strong> Configure a new rule as follows:
                 <ul class="bullets">
                   <li><strong>Name:</strong> FHIRtoSQLPatient</li>
                   <li><strong>Source:</strong> FHIRIn</li>
@@ -684,12 +691,12 @@ target.phone)</code></pre>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="7" />
-              <span><strong>5.</strong> Click <code>+condition</code> to add a new condition (for filtering based on message content).</span>
+              <span><strong>6.</strong> Click <code>+condition</code> to add a new condition (for filtering based on message content).</span>
             </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="8" />
-              <span><strong>6.</strong> Double click on the new condition and configure it as follows:
+              <span><strong>7.</strong> Double click on the new condition and configure it as follows:
               <ul class="bullets">
                 <li><strong>Value:</strong> 1</li>
                 <li>Click <code>OK</code>.</li>
@@ -698,35 +705,47 @@ target.phone)</code></pre>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="8" />
-              <span><strong>7.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code>.</span>
+              <span><strong>8.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code> to the right of <code>then actions</code>.
+              
+                <details class="hint">
+                  <summary>Hint</summary>
+                  <div class="hint__content">
+                    <img src="../assets/images/exercise2/8-rule-then-actions.png" alt="Rule add send action" />
+                  </div>
+                </details>
+              </span>
             </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="9" />
-              <span><strong>8.</strong> Double click the send action and configure as follows:
+              <span><strong>9.</strong> Double click the send action and configure as follows:
               <ul class="bullets">
                 <li><strong>Value:</strong> PostgreSQLPatient</li>
                 <li><strong>Transform:</strong> UNITYPKG.DTL.FHIRtoSQL</li>
+                <li>Click <code>OK</code>.</li>
               </ul></span>
             </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="10" />
-              <span><strong>9.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code> to add a second send action.</span>
+              <span><strong>10.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code> to add a second send action.
+              </span>
             </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="9" />
-              <span><strong>10.</strong> Double click the newest send action and configure as follows:
+              <span><strong>11.</strong> Double click the newest send action and configure as follows:
               <ul class="bullets">
                 <li><strong>Value:</strong> FHIROut</li>
                 <li><strong>Transform:</strong> &lt;Leave this blank&gt;</li>
-              </ul></span>
+                <li>Click <code>OK</code>.</li>
+              </ul>
+            </span>
             </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="10" />
-              <span><strong>11.</strong> Click compile.</span>
+              <span><strong>12.</strong> Click compile.</span>
             </label>
 
           <div class="checklist__actions">
