@@ -318,7 +318,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>4.</strong> For the URL, enter: <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/metadata</code></pre>
+              <strong>4.</strong> For the URL, enter: <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1 (i.e. csp/healthshare/unity/fhir/r4)&gt;/metadata</code></pre>
               
               <br/>
               Run the request. You should see a capability statement that displays valid interactions and operations for the IRIS FHIR Server.
@@ -328,29 +328,22 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>5.</strong> Change the Postman request method to <code>POST</code>.
+              <strong>5.</strong> For the URL, enter: 
+              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1 (i.e. csp/healthshare/unity/fhir/r4)&gt;/Patient</code></pre>
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>6.</strong> For the URL, enter: 
-              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/Patient</code></pre>
+              <strong>6.</strong> In Postman, navigate to the <code>Authorization</code> tab. Select <code>Basic Auth</code> for the Auth Type. Enter your credentials for logging into IRIS (such as SuperUser).
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>7.</strong> In Postman, navigate to the <code>Authorization</code> tab. Select <code>Basic Auth</code> for the Auth Type. Enter your credentials for logging into IRIS (such as SuperUser).
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="2" />
-            <span>
-              <strong>8.</strong> Run the request. You should see a response saying no Patients are found.
+              <strong>7.</strong> Run the request. You should see a response saying no Patients are found.
             </span>
           </label>
 
@@ -598,7 +591,7 @@ target.phone)</code></pre>
 
             <label class="checklist__item">
               <input type="checkbox" data-step="4" />
-              <span><strong>2.</strong> Create a new business process with the following configuration:
+              <span><strong>2a.</strong> Create a new business process with the following configuration:
               <ul class="bullets">
                 <li><strong>Business Process Class: </strong>EnsLib.MsgRouter.RoutingEngine</li>
                 <li><strong>Auto-Create Rule:</strong> Checked</li>
@@ -609,16 +602,27 @@ target.phone)</code></pre>
                 <li>Click <code>OK.</code></li>
               </ul></span>
             </label>
+
+            <label class="checklist__item">
+              <input type="checkbox" data-step="5" />
+              <span><strong>2b.</strong> Click on FHIRRouter and in the settings panel, scroll to Additional Settings. Configure the following:
+              <ul class="bullets">
+                <li><strong>Response From:</strong> FHIROut</li>
+              </ul> </span>
+
+              <br/>
+              This enables the router to return responses that come from this specific downstream operation.
+            </label>
   
             <label class="checklist__item">
               <input type="checkbox" data-step="5" />
-              <span><strong>3.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule.</span>
+              <span><strong>3.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule. </span>
             </label>
   
   
             <label class="checklist__item">
               <input type="checkbox" data-step="6" />
-              <span><strong>4.</strong>  Configure a new rule as follows:
+              <span><strong>4.</strong> Configure a new rule as follows:
                 <ul class="bullets">
                   <li><strong>Name:</strong> FHIRtoSQLPatient</li>
                   <li><strong>Source:</strong> FHIRIn</li>
@@ -683,186 +687,6 @@ target.phone)</code></pre>
       </details>
     </section>
 
-    <!-- CONFIGURE POSTGRESQL EXPORT -->
-    <section id="pgexport" class="section">
-      <div class="section__header">
-        <h2>Configure PostgreSQL Export</h2>
-        <p class="muted">Enable external language servers and configure SQL Gateway + production operations.</p>
-      </div>
-
-      <details class="details details--accent">
-        <summary>Configure PostgreSQL Export</summary>
-        <br/>
-
-        <div class="details__content">
-          <p class="muted">In this section, we will set up IRIS for exporting SQL data to a PostgreSQL database on the Google VM. First, we will make sure the JDBC Server and Java language servers are running so that we can make a JDBC connection between IRIS and PostgreSQL.</p>
-        </div>
-
-        <form class="checklist" data-checklist-id="exercise-1-routing">
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="2" />
-            <span><strong>1. </strong>From the home page, navigate to System Administration → Configuration → Connectivity → External Language Servers.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="3" />
-            <span><strong>2. </strong>Click Start next to %JDBC Server if the server is not yet started. Click OK and wait for the server to start. Click Done when finished.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
-            <span><strong>3. </strong>Click Start next to %Java Server if the server is not yet started. Click OK and wait for the server to start. Click Done when finished.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
-            <span><strong>4. </strong>Write down the port for the %Java Server entry (you will need this in a later step).</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="6" />
-            <span><strong>5. </strong>Return to the home page.</span>
-          </label>
-
-          <div class="details__content">
-            <p class="muted">Next, we will set up the SQL Gateway in IRIS to connect to your PostgreSQL database.</p>
-          </div>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
-            <span><strong>6. </strong>From the home page, navigate to System Administration → Configuration → Connectivity → SQL Gateway Connections.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="9" />
-            <span><strong>7. </strong>Click Create New Connection.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="10" />
-            <span><strong>8. </strong>Configure the connection as follows:
-              <ul class="bullets">
-                <li>Type of connection: JDBC</li>
-                <li>Connection name: postgresql</li>
-                <li>User: superuser</li>
-                <li>Password: &lt;your superuser password&gt;</li>
-                <li>Driver name: org.postgresql.Driver</li>
-                <li>URL: jdbc:postgresql://localhost:5432/uhtpoc</li>
-                <li>Class path: /usr/share/java/postgresql-42.3.3.jar</li>
-                <li>Click Test Connection to make sure your configuration is valid.</li>
-                <li>Click Save.</li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="20" />
-            <span><strong>9. </strong>Return to the home page.</span>
-          </label>
-
-          <div class="details__content">
-            <p class="muted">We will edit the interoperability production to work with these newly enabled components of IRIS for our PostgreSQL connection.</p>
-          </div>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="22" />
-            <span><strong>10. </strong>Return to the home page. Ensure you are in the <code>UNITY</code> namespace. Then f the home page, navigate to Interoperability → Configure → Production.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="23" />
-            <span><strong>11. </strong>Under Services, click on JavaGatewayService. In the right-side settings panel, configure the following under Basic Settings:
-              <ul class="bullets">
-                <li>Enabled: check</li>
-                <li>External Language Server Name: %Java Server</li>
-                <li>Address: 127.0.0.1 (should be default)</li>
-                <li>Port: &lt;port from step 4 earlier&gt;</li>
-                <li>Click Apply at the top of the panel to save these settings.</li>
-                </ul>
-
-                <details class="hint">
-                  <summary>Hint</summary>
-                  <div class="hint__content">
-                    <img src="../assets/images/exercise1/34-java-gateway.png" alt="Java Gateway config" />
-                  </div>
-                </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="29" />
-            <span><strong>12. </strong>Under Operations, click on PostgreSQLPatient. In the right-side settings panel, configure the following under Basic Settings:
-
-              <ul class="bullets">
-                <li>Enabled: check</li>
-                <li>DSN: postgresql (type this into the text box)</li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="32" />
-            <span><strong>13. </strong>Scroll down and under Connection Settings, configure the following:
-            <ul class="bullets">
-              <li>Java Gateway Service: JavaGatewayService</li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="34" />
-            <span><strong>14. </strong>Scroll down and under Data in the settings, configure the following:
-              <ul class="bullets">
-                <li>Query: <pre><code>INSERT INTO Patient (mrn, first_name, last_name, date_of_birth, gender, phone) VALUES (?, ?, ?, ?, ?, ?)</code></pre></li>
-                <li>RequestClass: uthpoc.Patient</li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="37" />
-            <span><strong>15. </strong>Still in the Data section, we can configure the input parameters as follows:
-            <ul class="bullets">
-              <li>Input Parameters:
-                <ul>
-                  <li>Click the plus icon next to Add.</li>
-                  <li>Click the Table icon (next to the red X).</li>
-                  <li>In the popup, select *mrn from the dropdown.</li>
-                  <li>Click OK.</li>
-                  <li>Repeat steps i-iv for the rest of the parameters in the following order: *firstname, *lastname, *dateofbirth, *gender, *phone</li>
-                </ul>
-              </li>
-              <li>Parameters' SQL data types: 
-                <pre><code>SQL_VARCHAR,SQL_VARCHAR,SQL_VARCHAR,SQL_DATE,SQL_VARCHAR,SQL_VARCHAR</code></pre></li>
-
-                <li>Click Apply at the top of the panel to save these settings.</li>
-            </ul></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="46" />
-            <span><strong>16. </strong>Under Operations, click on PostgreSQLEncounter. In the right-side settings panel, configure the following under Basic Settings:
-            <ul class="bullets">
-              <li>Enabled: check</li>
-              <li>DSN: postgresql</li>
-              <li>All of the other settings should be configured for you. Feel free to verify the SQL query to make sure it is valid for the table you created in PostgreSQL.</li>
-            </ul></span>
-          </label>
-
-          <div class="details__content">
-            <p class="muted">You should have all the components necessary for export to PostgreSQL ready now. Time to test!</p>
-          </div>
-  
-
-          <div class="checklist__actions">
-            <button class="btn" type="button" data-reset-checklist>Reset section</button>
-          </div>
-          
-        </form>
-      </details>
-    </section>
-
     <!-- DATA INGESTION AND VALIDATION -->
     <section id="validate" class="section">
       <div class="section__header">
@@ -877,26 +701,26 @@ target.phone)</code></pre>
         <form class="checklist" data-checklist-id="exercise-1-validate">
 
           <div class="details__content">
-            <p class="muted">In this section, we will feed data through the interoperability production and validate that it has populated our tables.</p>
+            <p class="muted">In this section, we will feed data through the interoperability production and validate that it has populated our FHIR Server and tables. We will start by POSTing the FHIR data and then querying the FHIR Server directly.</p>
           </div>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="1" />
-            <span><strong>1. </strong>At the top of the production page, click Start. Click OK.</span>
+            <span><strong>1. </strong>If the production isn't already started yet, click the <code>Start</code> button on the production configuration page.</span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <!-- TODO: make these folders -->
-            <span><strong>2. </strong>Download these HL7v2 messages: 
+            <span><strong>2. </strong>Download these FHIR Patient resources: 
               <ul>
-                <li>ADT_A01.hl7.txt  <a
-                  href="../assets/downloads/ADT_A01.hl7.txt"
+                <li>FHIR_Patient1.txt  <a
+                  href="../assets/downloads/FHIR_Patient1.txt"
                   download
                   target="_blank"
                   class="btn btn--icon"
-                  aria-label="Download ADT^A01.hl7.txt"
-                  title="Download ADT^A01.hl7.txt"
+                  aria-label="Download FHIR_Patient1.txt"
+                  title="Download FHIR_Patient1.txt"
                 >
                   <img
                     src="../assets/images/download.svg"
@@ -905,13 +729,13 @@ target.phone)</code></pre>
                   />
                 </a></li>
 
-              <li>ADT_A02.hl7.txt  <a
-                href="../assets/downloads/ADT_A02.hl7.txt"
+              <li>FHIR_Patient2.txt  <a
+                href="../assets/downloads/FHIR_Patient2.txt"
                 download
                 target="_blank"
                 class="btn btn--icon"
-                aria-label="Download ADT^A02.hl7.txt"
-                title="Download ADT^A02.hl7.txt"
+                aria-label="Download FHIR_Patient2.txt"
+                title="Download FHIR_Patient2.txt"
               >
                 <img
                   src="../assets/images/download.svg"
@@ -919,13 +743,13 @@ target.phone)</code></pre>
                   aria-hidden="true"
                 />
               </a></li>
-              <li>ADT_A03.hl7.txt <a
-                href="../assets/downloads/ADT_A03.hl7.txt"
+              <li>FHIR_Patient3.txt <a
+                href="../assets/downloads/FHIR_Patient3.txt"
                 download
                 target="_blank"
                 class="btn btn--icon"
-                aria-label="Download ADT^A03.hl7.txt"
-                title="Download ADT^A03.hl7.txt"
+                aria-label="Download FHIR_Patient3.txt"
+                title="Download FHIR_Patient3.txt"
               >
                 <img
                   src="../assets/images/download.svg"
@@ -938,35 +762,53 @@ target.phone)</code></pre>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="3" />
-            <span><strong>3. </strong>Upload these files to your Google VM (in the <code>/home/&lt;USERNAME&gt;</code> directory).</span>
+            <span><strong>3. </strong>Create a new POST request in Postman.</span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4. </strong>From your home directory, copy these files into the <code>/isc/MessageIn/HL7</code> folder, where our interoperability production will ingest the messages:
-              <pre><code>cp ADT_A01.hl7.txt /isc/MessageIn/HL7
-
-cp ADT_A02.hl7.txt /isc/MessageIn/HL7
-
-cp ADT_A03.hl7.txt /isc/MessageIn/HL7</code></pre>
+              <strong>4. </strong>For the URL, enter:
+              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/metadata</code></pre>
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>5. </strong>Click on the Messages tab in the right-side settings panel to see messages that flowed through the production. Click on a Session ID to open a visual trace.
-              
-              <details class="hint">
-                <summary>Output</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/35-messages.png" alt="Messages" />
-                </div>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/36-visual-trace.png" alt="Visual Trace" />
-                </div>
-              </details>
+              <strong>5. </strong> Set the Authorization to <code>Basic Authorization</code>. Enter your IRIS username and password (i.e. SuperUser account).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>6. </strong> In the Headers tab, add the following:
+              <ul class="bullets">
+                <li><strong>Key:</strong> <pre><code>Content-Type</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>application/fhir+json</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>7. </strong> In the body, paste the text from the <code>FHIR_Patient1.txt</code> file you downloaded earlier.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>8. </strong> Run the request. You should see a 201 success code, indicating the resource has been successfully posted to the FHIR Server.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>9. </strong> Repeat steps 1-8 for the other two files downloaded earlier (<code>FHIR_Patient2.txt</code>,<code>FHIR_Patient3.txt</code>).
             </span>
           </label>
 
@@ -978,12 +820,12 @@ cp ADT_A03.hl7.txt /isc/MessageIn/HL7</code></pre>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
-            <span><strong>6. </strong>From the Home page of the Management Portal, navigate to System Explorer → SQL.</span>
+            <span><strong>10. </strong>From the Home page of the Management Portal, navigate to System Explorer → SQL.</span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
-            <span><strong>7. </strong>In the text box at the center of the page, enter the following query: 
+            <span><strong>11. </strong>In the text box at the center of the page, enter the following query: 
               <pre><code>SELECT * FROM uhtpoc.Patient</code></pre></span>
           </label>
 
@@ -991,23 +833,8 @@ cp ADT_A03.hl7.txt /isc/MessageIn/HL7</code></pre>
             <input type="checkbox" data-step="8" />
             <span><strong>8. </strong>Click the Execute button above the query text box.
 
-              You should see that 2 of the 3 patients are now stored in this table (on of them was filtered out by the business rule condition we configured earlier).
+              You should see three new patients that we POSTed through IRIS earlier.
             </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="9" />
-            <span><strong>9. </strong>In the text box at the center of the page, enter the following query: 
-              <pre><code>SELECT * FROM uhtpoc.Encounter</code></pre>
-          </span>
-
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="10" />
-            <span><strong>10. </strong>Click the Execute button above the query text box.
-            
-              You should see that all 3 encounters are in this table.
           </label>
 
           <div class="details__content">
@@ -1016,14 +843,8 @@ cp ADT_A03.hl7.txt /isc/MessageIn/HL7</code></pre>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="12" />
-            <span><strong>11. </strong>In your VM terminal, run: 
+            <span><strong>9. </strong>In your VM terminal, run: 
               <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Patient;"</code></pre></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="13" />
-            <span><strong>12. </strong>In your VM terminal, run: 
-            <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Encounter;"</code></pre></span>
           </label>
 
           <div class="checklist__actions">
