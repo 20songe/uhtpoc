@@ -368,7 +368,7 @@
     <section id="dtl" class="section">
       <div class="section__header">
         <h2>Build a FHIR-to-SQL Data Transformation</h2>
-        <p class="muted">Create a data transformation and a business process for transforming from a FHIR Patient resource into the SQL tables from Exercise 1.</p>
+        <p class="muted">Create a data transformation to extract from a FHIR Patient resource into the SQL tables from Exercise 1.</p>
       </div>
 
       <details class="details details--accent">
@@ -566,87 +566,6 @@ target.phone)</code></pre>
             </span>
           </label>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
-            <span><strong>12.</strong> Create a new business process with the following configuration:
-            <ul class="bullets">
-              <li><strong>Business Process Class: </strong>EnsLib.MsgRouter.RoutingEngine</li>
-              <li><strong>Auto-Create Rule:</strong> Checked</li>
-              <li><strong>New Rule Package: </strong> UNITYPKG.Rule (the parent package might have a slightly different name like UNITY1PKG, depending on your namespace name)</li>
-              <li><strong>Business Process Name: </strong>FHIRRouter</li>
-              <li><strong>Display Category:</strong> Exercise 2</li>
-              <li><strong>Enable Now:</strong> Checked</li>
-              <li>Click <code>OK.</code></li>
-            </ul></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
-            <span><strong>13.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule.</span>
-          </label>
-
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="6" />
-            <span><strong>14.</strong>  Configure a new rule as follows:
-              <ul class="bullets">
-                <li><strong>Name:</strong> FHIRtoSQLPatient</li>
-                <li><strong>Source:</strong> FHIRIn</li>
-                <li><strong>Message Class:</strong> HS.FHIRServer.Interop.Request</li>
-                <li>Click <code>OK.</code></li>
-              </ul>
-            </span>
-          </label>
-
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="7" />
-            <span><strong>15.</strong> Click <code>+condition</code> to add a new condition (for filtering based on message content).</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
-            <span><strong>16.</strong> Double click on the new condition and configure it as follows:
-            <ul class="bullets">
-              <li><strong>Value:</strong> 1</li>
-              <li>Click <code>OK</code>.</li>
-            </ul></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
-            <span><strong>17.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code>.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="9" />
-            <span><strong>18.</strong> Double click the send action and configure as follows:
-            <ul class="bullets">
-              <li><strong>Value:</strong> PostgreSQLPatient</li>
-              <li><strong>Transform:</strong> UNITYPKG.DTL.FHIRtoSQL</li>
-            </ul></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="10" />
-            <span><strong>19.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code> to add a second send action.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="9" />
-            <span><strong>20.</strong> Double click the newest send action and configure as follows:
-            <ul class="bullets">
-              <li><strong>Value:</strong> FHIROut</li>
-              <li><strong>Transform:</strong> &lt;Leave this blank&gt;</li>
-            </ul></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="10" />
-            <span><strong>21.</strong> Click compile.</span>
-          </label>
-          
-
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
@@ -654,7 +573,7 @@ target.phone)</code></pre>
       </details>
     </section>
 
-    <!-- HL7v2 BUSINESS RULES AND ROUTING -->
+    <!-- FHIR BUSINESS RULES AND ROUTING -->
     <section id="routing" class="section">
       <div class="section__header">
         <h2>FHIR Business Rules and Routing</h2>
@@ -662,7 +581,7 @@ target.phone)</code></pre>
       </div>
 
       <details class="details details--accent">
-        <summary>HL7v2 Business Rules and Routing</summary>
+        <summary>FHIR Business Rule and Routing</summary>
         <br/>
 
         <div class="details__content">
@@ -677,236 +596,85 @@ target.phone)</code></pre>
             <span><strong>1.</strong> From the home page, navigate to Interoperability → Configure → Production.</span>
           </label>
 
-          <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
-            <span><strong>2.</strong> We will create a new business service to ingest HL7 files. This simulates an HL7 TCP connection, which is typical for real HL7v2 interoperability productions. Click on the small plus icon next to Services at the top of the production page.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/25-service.png" alt="Create HL7 service" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="6" />
-            <span><strong>4.</strong> In the pop-up, select the HL7 Input tab. Select File. Configure the following:
-            <ul class="bullets">
-              <li>HL7 Service Name: HL7FileIn</li>
-              <li>Display Category: Exercise 1</li>
-              <li>Enable Now: checked</li>
-              <li>HL7 Service Target: Choose From List</li>
-              <li>Target: HL7Router</li>
-              <li>HL7 Schema Category: 2.5.1</li>
-              <li>File Path: /isc/MessageIn/HL7/</li>
-            </ul>
-            
-            Click OK.
-
-            <details class="hint">
-              <summary>Hint</summary>
-              <div class="hint__content">
-                <img src="../assets/images/exercise1/26-business-service-wizard.png" alt="Create HL7 service" />
-              </div>
-            </details>
-          </span>
-          </label>
-
-          <div class="details__content">
-            <p class="muted">
-              Next, we'll edit the business rule to apply the transformations we built to our message.
-            </p>
-          </div>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="14" />
-            <span><strong>4.</strong> Under the Processes section in the center of the production configuration page, click on the existing HL7Router component.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="15" />
-            <span><strong>5.</strong> In the settings panel on the right, scroll to Basic Settings. Click the magnifying glass next to the Business Rule Name setting. This opens the rule editor.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="16" />
-            <span><strong>6.</strong> Double click on the rule. In the pop-up, configure the following:
+            <label class="checklist__item">
+              <input type="checkbox" data-step="4" />
+              <span><strong>2.</strong> Create a new business process with the following configuration:
               <ul class="bullets">
-                <li>Name: HL7toSQLPatient</li>
-                <li>Source: HL7FileIn</li>
-                <li>Schema Category: 2.5.1</li>
-                <li>Document Name: ADT_A01, ADT_A02, ADT_A03</li>
-              </ul>
-
-              Click OK.
-
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/27-rule-config.png" alt="Rule configuration" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="22" />
-            <span><strong>7.</strong> Click on the +condition button to the right of the rule.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/28-condition.png" alt="Condition" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="23" />
-            <span><strong>8.</strong> Double click on the newly added condition item.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/29-condition.png" alt="Condition" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="24" />
-            <span><strong>8.</strong> In the pop-up, set Value to 
-              
-              <pre><code>HL7.{PID:PatientIdentifierList(1).IDNumber} StartsWith "123" </code></pre>
-              
-              Click OK.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/30-edit-expression.png" alt="Condition" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="25" />
-            <span><strong>9.</strong> Click on the <code>then</code> or the <code>actions</code> button inside the rule.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/31-then-action.png" alt="Condition" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="26" />
-            <span><strong>10.</strong> Click on the +send button to the right of the new then action item.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/32-send.png" alt="Condition" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="27" />
-            <span><strong>11.</strong> Double click on the newly added send action.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="28" />
-            <span><strong>12.</strong> In the Edit Send pop-up, configure the following:
+                <li><strong>Business Process Class: </strong>EnsLib.MsgRouter.RoutingEngine</li>
+                <li><strong>Auto-Create Rule:</strong> Checked</li>
+                <li><strong>New Rule Package: </strong> UNITYPKG.Rule (the parent package might have a slightly different name like UNITY1PKG, depending on your namespace name)</li>
+                <li><strong>Business Process Name: </strong>FHIRRouter</li>
+                <li><strong>Display Category:</strong> Exercise 2</li>
+                <li><strong>Enable Now:</strong> Checked</li>
+                <li>Click <code>OK.</code></li>
+              </ul></span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="5" />
+              <span><strong>3.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule.</span>
+            </label>
+  
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="6" />
+              <span><strong>4.</strong>  Configure a new rule as follows:
+                <ul class="bullets">
+                  <li><strong>Name:</strong> FHIRtoSQLPatient</li>
+                  <li><strong>Source:</strong> FHIRIn</li>
+                  <li><strong>Message Class:</strong> HS.FHIRServer.Interop.Request</li>
+                  <li>Click <code>OK.</code></li>
+                </ul>
+              </span>
+            </label>
+  
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="7" />
+              <span><strong>5.</strong> Click <code>+condition</code> to add a new condition (for filtering based on message content).</span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="8" />
+              <span><strong>6.</strong> Double click on the new condition and configure it as follows:
               <ul class="bullets">
-                <li>Target: <pre><code>PostgreSQLPatient</code></pre></li>
-                <li>Transform: <pre><code>UNITYPKG.DTL.ADTtoSQLPatient</code></pre></li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="31" />
-            <span><strong>13.</strong> Click Compile.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="32" />
-            <span><strong>14.</strong> Next, we'll add a second rule to work with the encounter data. Click on the rule and then click on the +rule button.
-            
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/33-rule.png" alt="Condition" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="33" />
-            <span><strong>15.</strong> Double click on the new rule to edit it. In the pop-up, configure the following:
-            <ul class="bullets">
-              <li>Name: HL7toSQLEncounter</li>
-              <li>Source: HL7FileIn</li>
-              <li>Doc Category: 2.5.1</li>
-              <li>Doc Name: ADT_A01, ADT_A02, ADT_A03</li>
-            </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="38" />
-            <span><strong>16.</strong> Click on the +condition button next to the new rule.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="39" />
-            <span><strong>17.</strong> Double click on the new condition to edit it.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="40" />
-            <span><strong>18.</strong> In the Value text box, enter 1. Click OK.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="41" />
-            <span><strong>19.</strong> Click on the <code>then</code> or <code>actions</code> button inside the rule to bring up additional actions we can add. Click the +send to the RIGHT of the new then action item.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="42" />
-            <span><strong>20.</strong> Double click on the newly added send action.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="43" />
-            <span><strong>21.</strong> In the Edit Send pop-up, configure the following:
+                <li><strong>Value:</strong> 1</li>
+                <li>Click <code>OK</code>.</li>
+              </ul></span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="8" />
+              <span><strong>7.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code>.</span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="9" />
+              <span><strong>8.</strong> Double click the send action and configure as follows:
               <ul class="bullets">
-                <li>Target: PostgreSQLEncounter</li>
-                <li>Transform: UNITYPKG.DTL.ADTtoSQLEncounter</li>
-              </ul>
-
-              Click Compile.
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="47" />
-            <span><strong>22.</strong> Compile the transformation.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="47" />
-            <span><strong>23.</strong> Return to the home page.</span>
-          </label>
+                <li><strong>Value:</strong> PostgreSQLPatient</li>
+                <li><strong>Transform:</strong> UNITYPKG.DTL.FHIRtoSQL</li>
+              </ul></span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="10" />
+              <span><strong>9.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code> to add a second send action.</span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="9" />
+              <span><strong>10.</strong> Double click the newest send action and configure as follows:
+              <ul class="bullets">
+                <li><strong>Value:</strong> FHIROut</li>
+                <li><strong>Transform:</strong> &lt;Leave this blank&gt;</li>
+              </ul></span>
+            </label>
+  
+            <label class="checklist__item">
+              <input type="checkbox" data-step="10" />
+              <span><strong>11.</strong> Click compile.</span>
+            </label>
 
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
