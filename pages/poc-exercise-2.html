@@ -274,7 +274,7 @@
               <details class="hint">
                 <summary>Hint</summary>
                 <div class="hint__content">
-                  <img src="../assets/images/exercise2/3-three-bars.png" alt="Edit FHIR Config" />
+                  <img src="../assets/images/exercise2/4-three-bars.png" alt="Edit FHIR Config" />
                 </div>
               </details>
             </span>
@@ -357,8 +357,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>5.</strong> For the URL, enter: 
-              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1 (i.e. csp/healthshare/unity/fhir/r4)&gt;/Patient</code></pre>
+              <strong>5.</strong> Edit the URL by replacing "metadata" with "Patient" (i.e. <code>http://&lt;hostname&gt;/irishealth/csp/healthshare/unity/fhir/r4/Patient</code>)
             </span>
           </label>
 
@@ -366,6 +365,13 @@
             <input type="checkbox" data-step="2" />
             <span>
               <strong>6.</strong> In Postman, navigate to the <code>Authorization</code> tab. Select <code>Basic Auth</code> for the Auth Type. Enter your credentials for logging into IRIS (such as SuperUser).
+              
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise2/5-basic-auth.png" alt="Postman Basic Auth" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -373,6 +379,13 @@
             <input type="checkbox" data-step="2" />
             <span>
               <strong>7.</strong> Run the request. You should see a response saying no Patients are found.
+
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise2/6-fhir-output.png" alt="Postman Basic Auth" />
+                </div>
+              </details>
             </span>
           </label>
 
