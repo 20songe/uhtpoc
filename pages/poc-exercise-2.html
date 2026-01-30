@@ -368,7 +368,7 @@
     <section id="dtl" class="section">
       <div class="section__header">
         <h2>Build a FHIR-to-SQL Data Transformation</h2>
-        <p class="muted">Create a business process and data transformation for transforming from a FHIR Patient resource into the SQL tables from Exercise 1.</p>
+        <p class="muted">Create a data transformation and a business process for transforming from a FHIR Patient resource into the SQL tables from Exercise 1.</p>
       </div>
 
       <details class="details details--accent">
@@ -390,7 +390,7 @@
           <span><strong>2.</strong> In the top left corner, click <code>New.</code> Configure the following:
             <ul class="bullets">
               <li><strong>Package:</strong> UNITYPKG.DTL (this might be different depending on your namespace)</li>
-              <li><strong>Name:</strong> FHIRtoSQLPatient</li>
+              <li><strong>Name:</strong> FHIRtoSQLPatientSubtransform</li>
               <li><strong>Source Type:</strong>
               <ul class="bullets">
                 <li>Click the magnifying glass next to <code>Source Class</code> text box.</li>
@@ -448,7 +448,7 @@
           <span><strong>6.</strong> Create a <code>set</code> action with the following configuration:
             <ul class="bullets">
               <li><strong>Property:</strong> <pre><code>target.dateofbirth</code></pre></li>
-              <li><strong>Value:</strong> <pre><code>source.birthDate</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>$System.SQL.TODATE(source.birthDate,"YYYY-MM-DD")</code></pre></li>
             </ul>
           </code>
           </span>
@@ -499,11 +499,70 @@ target.phone)</code></pre>
           </span>
         </label>
 
-        <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>11.</strong> In the top left corner, click <code>New</code>.
+              <strong>11.</strong> In the top left corner, click <code>New</code>. Configure the following:
+              <ul class="bullets">
+                <li><strong>Package:</strong> UNITYPKG.DTL (this might be different depending on your namespace)</li>
+                <li><strong>Name:</strong> FHIRtoSQL</li>
+                <li><strong>Source Type:</strong>
+                <ul class="bullets">
+                  <li>Click the magnifying glass next to <code>Source Class</code> text box.</li>
+                  <li>In the pop-up, select on the leftmost pane: <code>All Non-System Classes</code></li>
+                  <li>Select: HS → FHIRServer → Interop → Request</li>
+                </ul></li>
+                <li><strong>Target Type:</strong>
+                <ul class="bullets">
+                  <li>Click the magnifying glass next to <code>Target Class</code> text box.</li>
+                  <li>In the pop-up, select on the leftmost pane: <code>Persistent Classes</code></li>
+                  <li>Select: uhtpoc → Patient</li>
+                  </ul>
+                </li>
+  
+                <li>Click <code>OK</code></li>.
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>12.</strong> Create a <code>set</code> action with the following configuration:
+              <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>resourceStream</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>##class(HS.SDA3.QuickStream).%OpenId(source.QuickStreamId)</code></pre></li>
+              </ul>
+            </code>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>13.</strong> Create a <code>set</code> action with the following configuration:
+              <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>resource</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>##class(HS.FHIR.DTL.vR4.Model.Resource.Patient).FromJSON(resourceStream,"vR4")</code></pre></li>
+              </ul>
+            </code>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>14.</strong> Create a <code>subtransform</code> action with the following configuration:
+              <ul class="bullets">
+                <li><strong>Transform Class:</strong> <pre><code>UNITYPKG.DTL.FHIRtoSQLPatientSubtransform</code></pre></li>
+                <li><strong>Source:</strong> <pre><code>resource</code></pre></li>
+                <li><strong>Target:</strong> <pre><code>target</code></pre></li>
+              </ul>
+            </code>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span><strong>15.</strong> Click on <code>Compile</code>.
+            </code>
             </span>
           </label>
 
@@ -529,14 +588,13 @@ target.phone)</code></pre>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
-            <span><strong>14. Configure a new rule as follows:
+            <span><strong>14.</strong>  Configure a new rule as follows:
               <ul class="bullets">
                 <li><strong>Name:</strong> FHIRtoSQLPatient</li>
                 <li><strong>Source:</strong> FHIRIn</li>
                 <li><strong>Message Class:</strong> HS.FHIRServer.Interop.Request</li>
                 <li>Click <code>OK.</code></li>
               </ul>
-            </strong> 
             </span>
           </label>
 
@@ -564,19 +622,30 @@ target.phone)</code></pre>
             <input type="checkbox" data-step="9" />
             <span><strong>18.</strong> Double click the send action and configure as follows:
             <ul class="bullets">
-              <li><strong>Value:</strong> FHIROut</li>
-              <li><strong>Transform:</strong> UNITYPKG.DTL.FHIRtoSQLPatient</li>
+              <li><strong>Value:</strong> PostgreSQLPatient</li>
+              <li><strong>Transform:</strong> UNITYPKG.DTL.FHIRtoSQL</li>
             </ul></span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="10" />
-            <span><strong>19.</strong> Click compile.</span>
+            <span><strong>19.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code> to add a second send action.</span>
           </label>
 
-          <div class="details__content">
-            <p class="muted">Now that we have imported part of the interoperability interface, we will examine the production and create the data transformation for HL7v2 to the Patient SQL table.</p>
-          </div>
+          <label class="checklist__item">
+            <input type="checkbox" data-step="9" />
+            <span><strong>20.</strong> Double click the newest send action and configure as follows:
+            <ul class="bullets">
+              <li><strong>Value:</strong> FHIROut</li>
+              <li><strong>Transform:</strong> &lt;Leave this blank&gt;</li>
+            </ul></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="10" />
+            <span><strong>21.</strong> Click compile.</span>
+          </label>
+          
 
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
@@ -588,8 +657,8 @@ target.phone)</code></pre>
     <!-- HL7v2 BUSINESS RULES AND ROUTING -->
     <section id="routing" class="section">
       <div class="section__header">
-        <h2>HL7v2 Business Rules and Routing</h2>
-        <p class="muted">Configure the HL7 file service and routing rules.</p>
+        <h2>FHIR Business Rules and Routing</h2>
+        <p class="muted">Configure a routing engine and routing rules for the FHIR data.</p>
       </div>
 
       <details class="details details--accent">
