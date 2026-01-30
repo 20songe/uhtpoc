@@ -587,7 +587,7 @@ target.phone)</code></pre>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
-            <span><strong>14.</strong> Create a <code>subtransform</code> action with the following configuration:
+            <span><strong>14.</strong> Create a <code>subtransform</code> action with the following configuration (note that the transform class might be different based on the package you put your DTLs in):
               <ul class="bullets">
                 <li><strong>Transform Class:</strong> <pre><code>UNITYPKG.DTL.FHIRtoSQLPatientSubtransform</code></pre></li>
                 <li><strong>Source:</strong> <pre><code>resource</code></pre></li>
@@ -596,7 +596,7 @@ target.phone)</code></pre>
             </code>
 
             <br/>
-            This applies the first transformation we created to the FHIR resource stored in the resource variable.
+            This applies the first transformation we created to the FHIR resource stored in the <code>resource</code> variable.
             </span>
           </label>
 
@@ -656,10 +656,11 @@ target.phone)</code></pre>
               <span><strong>2b.</strong> Click on FHIRRouter and in the settings panel, scroll to Additional Settings. Configure the following:
               <ul class="bullets">
                 <li><strong>Response From:</strong> FHIROut</li>
-              </ul> </span>
-
+              </ul> 
+            
               <br/>
               This enables the router to return responses that come from this specific downstream operation.
+            </span>
             </label>
   
             <label class="checklist__item">
