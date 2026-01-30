@@ -748,6 +748,16 @@ target.phone)</code></pre>
               <span><strong>12.</strong> Click compile.</span>
             </label>
 
+            <label class="checklist__item">
+              <input type="checkbox" data-step="10" />
+              <span><strong>13.</strong> Return to the Production configuration page for your namespace.</span>
+            </label>
+
+            <label class="checklist__item">
+              <input type="checkbox" data-step="10" />
+              <span><strong>14.</strong> Click on FHIRIn and change the <code>Target Config Name</code> to FHIRRouter. Click Apply to save the setting change.</span>
+            </label>
+
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
@@ -837,7 +847,7 @@ target.phone)</code></pre>
             <input type="checkbox" data-step="4" />
             <span>
               <strong>4. </strong>For the URL, enter:
-              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/metadata</code></pre>
+              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1 (i.e. csp/healthshare/unity/fhir/r4/Patient)&gt;/Patient</code></pre>
             </span>
           </label>
 
@@ -862,7 +872,7 @@ target.phone)</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>7. </strong> In the body, paste the text from the <code>FHIR_Patient1.txt</code> file you downloaded earlier.
+              <strong>7. </strong> In the body (you can choose "raw" and "JSON"), paste the text from the <code>FHIR_Patient1.txt</code> file you downloaded earlier.
             </span>
           </label>
 
@@ -877,6 +887,13 @@ target.phone)</code></pre>
             <input type="checkbox" data-step="4" />
             <span>
               <strong>9. </strong> Repeat steps 1-8 for the other two files downloaded earlier (<code>FHIR_Patient2.txt</code>,<code>FHIR_Patient3.txt</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>10. </strong> Make a GET request to the <code>/Patient</code> endpoint we have been POSTing to. You should get a bundle with three patients.
             </span>
           </label>
 
