@@ -285,16 +285,8 @@
           </form>
       </details>
 
-    </section>
-
-    <section id="test-fhir" class="section">
-      <div class="section__header">
-        <h2>(Optional) Test the New FHIR Endpoint</h2>
-        <p class="muted">We will test our connection to the newly created FHIR endpoint.</p>
-      </div>
-
       <details class="details details--accent">
-        <summary>Test a Connection to the FHIR Endpoint</summary>
+        <summary>(Optional) Test the New FHIR Endpoint</summary>
 
         <div class="details__content">
           <p class="muted">We will practice making FHIR REST calls to the IRIS FHIR Server through Postman.</p>
@@ -304,7 +296,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>1.</strong> On the FHIR Server Management page, copy the URL from your FHIR endpoint's card.
+              <strong>1.</strong> On the FHIR Server Management page, copy the URL from your FHIR endpoint's card (i.e. /csp/healthshare/unity/fhir/r4).
             </span>
           </label>
 
@@ -326,8 +318,9 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>4.</strong> For the URL, enter: <code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/metadata</code>
-
+              <strong>4.</strong> For the URL, enter: <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/metadata</code></pre>
+              
+              <br/>
               Run the request. You should see a capability statement that displays valid interactions and operations for the IRIS FHIR Server.
             </span>
           </label>
@@ -342,7 +335,8 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>6.</strong> For the URL, enter: http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/Patient
+              <strong>6.</strong> For the URL, enter: 
+              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1&gt;/Patient</code></pre>
             </span>
           </label>
 
@@ -364,7 +358,11 @@
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
         </form>
+
+      </details>
+
     </section>
+
 
     <!-- FHIR-to-SQL DATA TRANSFORMATION -->
     <section id="dtl" class="section">
@@ -377,429 +375,208 @@
         <summary>Build a FHIR-to-SQL Data Transformation</summary>
 
         <div class="details__content">
-          <p class="muted">We will practice creating a rule router and data transformation from scratch.</p>
+          <p class="muted">We will practice creating a rule router and data transformation for inbound FHIR data from scratch.</p>
         </div>
+
+        <form class="checklist" data-checklist-id="exercise-2-sql-transformation">
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>1.</strong> From the Home page of the Management Portal, navigate to Interoperability → Build → Data Transformations.
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>2.</strong> In the top left corner, click <code>New.</code> Configure the following:
+            <ul class="bullets">
+              <li><strong>Package:</strong> UNITYPKG.DTL (this might be different depending on your namespace)</li>
+              <li><strong>Name:</strong> FHIRtoSQLPatient</li>
+              <li><strong>Source Type:</strong>
+              <ul class="bullets">
+                <li>Click the magnifying glass next to <code>Source Class</code> text box.</li>
+                <li>In the pop-up, select on the leftmost pane: <code>All Non-System Classes</code></li>
+                <li>Select: HS → FHIR → DTL → vR4 → Model → Resource → Patient</li>
+              </ul></li>
+              <li><strong>Target Type:</strong>
+              <ul class="bullets">
+                <li>Click the magnifing glass next to <code>Target Class</code> text box.</li>
+                <li>In the pop-up, select on the leftmost pane: <code>Persistent Classes</code></li>
+                <li>Select: uhtpoc → Patient</li>
+                </ul>
+              </li>
+
+              <li>Click <code>OK</code></li>.
+            </ul>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>3.</strong> Create a <code>set</code> action with the following configuration:
+            <ul class="bullets">
+              <li><strong>Property:</strong> <pre><code>target.mrn</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>source.identifier.(1).id</code></pre></li>
+            </ul>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>4.</strong> Create a <code>set</code> action with the following configuration:
+            <ul class="bullets">
+              <li><strong>Property:</strong> <pre><code>target.firstname</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>source.name.(1).given.(1)</code></pre></li>
+            </ul>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>5.</strong> Create a <code>set</code> action with the following configuration:
+            <ul class="bullets">
+              <li><strong>Property:</strong> <pre><code>target.lastname</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>source.name.(1).family</code></pre></li>
+            </ul>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>6.</strong> Create a <code>set</code> action with the following configuration:
+            <ul class="bullets">
+              <li><strong>Property:</strong> <pre><code>target.dateofbirth</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>source.birthDate</code></pre></li>
+            </ul>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>7.</strong> Create a <code>set</code> action with the following configuration:
+            <ul class="bullets">
+              <li><strong>Property:</strong> <pre><code>target.gender</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>source.gender</code></pre></li>
+            </ul>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>8.</strong> Create a <code>set</code> action with the following configuration:
+            <ul class="bullets">
+              <li><strong>Property:</strong> <pre><code>target.phone</code></pre></li>
+              <li><strong>Value:</strong> <pre><code>source.contact.(1).telecom.(1).value</code></pre></li>
+            </ul>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>9.</strong> Create a <code>sql</code> action with the following SQL statement:
+            <br/>
+            
+            <pre><code>INSERT INTO uhtpoc.Patient 
+(mrn, first_name, last_name, date_of_birth, gender, phone) 
+VALUES (target.mrn, 
+target.firstname, 
+target.lastname, 
+target.dateofbirth, 
+target.gender, 
+target.phone)</code></pre>
+          </code>
+          </span>
+        </label>
+
+        <label class="checklist__item">
+          <input type="checkbox" data-step="6" />
+          <span><strong>10.</strong> Click <code>Compile</code>.
+          </span>
+        </label>
 
         <form class="checklist" data-checklist-id="exercise-1-sql-transformation">
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>1.</strong> Download the production export here: exercise1-export.xml
-          
-              <a
-                href="../assets/downloads/exercise1-export.xml"
-                download
-                target="_blank"
-                class="btn btn--icon"
-                aria-label="Download exercise1-export.xml"
-                title="Download exercise1-export.xml"
-              >
-                <img
-                  src="../assets/images/download.svg"
-                  alt=""
-                  aria-hidden="true"
-                />
-              </a>
+              <strong>11.</strong> In the top left corner, click <code>New</code>.
             </span>
           </label>
-          
-          
 
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
-            <span><strong>2.</strong> From the Management Portal home page, navigate to Interoperability → Manage → Deployment Change → Deploy.</span>
+            <span><strong>12.</strong> Create a new business process with the following configuration:
+            <ul class="bullets">
+              <li><strong>Business Process Class: </strong>EnsLib.MsgRouter.RoutingEngine</li>
+              <li><strong>Auto-Create Rule:</strong> Checked</li>
+              <li><strong>New Rule Package: </strong> UNITYPKG.Rule (the parent package might have a slightly different name like UNITY1PKG, depending on your namespace name)</li>
+              <li><strong>Business Process Name: </strong>FHIRRouter</li>
+              <li><strong>Display Category:</strong> Exercise 2</li>
+              <li><strong>Enable Now:</strong> Checked</li>
+              <li>Click <code>OK.</code></li>
+            </ul></span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
-            <span><strong>3.</strong> At the top of the page, click Open Local Deployment.</span>
+            <span><strong>13.</strong> Click on your new message router. From the settings panel (Basic Settings), click the magnifying glass next to the <code>Business Rule Name</code> configuration to open the auto-created business rule.</span>
           </label>
 
 
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
-            <span><strong>4.</strong> Use the file explorer to find and select the <code>exercise1-export.xml</code> file you downloaded in the first step.
+            <span><strong>14. Configure a new rule as follows:
+              <ul class="bullets">
+                <li><strong>Name:</strong> FHIRtoSQLPatient</li>
+                <li><strong>Source:</strong> FHIRIn</li>
+                <li><strong>Message Class:</strong> HS.FHIRServer.Interop.Request</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </strong> 
             </span>
           </label>
 
 
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
-            <span><strong>5.</strong> Under Select Target, verify that the selected target production is UNITYPKG.FoundationProduction.</span>
+            <span><strong>15.</strong> Click <code>+condition</code> to add a new condition (for filtering based on message content).</span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
-            <span><strong>6.</strong> At the top of the page, click Deploy. A pop-up will ask you to confirm this action. Click <code>OK</code>.</span>
+            <span><strong>16.</strong> Double click on the new condition and configure it as follows:
+            <ul class="bullets">
+              <li><strong>Value:</strong> 1</li>
+              <li>Click <code>OK</code>.</li>
+            </ul></span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="8" />
-            <span><strong>7.</strong> Optionally, you can click the refresh button on the top right of the page to monitor progress.</span>
+            <span><strong>17.</strong> Click on <code>then</code> or <code>actions</code>. Then select <code>+send</code>.</span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="9" />
-            <span><strong>8.</strong> Return to the home page.</span>
+            <span><strong>18.</strong> Double click the send action and configure as follows:
+            <ul class="bullets">
+              <li><strong>Value:</strong> FHIROut</li>
+              <li><strong>Transform:</strong> UNITYPKG.DTL.FHIRtoSQLPatient</li>
+            </ul></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="10" />
+            <span><strong>19.</strong> Click compile.</span>
           </label>
 
           <div class="details__content">
             <p class="muted">Now that we have imported part of the interoperability interface, we will examine the production and create the data transformation for HL7v2 to the Patient SQL table.</p>
           </div>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="10" />
-            <span><strong>9.</strong> Navigate to Interoperability → Configure → Production.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="11" />
-            <span><strong>10.</strong> Verify that there is an HL7 message router in the Processes column of your interoperability production.
-            
-              <details class="hint">
-                <summary>Output</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/15-production.png" alt="Production page" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="12" />
-            <span><strong>11.</strong> Return to the Management Portal home page.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="13" />
-            <span><strong>12.</strong> Navigate to Interoperability → Build → Data Transformations.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="14" />
-            <span><strong>13.</strong> In the top left corner, click Open.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/16-open-dtl.png" alt="Open DTL" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="15" />
-            <span><strong>14.</strong> Select the data transformation we just imported at UNITYPKG → DTL → ADTtoSQLPatient. Click <code>OK</code>.
-              
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/17-open-dtl.png" alt="Open DTL" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="16" />
-            <span><strong>15.</strong> First, we'll edit an existing action. Click on the last action item in the list at the bottom of the page (this should be a set action with Property of <code>target.mrn</code> and Value of <code>source.{PID:PatientIdentifierList(1).IDNumber}</code>).
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/18-set.png" alt="Edit set" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="17" />
-            <span><strong>16.</strong> The configuration for this action is in the panel on the right side of the screen. Click the magnifying glass next to the Value field.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/19-edit-set.png" alt="Edit set" />
-                </div>
-              </details>
-            
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="18" />
-            <span><strong>17.</strong> In the pop-up, select <code>ToUpper()</code> from the Function dropdown. Click OK.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/20-utility.png" alt="Utility function" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="20" />
-            <span><strong>18.</strong> Click Compile at the top of the page to save and compile the data transformation. You can also click Save to save the transformation without compiling. Remember to save/compile throughout the build process.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="21" />
-            <span><strong>19.</strong> To add a new set action, click the Add Action dropdown at the top of the page and select set.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="22" />
-            <span><strong>20.</strong> Double click dateofbirth on the right side under uhtpoc.Patient (target message). Notice that this fills the Property field of the configuration panel on the right side of the screen.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/21-double-click.png" alt="Drag and drop" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="23" />
-            <span><strong>22.</strong> In the settings panel on the right, copy-paste the following into the Value field: 
-              <pre><code>$System.SQL.TODATE(source.{PID:DateTimeofBirth.Time},"YYYYMMDD")</code></pre>
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/22-value.png" alt="Drag and drop" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="24" />
-            <span><strong>23.</strong> Click the Add Action dropdown at the top of the page and select set. In the settings panel on the right, copy-paste in the following configurations:
-              <ul class="bullets">
-                <li>Property: <pre><code>target.gender</code></pre></li>
-                <li>Value: <pre><code>source.{PID:AdministrativeSex}</code></pre></li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="27" />
-            <span><strong>24.</strong> Examine the graphical representation of the transformation. There should be new lines connecting the source and target messages for the date of birth and gender fields.
-            
-              <details class="hint">
-                <summary>Output</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/23-lines.png" alt="Drag and drop" />
-                </div>
-              </details>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="28" />
-            <span><strong>25.</strong> Next, we will add some conditional branching logic. From the Add Action dropdown, select the if action.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="29" />
-            <span><strong>26.</strong> In settings panel on the right, configure the following:
-              <ul class="bullets">
-                <li>Condition: <pre><code>source.{PID:PhoneNumberHome(1).TelephoneNumber}</code></pre></li>
-                </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="31" />
-            <span><strong>27.</strong> From the Add Action dropdown, select set. Configure the following in the settings panel:
-              <ul class="bullets">
-                <li>Property: <pre><code>target.phone</code></pre></li>
-                <li>Value: <pre><code>source.{PID:PhoneNumberHome(1).TelephoneNumber}</code></pre></li>
-                </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="34" />
-            <span><strong>28.</strong> In the actions list at the bottom of the page, click on the else item.
-            
-              <details class="hint">
-                <summary>Hint</summary>
-                <div class="hint__content">
-                  <img src="../assets/images/exercise1/24-else.png" alt="Drag and drop" />
-                </div>
-              </details></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="35" />
-            <span><strong>29.</strong> From the Add Action dropdown, select set. Configure the following in the settings panel:
-              <ul class="bullets">
-                <li>Property: <pre><code>target.phone</code></li>
-                <li>Value: <pre><code>source.{PID:PhoneNumberBusiness(1).TelephoneNumber}</code></pre></li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="38" />
-            <span><strong>30.</strong> In the actions list at the bottom of the page, click on the endif item to insert a new action below it.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="39" />
-            <span><strong>31.</strong> From the Add Action dropdown, select sql. Copy-paste the following query into the SQL text box: 
-            <pre><code>INSERT INTO uhtpoc.Patient (mrn,
-first_name,
-last_name,
-date_of_birth,
-gender, phone)
-VALUES (target.mrn, 
-  target.firstname,
-  target.lastname,
-  target.dateofbirth,
-  target.gender,
-  target.phone)</code></pre></span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="40" />
-            <span><strong>32.</strong> Click Compile to save and compile the transformation.</span>
-          </label>
-
-          <div class="details__content">
-            <p class="muted">We also have another data transformation from HL7 ADTs to an encounter table. </p>
-              
-             <p>You can choose to download this file and import the transformation (the same way you imported Encounter.cls): <a
-              href="../assets/downloads/encounter-dtl.xml"
-              download
-              target="_blank"
-              class="btn btn--icon"
-              aria-label="Download encounter-dtl.xml"
-              title="Download encounter-dtl.xml"
-            >
-              <img
-                src="../assets/images/download.svg"
-                alt=""
-                aria-hidden="true"
-              />
-            </a></p> 
-              
-              <p>You can also OPTIONALLY build it out yourself as a bonus exercise (see steps below).</p>
-            </p>
-          </div>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="42" />
-            <span><strong>33.</strong> Click New in the top left corner.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="43" />
-            <span><strong>34.</strong> In the Data Transformation Wizard pop-up, configure the following:
-              <ul class="bullets">
-                <li>Package: UNITYPKG.DTL</li>
-                <li>Name: ADTtoSQLEncounter</li>
-                <li>Source Type:
-                  <div>
-                    <ul class="bullets">
-                      <li>Select HL7.</li>
-                      <li>Click the magnifying glass next to the Source Document Type box.</li>
-                      <li>In the pop-up, select 2.5.1 → ADT_A01 (for our purposes, this should also allow the transformation to work for ADT_A02 and ADT_A03 messages).</li>
-                    </ul>
-                  </div>
-                </li>
-                <li>Target Class:
-                  <div>
-                    <ul class="bullets">
-                      <li>Select All Messages.</li>
-                      <li>Click the magnifying glass next to the Target Class text box.</li>
-                      <li>In the pop-up, select Persistent Classes from the left-most panel.</li>
-                      <li>Select uhtpoc → Encounter.</li>
-                    </ul>
-                  </div>
-                </li>
-                <li>Click OK.</li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="56" />
-            <span><strong>35.</strong> The new transformation should now be pulled up in the data transformation editor.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="57" />
-            <span><strong>36.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
-            <ul class="bullets">
-              <li>Property: <pre><code>target.mrn</code></pre></li>
-              <li>Value: <pre><code>source.{PID:PatientIdentifierList(1).IDNumber}</code></pre></li>
-            </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="60" />
-            <span><strong>37.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
-              <ul class="bullets">
-                <li>Property: <pre><code>target.date</code></pre></li>
-                <li>Value: <pre><code>$System.SQL.TODATE(source.{EVN:RecordedDateTime.Time},"YYYYMMDD")</code></pre></li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="63" />
-            <span><strong>38.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
-              <ul class="bullets">
-                <li>Property: <pre><code>target.encounterNum</code></pre></li>
-                <li>Value: <pre><code>source.{PV1:VisitNumber.IDNumber}</code></pre></li>
-              </ul>
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="66" />
-            <span><strong>38.</strong> From the Add Action dropdown, select the set action. Configure as follows in the right-side panel:
-              <ul class="bullets">
-                <li>Property: <pre><code>target.encounterType</code></pre></li>
-                <li>Value: <pre><code>source.{PV1:PatientClass}</code></pre></li>
-              </ul>
-            </span>
-          </label>
-
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="69" />
-            <span><strong>39.</strong> From the Add Action dropdown, select the sql action. Enter the following SQL statement into the configuration panel:
-              <pre><code>INSERT INTO uhtpoc.Encounter (mrn,
-date,
-encounterNum,
-encounterType) VALUES (target.mrn,
-  target.date,
-  target.encounterNum,
-  target.encounterType)</code></pre>
-</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="70" />
-            <span><strong>40.</strong> Click Compile.</span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="70" />
-            <span><strong>41.</strong> Return to the Management Portal home page.</span>
-          </label>
-
-          <div class="details__content">
-            <p class="muted">
-              Congrats on completing the data transformations for this exercise! 
-              </p></div>
 
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
