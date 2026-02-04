@@ -230,7 +230,17 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-                <strong>5.</strong> Create a <code>set</code> action with the following configuration:       
+                <strong>5.</strong> Create an <code>if</code> action. Click on the new <code>if</code> action at the bottom of the screen (this should be the second action in your list) and configure the following:       
+                <ul class="bullets">
+                <li><strong>Condition:</strong> <pre><code>target.data'=""</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+                <strong>6.</strong> With the <code>if</code> action still selected, create a <code>set</code> action with the following configuration:       
                 <ul class="bullets">
                 <li><strong>Property:</strong> <pre><code>target.date</code></pre></li>
                 <li><strong>Value:</strong> <pre><code>$System.SQL.TODATE(source.EnteredOn, "YYYY-MM-DD")</code></pre></li>
@@ -239,9 +249,20 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="6" />
+            <input type="checkbox" data-step="7" />
             <span>
-                <strong>6.</strong> Create a <code>set</code> action with the following configuration:       
+                <strong>7.</strong> Click on the <code>else</code> action (should be the fourth action in your list at the bottom of the screen). Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.date</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>$System.SQL.TODATE(source.FromTime, "YYYY-MM-DD")</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+                <strong>8.</strong> Click on the <code>endif</code> action (should be the seventh action in your list at the bottom of the screen). Create a <code>set</code> action with the following configuration:       
                 <ul class="bullets">
                 <li><strong>Property:</strong> <pre><code>target.encounterNum</code></pre></li>
                 <li><strong>Value:</strong> <pre><code>source.EncounterNumber</code></pre></li>
@@ -250,9 +271,9 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="7" />
+            <input type="checkbox" data-step="9" />
             <span>
-                <strong>7.</strong> Create a <code>set</code> action with the following configuration:       
+                <strong>9.</strong> Create a <code>set</code> action with the following configuration:       
                 <ul class="bullets">
                 <li><strong>Property:</strong> <pre><code>target.encounterType</code></pre></li>
                 <li><strong>Value:</strong> <pre><code>source.EncounterType</code></pre></li>
@@ -261,9 +282,9 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
+            <input type="checkbox" data-step="10" />
             <span>
-                <strong>8.</strong> Create a <code>sql</code> action with the following configuration:       
+                <strong>10.</strong> Create a <code>sql</code> action with the following configuration:       
                 <ul class="bullets">
                 <li><strong>SQL:</strong> <pre><code>INSERT INTO uhtpoc.Encounter (mrn, date, encounterNum, encounterType) VALUES 
 (target.mrn, target.date, target.encounterNum, target.encounterType)</code></pre></li>
@@ -272,9 +293,9 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="9" />
+            <input type="checkbox" data-step="11" />
             <span>
-                <strong>9.</strong> Click <code>Compile.</code>
+                <strong>11.</strong> Click <code>Compile.</code>
             </span>
           </label>
 
