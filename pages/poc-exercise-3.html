@@ -926,14 +926,21 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="1" />
             <span>
-              <strong>1.</strong> Add a new business process and configure as follows (in the All Processes tab):
+              <strong>1.</strong> Navigate to our production (Interoperability → Configure → Production). Add a new business process and configure as follows (in the All Processes tab):
               <ul class="bullets">
                 <li><strong>Business Process Class:</strong> UNITYPKG.Process.MasterRouter</li>
                 <li><strong>Business Process Name:</strong> MasterRouter</li>
-                <li><strong>Display Category:</strong> Exercise 3</li>
-                <li><strong>Enabled:</strong> checked</li>
+                <li><strong>Display Category:</strong> Exercise 3 (you will need to type this in)</li>
+                <li><strong>Enable Now:</strong> checked</li>
                 <li>Click <code>OK.</code></li>
               </ul>
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise3/16-master-router.png" alt="Create master router" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -945,7 +952,7 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
                 <li><strong>Business Process Name:</strong> UNITYPKG.Process.SDAtoSQLProcess</li>
                 <li><strong>Business Process Name:</strong> SDAToSQLProcess</li>
                 <li><strong>Display Category:</strong> Exercise 3</li>
-                <li><strong>Enabled:</strong> checked</li>
+                <li><strong>Enable Now:</strong> checked</li>
                 <li>Click <code>OK.</code></li>
               </ul>
             </span>
@@ -999,7 +1006,7 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
                 <li><strong>Service Class:</strong> EnsLib.EDI.XML.Service.FileService</li>
                 <li><strong>Service Name:</strong> CDAFileIn</li>
                 <li><strong>Display Category:</strong> Exercise 3</li>
-                <li><strong>Enabled:</strong> checked</li>
+                <li><strong>Enable Now:</strong> checked</li>
                 <li>Click <code>OK.</code></li>
               </ul>
             </span>
@@ -1010,7 +1017,7 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
             <span>
               <strong>2.</strong> Click on the new <code>CDAFileIn</code> service and configure the following (under Basic Settings):
               <ul class="bullets">
-                <li><strong>File Path:</strong> /isc/MessageIn/CCDA/</li>
+                <li><strong>File Path:</strong> <pre><code>/isc/MessageIn/CCDA/</code></pre></li>
                 <li><strong>Target Config Names:</strong> MasterRouter</li>
                 <li>Click <code>OK.</code></li>
               </ul>
