@@ -726,13 +726,13 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
             <!-- TODO: make these folders -->
             <span><strong>2. </strong>Download this data for exercise 3: 
               <ul>
-                <li>FHIR_Patient1.txt  <a
-                  href="../assets/downloads/FHIR_Patient1.txt"
+                <li>exercise3_ADT^A01.hl7.txt  <a
+                  href="../assets/downloads/exercise3/exercise3_ADT^A01.hl7.txt"
                   download
                   target="_blank"
                   class="btn btn--icon"
-                  aria-label="Download FHIR_Patient1.txt"
-                  title="Download FHIR_Patient1.txt"
+                  aria-label="Download exercise3_ADT^A01.hl7.txt"
+                  title="Download exercise3_ADT^A01.hl7.txt"
                 >
                   <img
                     src="../assets/images/download.svg"
@@ -741,36 +741,73 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
                   />
                 </a></li>
 
-              <li>FHIR_Patient2.txt  <a
-                href="../assets/downloads/FHIR_Patient2.txt"
-                download
-                target="_blank"
-                class="btn btn--icon"
-                aria-label="Download FHIR_Patient2.txt"
-                title="Download FHIR_Patient2.txt"
-              >
-                <img
-                  src="../assets/images/download.svg"
-                  alt=""
-                  aria-hidden="true"
-                />
-              </a></li>
-              <li>FHIR_Patient3.txt <a
-                href="../assets/downloads/FHIR_Patient3.txt"
-                download
-                target="_blank"
-                class="btn btn--icon"
-                aria-label="Download FHIR_Patient3.txt"
-                title="Download FHIR_Patient3.txt"
-              >
-                <img
-                  src="../assets/images/download.svg"
-                  alt=""
-                  aria-hidden="true"
-                />
-              </a></li>
+                <li>exercise3_ADT^A02.hl7.txt  <a
+                  href="../assets/downloads/exercise3/exercise3_ADT^A02.hl7.txt"
+                  download
+                  target="_blank"
+                  class="btn btn--icon"
+                  aria-label="Download exercise3_ADT^A02.hl7.txt"
+                  title="Download exercise3_ADT^A02.hl7.txt"
+                >
+                  <img
+                    src="../assets/images/download.svg"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </a></li>
+
+                <li>exercise3_ADT^A03.hl7.txt  <a
+                  href="../assets/downloads/exercise3/exercise3_ADT^A03.hl7.txt"
+                  download
+                  target="_blank"
+                  class="btn btn--icon"
+                  aria-label="Download exercise3_ADT^A03.hl7.txt"
+                  title="Download exercise3_ADT^A03.hl7.txt"
+                >
+                  <img
+                    src="../assets/images/download.svg"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </a></li>
+
+                <li>CCDA.xml<a
+                  href="../assets/downloads/exercise3/CCDA.xml"
+                  download
+                  target="_blank"
+                  class="btn btn--icon"
+                  aria-label="Download CCDA.xml"
+                  title="Download CCDA.xml"
+                >
+                  <img
+                    src="../assets/images/download.svg"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </a></li>
+
+                <li>FHIR_Bundle.txt<a
+                  href="../assets/downloads/exercise3/FHIR_Bundle.txt"
+                  download
+                  target="_blank"
+                  class="btn btn--icon"
+                  aria-label="Download FHIR_Bundle.txt"
+                  title="Download FHIR_Bundle.txt"
+                >
+                  <img
+                    src="../assets/images/download.svg"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </a></li>
               </ul></span>
           </label>
+
+          <div class="details__content">
+            <p class="muted">
+              We will start by ingesting FHIR data via REST.
+            </p>
+          </div>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="3" />
@@ -780,20 +817,20 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4. </strong>For the URL, enter:
-              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1 (i.e. csp/healthshare/unity/fhir/r4/Patient)&gt;/Patient</code></pre>
+              <strong>4. </strong>For the URL, enter your FHIR endpoint, for example:
+              <pre><code>http://&lt;hostname&gt;/irishealth/csp/healthshare/unity/fhir/r4</code></pre>
             </span>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
+            <input type="checkbox" data-step="5" />
             <span>
               <strong>5. </strong> Set the Authorization to <code>Basic Authorization</code>. Enter your IRIS username and password (i.e. SuperUser account).
             </span>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
+            <input type="checkbox" data-step="6" />
             <span>
               <strong>6. </strong> In the Headers tab, add the following:
               <ul class="bullets">
@@ -804,32 +841,48 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
+            <input type="checkbox" data-step="7" />
             <span>
-              <strong>7. </strong> In the body (you can choose "raw" and "JSON"), paste the text from the <code>FHIR_Patient1.txt</code> file you downloaded earlier.
+              <strong>7. </strong> In the body (you can choose "raw" and "JSON"), paste the text from the <code>FHIR_Bundle.txt</code> file you downloaded earlier.
             </span>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
+            <input type="checkbox" data-step="8" />
             <span>
               <strong>8. </strong> Run the request. You should see a 201 success code, indicating the resource has been successfully posted to the FHIR Server.
             </span>
           </label>
 
+          <div class="details__content">
+            <p class="muted">
+              We will now use file drops to ingest the HL7v2 messages and the CCDA document.
+            </p>
+          </div>
+
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
+            <input type="checkbox" data-step="9" />
             <span>
-              <strong>9. </strong> Repeat steps 1-8 for the other two files downloaded earlier (<code>FHIR_Patient2.txt</code>,<code>FHIR_Patient3.txt</code>).
+              <strong>9. </strong> Upload the HL7 ADT messages and CCDA XML document that we downloaded early to the Google VM.
             </span>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="4" />
+            <input type="checkbox" data-step="10" />
             <span>
-              <strong>10. </strong> Make a GET request to the <code>/Patient</code> endpoint we have been POSTing to. You should get a bundle with three patients.
+              <strong>10. </strong> Copy the HL7 ADT messages to the <code>/isc/MessageIn/HL7/</code> directory:
+              <pre><code>sudo cp ~/exercise3_*.hl7.txt /isc/MessageIn/HL7</code></pre>
             </span>
           </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="11" />
+            <span>
+              <strong>11. </strong> Copy the CCDA document to the <code>/isc/MessageIn/CCDA/</code> directory:
+              <pre><code>sudo cp ~/CCDA.xml /isc/MessageIn/CCDA</code></pre>
+            </span>
+          </label>
+
 
           <div class="details__content">
             <p class="muted">
@@ -838,21 +891,19 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </div>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
-            <span><strong>10. </strong>From the Home page of the Management Portal, navigate to System Explorer → SQL.</span>
+            <input type="checkbox" data-step="12" />
+            <span><strong>12. </strong>From the Home page of the Management Portal, navigate to System Explorer → SQL.</span>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="7" />
-            <span><strong>11. </strong>In the text box at the center of the page, enter the following query: 
+            <input type="checkbox" data-step="13" />
+            <span><strong>13. </strong>In the text box at the center of the page, enter the following query: 
               <pre><code>SELECT * FROM uhtpoc.Patient</code></pre></span>
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
-            <span><strong>8. </strong>Click the Execute button above the query text box.
-
-              You should see three new patients that we POSTed through IRIS earlier.
+            <input type="checkbox" data-step="14" />
+            <span><strong>14. </strong>Click the Execute button above the query text box.
             </span>
           </label>
 
@@ -861,9 +912,15 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           </div>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="12" />
-            <span><strong>9. </strong>In your VM terminal, run to view the new patient entries: 
+            <input type="checkbox" data-step="15" />
+            <span><strong>15. </strong>In your VM terminal, run to view the new patient entries: 
               <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Patient;"</code></pre></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="16" />
+            <span><strong>16. </strong>In your VM terminal, run to view the new encounter entries: 
+              <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Encounter;"</code></pre></span>
           </label>
 
           <div class="checklist__actions">
