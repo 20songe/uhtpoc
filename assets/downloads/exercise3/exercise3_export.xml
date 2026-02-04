@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for Windows (x86-64) 2025.1 (Build 223U)" ts="2026-02-03 22:32:20">
+<Class name="UNITYPKG.Process.MasterRouter">
+<Super>Ens.BusinessProcess</Super>
+<TimeChanged>67604,79922.8709469</TimeChanged>
+<TimeCreated>67603,72850.2709289</TimeCreated>
+
+<UDLText name="T">
+<Content><![CDATA[
+// This business process takes in FHIR Bundles, CDA Documents, and HL7v2 Messages and transforms them into SDA
+
+]]></Content>
+</UDLText>
+
+<UDLText name="T">
+<Content><![CDATA[
+// custom setting: downstream target for this business process
+
+]]></Content>
+</UDLText>
+
+<Property name="TargetConfigName">
+<Type>%String</Type>
+</Property>
+
+<UDLText name="T">
+<Content><![CDATA[
+// custom setting: send data as stream
+
+]]></Content>
+</UDLText>
+
+<Property name="SendAsStream">
+<Type>%Boolean</Type>
+</Property>
+
+<Parameter name="SETTINGS">
+<Default><![CDATA[TargetConfigName:Basic:selector?multiSelect=1&context={Ens.ContextSearch/ProductionItems?targets=1&productionName=@productionId},SendAsStream:Basic]]></Default>
+</Parameter>
+
+<Method name="OnRequest">
+<FormalSpec>request:Ens.Request,*response:Ens.Response</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    // NOTE: this function is required to be implemented. It is called when this business process receives a request. 
+
+    Set status = $$$OK
+
+    // conditional logic based on inbound message type
+    if (request.%ClassName(1) = "HS.FHIRServer.Interop.Request") {
+        // CASE: inbound request was a FHIR bundle
+        Set fhirBundle = ##class(HS.SDA3.QuickStream).%OpenId(request.QuickStreamId)
+
+        // transform from FHIR to SDA internal data model
+        Set FHIRToSDATransform = ##class(HS.FHIR.DTL.Util.API.Transform.FHIRToSDA3).TransformStream(fhirBundle, "R4", "JSON")
+        Set status = FHIRToSDATransform.object.XMLExportToStream(.sdaStream)
+        // create placeholder response for FHIR Service
+        Set response = ##class(HS.FHIRServer.Interop.Response).%New()
+        Set response.HSCoreVersion = 8.2
+        Set response.Response.Status = 201
+    }
+    elseif (request.%ClassName(1) = "EnsLib.EDI.XML.Document") {
+        // CASE: inbound request was a CDA document
+        // create transformer object and apply XSLT transformation to transform CCDA into SDA stream
+        Set transformer = ##class(HS.Util.XSLTTransformer).%New()
+        Set cdaStream = ##class(%Stream.GlobalCharacter).%New()
+        Set status = request.XMLExportToStream(.cdaStream)
+        // TODO: Call the /SDA3/CCDAv21-to-SDA.xsl XSLT
+
+    }
+    elseif (request.%ClassName(1) = "EnsLib.HL7.Message") {
+        // CASE: inbound request was an HL7 message
+        // TODO: Call the HL7 to SDA3 transformation
+
+    }
+
+    // convert SDA from stream to output message (either XML message or stream container)
+    Set status = ..SDAStreamToOutputMessage(sdaStream, .outputMessage)
+
+    // TODO: Send output message to downstream target
+	
+    If 'response {
+        Set response = tResponse
+    }   
+    
+    Return status
+]]></Implementation>
+</Method>
+
+<Method name="SDAStreamToOutputMessage">
+<FormalSpec>sdaStream:%Stream.Object,*outputMessage:Ens.Request</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    // NOTE: This helper function takes in a Stream containing the intermediate data model XML and converts it to 
+    //       either an XML message or a stream container. These output message types include functions that are important
+    //       for properly passing them through an interoperability production and displaying them in the Visual Trace.
+    Set status = $$$OK
+    If (..SendAsStream) {
+        // send SDA as stream
+        Set outputMessage = ##class(Ens.StreamContainer).%New()
+        Set status = outputMessage.StreamSet(sdaStream)
+    } Else {
+        // send SDA as XML message
+        Set outputMessage = ##class(HS.Message.XMLMessage).%New()
+        Set outputMessage.ContentStream = ##class(%Stream.GlobalCharacter).%New()
+        Set status = outputMessage.ContentStream.CopyFrom(sdaStream)
+    }
+
+    Return status
+]]></Implementation>
+</Method>
+
+<Method name="OnResponse">
+<FormalSpec>request:%Library.Persistent,*response:%Library.Persistent</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    // NOTE: This function is required to be implemented. It is called in response to asynchronous requests sent on OnRequest.
+    // In this case, we only use synchronous calls, so we just return a success status
+    Return $$$OK
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DefaultData>MasterRouterDefaultData</DefaultData>
+<Data name="MasterRouterDefaultData">
+<Subscript>"MasterRouter"</Subscript>
+<Value name="1">
+<Value>HL7TargetConfigName</Value>
+</Value>
+<Value name="2">
+<Value>CDATargetConfigName</Value>
+</Value>
+<Value name="3">
+<Value>FHIRTargetConfigName</Value>
+</Value>
+<Value name="4">
+<Value>SendAsStream</Value>
+</Value>
+<Value name="5">
+<Value>TargetConfigName</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="UNITYPKG.Process.SDA3toSQLProcess">
+<Super>Ens.BusinessProcess</Super>
+<TimeChanged>67604,80601.7228305</TimeChanged>
+<TimeCreated>67604,56599.5355599</TimeCreated>
+
+<Property name="PatientTransformationClass">
+<Type>%String</Type>
+</Property>
+
+<Property name="PatientTargetConfigName">
+<Type>%String</Type>
+</Property>
+
+<Property name="EncounterTransformationClass">
+<Type>%String</Type>
+</Property>
+
+<Property name="EncounterTargetConfigName">
+<Type>%String</Type>
+</Property>
+
+<Parameter name="SETTINGS">
+<Default><![CDATA[PatientTransformationClass:Basic:dtlSelector,PatientTargetConfigName:Basic:selector?multiSelect=1&context={Ens.ContextSearch/ProductionItems?targets=1&productionName=@productionId},EncounterTransformationClass:Basic:dtlSelector,EncounterTargetConfigName:Basic:selector?multiSelect=1&context={Ens.ContextSearch/ProductionItems?targets=1&productionName=@productionId}]]></Default>
+</Parameter>
+
+<Method name="OnRequest">
+<FormalSpec>request:HS.Message.XMLMessage,*response:Ens.Response</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    Set status = $$$OK
+
+    // extract XMLMessage as SDA3 Container and loop through the elements (such as Patient, Encounter, etc.)
+    set sda3 = ##class(HS.SDA3.Container).%New()
+    do sda3.InitializeXMLParse(request.ContentStream)
+    // initalize Patient MRN to be used in encounter transformations
+    Set patientmrn = ""
+    while sda3.GetNextSDA(.type, .obj) {
+        // type is the SDA section type, such as "Patient" or "Encounter"
+        // object is the actual SDA section represented as an XML object
+        If type = "Patient" {
+            // TODO: Use the Transform method of the PatientTransformationClass setting
+			
+            If obj.PatientNumbers {
+                Set patientmrn = obj.PatientNumbers.GetAt(1).Number
+            }
+            
+            If sc {
+                // TODO: Send the output from our SDA to SQL Patient transformation to the downstream target
+                
+            }
+
+        } Elseif type = "Encounter" {
+            // initialize variable with patient MRN to pass into encounter transformation
+            Set var(1) = patientmrn
+            // TODO: Use the Transform method of the EncounterTransformationClass setting
+            Set sc = $CLASSMETHOD(..EncounterTransformationClass, "Transform", obj, .target, .var)
+            If sc {
+                // TODO: Send the output from our SDA to SQL Encounter transformation to the downstream target
+				
+            }
+        }
+    }
+
+    Return status
+]]></Implementation>
+</Method>
+
+<Method name="OnResponse">
+<FormalSpec>request:%Library.Persistent,*response:%Library.Persistent</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+        // NOTE: This function is required to be implemented. It is called in response to asynchronous requests sent on OnRequest.
+        // In this case, we only use synchronous calls, so we just return a success status
+        Return $$$OK
+]]></Implementation>
+</Method>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DefaultData>SDA3toSQLProcessDefaultData</DefaultData>
+<Data name="SDA3toSQLProcessDefaultData">
+<Subscript>"SDA3toSQLProcess"</Subscript>
+<Value name="1">
+<Value>PatientTargetConfigName</Value>
+</Value>
+<Value name="2">
+<Value>EncounterTargetConfigName</Value>
+</Value>
+<Value name="3">
+<Value>PatientTransformationClass</Value>
+</Value>
+<Value name="4">
+<Value>EncounterTransformationClass</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+</Export>
