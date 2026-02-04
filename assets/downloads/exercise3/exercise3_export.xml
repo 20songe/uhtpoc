@@ -200,7 +200,7 @@
             // initialize variable with patient MRN to pass into encounter transformation
             Set var(1) = patientmrn
             // TODO: Use the Transform method of the EncounterTransformationClass setting
-            Set sc = $CLASSMETHOD(..EncounterTransformationClass, "Transform", obj, .target, .var)
+            
             If sc {
                 // TODO: Send the output from our SDA to SQL Encounter transformation to the downstream target
 				
