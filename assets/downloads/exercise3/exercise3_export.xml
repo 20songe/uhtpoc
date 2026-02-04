@@ -103,6 +103,20 @@
         // send SDA as XML message
         Set outputMessage = ##class(HS.Message.XMLMessage).%New()
         Set outputMessage.ContentStream = ##class(%Stream.GlobalCharacter).%New()
+        
+        // remove extra XML declarations
+        set tempStream = sdaStream.Read(sdaStream.Size)
+        ; If it starts with an XML declaration, drop it
+        if $extract(tempStream,1,5)="<?xml" {
+            set index = $FIND(tempStream, "?>")
+            if index>0 {
+                set tempStream = $extract(tempStream, index, *)
+            }
+        }
+        do sdaStream.Clear()
+        do sdaStream.Write(tempStream)
+        do sdaStream.Rewind()
+
         Set status = outputMessage.ContentStream.CopyFrom(sdaStream)
     }
 
