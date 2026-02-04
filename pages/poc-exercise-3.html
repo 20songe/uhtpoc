@@ -468,15 +468,25 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
                 <strong>5.</strong> Create a <code>set</code> action with the following configuration:       
                 <ul class="bullets">
                 <li><strong>Property:</strong> <pre><code>target.gender</code></pre></li>
-                <li><strong>Value:</strong> Click the magnifying glass next to the <code>Value</code> text box and configure the following in the pop-up wizard.
+                <li><strong>Value:</strong> Click the magnifying glass next to the <code>Value</code> text box and configure the following in the pop-up wizard:
                 <ul class="bullets">
                   <li><strong>Function:</strong> Lookup()</li>
                   <li><strong>table:</strong> Gender</li>
                   <li><strong>value:</strong> <pre><code>source.Gender.Code</code></pre></li>
-                  <li><strong>default:</strong> "Unknown"</li>
+                  <li><strong>default:</strong> <pre><code>"Unknown"</code></pre></li>
                   <li>Click <code>OK.</code></li>
                 </ul></li>
               </ul>
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise3/8-dtl.png" alt="Lookup" />
+                </div>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise3/9-lookup-config.png" alt="Lookup" />
+                </div>
+              </details>
             </span>
           </label>
 
