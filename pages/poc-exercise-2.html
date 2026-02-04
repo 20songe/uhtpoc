@@ -74,7 +74,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="3" />
             <span>
-              <strong>1.</strong> Install Postman on your local machine (outside of the Google VM).</code></pre>
+              <strong>1.</strong> Install Postman on your local machine (outside of the Google VM).
             </span>
           </label>
 
@@ -452,7 +452,6 @@
               <li><strong>Property:</strong> <pre><code>target.mrn</code></pre></li>
               <li><strong>Value:</strong> <pre><code>source.identifier.(1).value</code></pre></li>
             </ul>
-          </code>
           </span>
         </label>
 
@@ -463,7 +462,6 @@
               <li><strong>Property:</strong> <pre><code>target.firstname</code></pre></li>
               <li><strong>Value:</strong> <pre><code>source.name.(1).given.(1)</code></pre></li>
             </ul>
-          </code>
           </span>
         </label>
 
@@ -474,7 +472,6 @@
               <li><strong>Property:</strong> <pre><code>target.lastname</code></pre></li>
               <li><strong>Value:</strong> <pre><code>source.name.(1).family</code></pre></li>
             </ul>
-          </code>
           </span>
         </label>
 
@@ -485,7 +482,6 @@
               <li><strong>Property:</strong> <pre><code>target.dateofbirth</code></pre></li>
               <li><strong>Value:</strong> <pre><code>$System.SQL.TODATE(source.birthDate,"YYYY-MM-DD")</code></pre></li>
             </ul>
-          </code>
           </span>
         </label>
 
@@ -496,7 +492,6 @@
               <li><strong>Property:</strong> <pre><code>target.gender</code></pre></li>
               <li><strong>Value:</strong> <pre><code>source.gender</code></pre></li>
             </ul>
-          </code>
           </span>
         </label>
 
@@ -507,7 +502,6 @@
               <li><strong>Property:</strong> <pre><code>target.phone</code></pre></li>
               <li><strong>Value:</strong> <pre><code>source.telecom.(1).value</code></pre></li>
             </ul>
-          </code>
           </span>
         </label>
 
@@ -524,7 +518,6 @@ target.lastname,
 target.dateofbirth, 
 target.gender, 
 target.phone)</code></pre>
-          </code>
           </span>
         </label>
 
@@ -581,7 +574,6 @@ target.phone)</code></pre>
                 <li><strong>Property:</strong> <pre><code>resource</code></pre></li>
                 <li><strong>Value:</strong> <pre><code>##class(HS.FHIR.DTL.vR4.Model.Resource.Patient).FromJSON(resourceStream,"vR4")</code></pre></li>
               </ul>
-            </code>
             </span>
           </label>
 
@@ -593,7 +585,6 @@ target.phone)</code></pre>
                 <li><strong>Source:</strong> <pre><code>resource</code></pre></li>
                 <li><strong>Target:</strong> <pre><code>target</code></pre></li>
               </ul>
-            </code>
 
             <br/>
             This applies the first transformation we created to the FHIR resource stored in the <code>resource</code> variable.
@@ -942,7 +933,7 @@ target.phone)</code></pre>
 
   <footer class="footer">
     <div class="container footer__inner">
-      <span class="muted">Exercise 1</span>
+      <span class="muted">Exercise 2</span>
       <span class="muted">Progress saved locally</span>
     </div>
   </footer>

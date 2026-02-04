@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exercise 3 Guide</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <img class="brand__mark" src="../assets/images/logo.svg" alt="POC Hub"/>
+        <div class="brand__text">
+          <div class="brand__title">POC Hub</div>
+          <div class="brand__subtitle">InterSystems IRIS for Health • Exercise 3</div>
+        </div>
+      </div>
+
+      <nav class="quicklinks" aria-label="Quick links">
+        <a class="chip" href="../index.html">Back to Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO (matches installation guide structure) -->
+    <section class="hero">
+      <h1>POC Exercise 3: Intermediate Data Model Transformation Pipeline</h1>
+      <p>
+        Use the instructions on this page to complete the exercise. The checklists can track progress (saved in browser).
+      </p>
+    </section>
+
+    <!-- OVERVIEW / SUCCESS -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Exercise Overview</h2>
+        <p class="muted">Unity Health Toronto is seeking to transform HL7v2 messages, FHIR resources, and CDA documents into SQL tables quickly and efficiently.</p>
+        <br/>
+        <p class="muted">In this exercise, we will demonstrate how we can leverage InterSystems’ internal data model, Summary Document Architecture (SDA), and pre-built transformations to build a pipeline transforming HL7v2, FHIR, and CDA into a relational table via an intermediate data model. This exercise will demonstrate the simplicity an intermediate data model provides for transforming from multiple healthcare data standards into a single tabular output.</p>
+        <br/>
+      </div>
+
+      <details class="details details--accent" >
+        <summary>Measures of Success</summary>
+        <div class="details__content">
+          <ul class="bullets">
+            <li>Successful ingestion of all three healthcare data standards</li>
+            <li>Successful transformation of this healthcare data into SDA and then a SQL table</li>
+            <li>Successful access to the tabular data</li>
+          </ul>
+          <p class="muted" style="margin-top:10px;">
+            Validation of this success will be accomplished using tools available through IRIS (Visual Trace, SQL Engine) and an external SQL database (PostgreSQL).
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <!-- PRE-REQUISITES -->
+    <section id="prereqs" class="section">
+      <div class="section__header">
+        <h2>Pre-requisites</h2>
+        <p class="muted">Complete these prerequisites before building the interoperability pipeline.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Pre-requisites</summary>
+        <br/>
+
+        <form class="checklist" data-checklist-id="exercise-1-prereqs">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> In VS Code, connect to your IRIS for Health Instance and navigate to the uhtpoc.Encounter and uhtpoc.Patient classes. Make sure they both extend:
+              <pre><code>(%Persistent, %XML.Adaptor)</code></pre>
+
+              This will display your custom classes nicely in the Visual Trace and allow you to run tests on individual data transformations (we will see this in later optional, but highly recommended sections).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Create the following directory in your Google VM:
+              <pre><code>sudo mkdir -p /isc/MessageIn/CCDA
+sudo chown -R &lt;USER&gt;:irisusr /isc/MessageIn/
+sudo chmod -R 775 /isc/MessageIn/</code></pre>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+
+    </section>
+
+    <!-- Create Data Transformations -->
+    <section id="transformation" class="section">
+      <div class="section__header">
+        <h2>Intermediate Data Model Transformation</h2>
+        <p class="muted">Build transformations from the internal data model, Summary Document Architecture (SDA), to our custom Encounter and Patient classes. This allows us to build a single transformation from SDA to our downstream data formats, rather than point-to-point transformations from HL7v2, FHIR, and CDA into the custom data formats.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Create Gender Lookup Table</summary>
+
+        <div class="details__content">
+          <p class="muted">We will create a lookup table for converting codes into specified values. This lookup table will be used in a later data transformation (for the encounter data).</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-lookup-table">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> From the homepage of the Management Portal, select your namespace (i.e. <code>UNITY</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Navigate to Interoperability → Configure → Data Lookup Tables.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Click <code>New</code> at the top of the screen to create a new lookup table.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> In the pop-up, configure the following:
+              <ul class="bullets">
+                <li><strong>New lookup table name:</strong> Gender</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> On the right-side panel, configure the following (this means that when we encounter the code "M" for gender, the lookup table will allow us to change that value to "Male"):
+              <ul class="bullets">
+                <li><strong>Key:</strong> M</li>
+                <li><strong>Value:</strong> Male</li>
+                <li>Click Apply. You should see a new entry appear in your table at the center of the screen.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> On the right-side panel, delete the previously entered text and re-configure as follows:
+              <ul class="bullets">
+                <li><strong>Key:</strong> F</li>
+                <li><strong>Value:</strong> Female</li>
+                <li>Click Apply. This should add a new entry to your table.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> At the top of the screen, click <code>Save</code> to save your new lookup table entries.
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>Build Encounter Data Transformation</summary>
+
+        <div class="details__content">
+          <p class="muted">We will transform from an SDA encounter to the custom encounter class. </p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-encounter-transformation">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> From the homepage of the Management Portal, select your namespace (i.e. <code>UNITY</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Navigate to Interoperability → Build → Data Transformations.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Create a new data transformation and configure as follows:
+              <ul class="bullets">
+                <li><strong>Package:</strong> UNITYPKG.DTL</li>
+                <li><strong>Name:</strong> SDAEncounterToSQLEncounter</li>
+                <li><strong>Source Type:</strong> <pre><code>HS.SDA3.Encounter</code></pre></li>
+                <li><strong>Target Type:</strong> <pre><code>uhtpoc.Encounter</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Create a <code>set</code> action with the following configuration (the "aux" variable will be used later to pass additional variables into this data transformation from another class that is calling this transformation):
+              <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.mrn</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>aux(1)</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+                <strong>5.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.date</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>$System.SQL.TODATE(source.EnteredOn, "YYYY-MM-DD")</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+                <strong>6.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.encounterNum</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>source.EncounterNumber</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+                <strong>7.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.encounterType</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>source.EncounterType</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+                <strong>8.</strong> Create a <code>sql</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>SQL:</strong> <pre><code>INSERT INTO uhtpoc.Encounter (mrn, date, encounterNum, encounterType) VALUES 
+(target.mrn, target.date, target.encounterNum, target.encounterType)</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="9" />
+            <span>
+                <strong>9.</strong> Click <code>Compile.</code>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>Build Patient Data Transformation</summary>
+
+        <div class="details__content">
+          <p class="muted">We will transform from an SDA Patient to the custom patient class. </p>
+        </div>
+
+        <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Create a new data transformation and configure as follows:
+              <ul class="bullets">
+                <li><strong>Package:</strong> UNITYPKG.DTL</li>
+                <li><strong>Name:</strong> SDAPatientToSQLPatient</li>
+                <li><strong>Source Type:</strong> <pre><code>HS.SDA3.Patient</code></pre></li>
+                <li><strong>Target Type:</strong> <pre><code>uhtpoc.Patient</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+                <strong>2.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.mrn</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>source.PatientNumbers.(1).Number</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+                <strong>3.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.firstname</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>source.Name.GivenName</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+                <strong>4.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.lastname</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>source.Name.FamilyName</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+                <strong>5.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.dateofbirth</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>$System.SQL.TODATE(source.BirthTime,"YYYY-MM-DD")</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+                <strong>5.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.gender</code></pre></li>
+                <li><strong>Value:</strong> Click the magnifying glass next to the <code>Value</code> text box and configure the following in the pop-up wizard.
+                <ul class="bullets">
+                  <li><strong>Function:</strong> Lookup()</li>
+                  <li><strong>table:</strong> Gender</li>
+                  <li><strong>value:</strong> <pre><code>source.Gender.Code</code></pre></li>
+                  <li><strong>default:</strong> "Unknown"</li>
+                  <li>Click <code>OK.</code></li>
+                </ul></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+                <strong>6.</strong> Create a <code>set</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>Property:</strong> <pre><code>target.phone</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>source.ContactInfo.HomePhoneNumber</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+                <strong>7.</strong> Create a <code>sql</code> action with the following configuration:       
+                <ul class="bullets">
+                <li><strong>SQL:</strong> <pre><code>INSERT INTO uhtpoc.Patient (mrn, first_name, last_name, date_of_birth, gender, phone) VALUES 
+(target.mrn, target.firstname, target.lastname, target.dateofbirth, target.gender, target.phone)</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+                <strong>8.</strong> Click <code>Compile.</code>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>(Optional) Test Patient Data Transformation</summary>
+        <div class="details__content">
+          <p class="muted">We will use the built-in testing tool to test our patient data transformation.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-optional-dtl-test">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> On the right-side panel, at the top, click on the <code>Tools</code> tab.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Click <code>Test.</code>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> In the Test Transform pop-up, replace the default input message with the following message:
+<pre>
+  <code>
+    &lt;test&gt;
+    &lt;Patient&gt;
+    &lt;Name&gt;
+    &lt;FamilyName&gt;Kamp&lt;/FamilyName&gt;
+    &lt;GivenName&gt;David&lt;/GivenName&gt;
+    &lt;Type&gt;Legal&lt;/Type&gt;
+    &lt;/Name&gt;
+    &lt;Gender&gt;
+    &lt;SDACodingStandard&gt;AdministrativeGender&lt;/SDACodingStandard&gt;
+    &lt;Code&gt;M&lt;/Code&gt;
+    &lt;Description&gt;Male&lt;/Description&gt;
+    &lt;/Gender&gt;
+    &lt;MaritalStatus&gt;
+    &lt;Code&gt;Widowed&lt;/Code&gt;
+    &lt;Description&gt;Widowed&lt;/Description&gt;
+    &lt;/MaritalStatus&gt;
+    &lt;Races&gt;
+    &lt;Race&gt;
+    &lt;Code&gt;White&lt;/Code&gt;
+    &lt;Description&gt;White&lt;/Description&gt;
+    &lt;/Race&gt;
+    &lt;/Races&gt;
+    &lt;BirthTime&gt;1975-01-15T05:00:00&lt;/BirthTime&gt;
+    &lt;PatientNumbers&gt;
+    &lt;PatientNumber&gt;
+    &lt;Number&gt;100000001&lt;/Number&gt;
+    &lt;Organization&gt;
+    &lt;Code&gt;1.3.6.1.4.1.21367.2010.1.2.300&lt;/Code&gt;
+    &lt;Description&gt;1.3.6.1.4.1.21367.2010.1.2.300&lt;/Description&gt;
+    &lt;/Organization&gt;
+    &lt;NumberType&gt;MRN&lt;/NumberType&gt;
+    &lt;/PatientNumber&gt;
+    &lt;/PatientNumbers&gt;
+    &lt;Addresses&gt;
+    &lt;Address&gt;
+    &lt;Street&gt;2936 State Avenue&lt;/Street&gt;
+    &lt;City&gt;
+    &lt;Code&gt;Manchester&lt;/Code&gt;
+    &lt;/City&gt;
+    &lt;State&gt;
+    &lt;Code&gt;CT&lt;/Code&gt;
+    &lt;/State&gt;
+    &lt;Zip&gt;
+    &lt;Code&gt;06040&lt;/Code&gt;
+    &lt;/Zip&gt;
+    &lt;Country&gt;
+    &lt;Code&gt;US&lt;/Code&gt;
+    &lt;/Country&gt;
+    &lt;/Address&gt;
+    &lt;/Addresses&gt;
+    &lt;EnteredOn&gt;2026-01-22T00:48:48-05:00&lt;/EnteredOn&gt;
+    &lt;/Patient&gt;
+    &lt;/test&gt;
+
+  </code>
+</pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> At the top of the pop-up click <code>Test.</code> You should see your custom patient object rendered as an XML in the Output Message section.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> When you are done exploring the testing utility, click <code>Close.</code>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+        </details>
+    </section>
+
+    <!-- Import Business Processes -->
+    <section id="business-processes" class="section">
+      <div class="section__header">
+        <h2>Build Business Process Classes</h2>
+        <p class="muted">Build out business processes that call out-of-the-box transformations to convert from HL7v2, FHIR, and CDA into our intermediate data model (SDA). We will also focus on leveraging VS Code for more flexible integration pipeline development.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Import Classes</summary>
+
+        <div class="details__content">
+          <p class="muted">We will import partially built business process classes.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-import-business-processes">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Download this export, which contains partially completed business process classes. 
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>Complete Business Process Classes</summary>
+
+        <div class="details__content">
+          <p class="muted">We will leverage out-of-the-box transformations to complete our HL7v2-to-SDA and CDA-to-SDA transformations.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-complete-bp-classes">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> 
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+    </section>
+
+    <!-- COMPLETE INTEROPERABILITY PIPELINE -->
+    <section id="interop-pipeline" class="section">
+      <div class="section__header">
+        <h2>Complete Interoperability Production</h2>
+        <p class="muted">Incorporate our business processes and reconfigure our production to leverage these processes to transform from various healthcare data standards to SQL tables via our intermediate data model, SDA.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Add Business Processes to Interoperability Production</summary>
+
+        <div class="details__content">
+          <p class="muted">We will add new business processes to our interoperability production.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-add-bp-interop-production">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Add a new business process and configure as follows (in the All Processes tab):
+              <ul class="bullets">
+                <li><strong>Business Process Class:</strong> UNITYPKG.Process.MasterRouter</li>
+                <li><strong>Business Process Name:</strong> MasterRouter</li>
+                <li><strong>Display Category:</strong> Exercise 3</li>
+                <li><strong>Enabled:</strong> checked</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Add a new business process and configure as follows (in the All Processes tab):
+              <ul class="bullets">
+                <li><strong>Business Process Name:</strong> UNITYPKG.Process.SDAtoSQLProcess</li>
+                <li><strong>Business Process Name:</strong> SDAToSQLProcess</li>
+                <li><strong>Display Category:</strong> Exercise 3</li>
+                <li><strong>Enabled:</strong> checked</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Click on the newly created <code>MasterRouter</code> process. In the right-side panel, configure as follows:
+              <ul class="bullets">
+                <li><strong>Target Config Name:</strong> SDAToSQLProcess</li>
+                <li>Click <code>Apply.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Click on the newly created <code>SDAToSQLProcess</code> process. In the right-side panel, configure as follows:
+              <ul class="bullets">
+                <li><strong>PatientTransformationClass:</strong> UNITYPKG.DTL.SDAPatientToSQLPatient</li>
+                <li><strong>PatientTargetConfigName:</strong> PostgreSQLPatient</li>
+                <li><strong>EncounterTransformationClass:</strong> UNITYPKG.DTL.SDAEncounterToSQLEncounter</li>
+                <li><strong>EncounterTargetConfigName:</strong> PostgreSQLEncounter</li>
+                <li>Click <code>Apply.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+
+      <details class="details details--accent">
+        <summary>Add/Reconfigure Relevant Business Services</summary>
+
+        <div class="details__content">
+          <p class="muted">We will add new business services and reconfigure existing ones to feed our new business processes.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-add-bp-interop-production">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Add a new business service and configure as follows (in the All Processes tab):
+              <ul class="bullets">
+                <li><strong>Service Class:</strong> EnsLib.EDI.XML.Service.FileService</li>
+                <li><strong>Service Name:</strong> CDAFileIn</li>
+                <li><strong>Display Category:</strong> Exercise 3</li>
+                <li><strong>Enabled:</strong> checked</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Click on the new <code>CDAFileIn</code> service and configure the following (under Basic Settings):
+              <ul class="bullets">
+                <li><strong>File Path:</strong> /isc/MessageIn/CCDA/</li>
+                <li><strong>Target Config Names:</strong> MasterRouter</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Click on the existing <code>FHIRIn</code> service and configure the following (under Basic Settings):
+              <ul class="bullets">
+                <li><strong>Target Config Name:</strong> MasterRouter (replace FHIRRouter)</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Click on the existing <code>HL7FileIn</code> service and configure the following (under Basic Settings):
+              <ul class="bullets">
+                <li><strong>Target Config Names:</strong> MasterRouter (replace HL7Router)</li>
+                <li>Click <code>OK.</code></li>
+              </ul>
+            </span>
+          </label>
+
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+    </section>
+
+
+    <!-- DATA INGESTION AND VALIDATION -->
+    <section id="validate" class="section">
+      <div class="section__header">
+        <h2>Data Ingestion and Validation</h2>
+        <p class="muted">Feed data through the production and validate IRIS + PostgreSQL tables.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Data Ingestion and Validation</summary>
+        <br/>
+
+        <form class="checklist" data-checklist-id="exercise-1-validate">
+
+          <div class="details__content">
+            <p class="muted">In this section, we will feed three types of healthcare data (HL7v2, FHIR, CDA) through the interoperability production and validate that it has populated our SQL tables.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span><strong>1. </strong>If the production isn't already started yet, click the <code>Start</code> button on the production configuration page.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <!-- TODO: make these folders -->
+            <span><strong>2. </strong>Download this data for exercise 3: 
+              <ul>
+                <li>FHIR_Patient1.txt  <a
+                  href="../assets/downloads/FHIR_Patient1.txt"
+                  download
+                  target="_blank"
+                  class="btn btn--icon"
+                  aria-label="Download FHIR_Patient1.txt"
+                  title="Download FHIR_Patient1.txt"
+                >
+                  <img
+                    src="../assets/images/download.svg"
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </a></li>
+
+              <li>FHIR_Patient2.txt  <a
+                href="../assets/downloads/FHIR_Patient2.txt"
+                download
+                target="_blank"
+                class="btn btn--icon"
+                aria-label="Download FHIR_Patient2.txt"
+                title="Download FHIR_Patient2.txt"
+              >
+                <img
+                  src="../assets/images/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a></li>
+              <li>FHIR_Patient3.txt <a
+                href="../assets/downloads/FHIR_Patient3.txt"
+                download
+                target="_blank"
+                class="btn btn--icon"
+                aria-label="Download FHIR_Patient3.txt"
+                title="Download FHIR_Patient3.txt"
+              >
+                <img
+                  src="../assets/images/download.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </a></li>
+              </ul></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span><strong>3. </strong>Create a new POST request in Postman.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4. </strong>For the URL, enter:
+              <pre><code>http://&lt;hostname&gt;/irishealth/&lt;URL copied in step 1 (i.e. csp/healthshare/unity/fhir/r4/Patient)&gt;/Patient</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>5. </strong> Set the Authorization to <code>Basic Authorization</code>. Enter your IRIS username and password (i.e. SuperUser account).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>6. </strong> In the Headers tab, add the following:
+              <ul class="bullets">
+                <li><strong>Key:</strong> <pre><code>Content-Type</code></pre></li>
+                <li><strong>Value:</strong> <pre><code>application/fhir+json</code></pre></li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>7. </strong> In the body (you can choose "raw" and "JSON"), paste the text from the <code>FHIR_Patient1.txt</code> file you downloaded earlier.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>8. </strong> Run the request. You should see a 201 success code, indicating the resource has been successfully posted to the FHIR Server.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>9. </strong> Repeat steps 1-8 for the other two files downloaded earlier (<code>FHIR_Patient2.txt</code>,<code>FHIR_Patient3.txt</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>10. </strong> Make a GET request to the <code>/Patient</code> endpoint we have been POSTing to. You should get a bundle with three patients.
+            </span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">
+              We will validate successful data ingestion by querying the data through a built-in SQL engine in IRIS. This will surface data stored in InterSystems IRIS's embedded database.
+            </p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span><strong>10. </strong>From the Home page of the Management Portal, navigate to System Explorer → SQL.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span><strong>11. </strong>In the text box at the center of the page, enter the following query: 
+              <pre><code>SELECT * FROM uhtpoc.Patient</code></pre></span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span><strong>8. </strong>Click the Execute button above the query text box.
+
+              You should see three new patients that we POSTed through IRIS earlier.
+            </span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">Next, we will connect to the external PostgreSQL database to query this data outside of IRIS.</p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="12" />
+            <span><strong>9. </strong>In your VM terminal, run to view the new patient entries: 
+              <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Patient;"</code></pre></span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">Exercise 3</span>
+      <span class="muted">Progress saved locally</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
