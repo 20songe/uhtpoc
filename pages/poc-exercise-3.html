@@ -73,46 +73,71 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="1" />
             <span>
-              <strong>1.</strong> In VS Code, connect to your IRIS for Health Instance and navigate to the uhtpoc.Encounter and uhtpoc.Patient classes. Make sure they both extend:
-              <pre><code>(%Persistent, %XML.Adaptor)</code></pre>
-
-              This will display your custom classes nicely in the Visual Trace and allow you to run tests on individual data transformations (we will see this in later optional, but highly recommended sections).
+              <strong>1.</strong> Click on the gear icon in the lower left-hand corner of VS Code. Select <code>Settings</code>.
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>2.</strong> Click on the gear icon in the lower left-hand corner of VS Code. Select <code>Settings</code>.
+              <strong>2.</strong> Search for "compile".
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="3" />
             <span>
-              <strong>3.</strong> Search for "compile".
+              <strong>3.</strong> Make sure the <strong>ObjectScript: Compile Flags</strong> setting is set to:
+              <pre><code>cukd</code></pre>
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4.</strong> Make sure the <strong>ObjectScript: Compile Flags</strong> setting is set to:
-              <pre><code>cukd</code></pre>
+              <strong>4.</strong> Make sure the <strong>ObjectScript: Compile On Save</strong> setting is checked.
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-              <strong>5.</strong> Make sure the <strong>ObjectScript: Compile On Save</strong> setting is checked.
+              <strong>5.</strong> In VS Code, connect to your IRIS for Health Instance and navigate to the uhtpoc.Encounter and uhtpoc.Patient classes. Make sure they both extend:
+              <pre><code>(%Persistent, %XML.Adaptor)</code></pre>
+
+              Save the file (<code>CTRL+S</code>) to automatically re-compile these classes.
+
+              This will display your custom classes nicely in the Visual Trace and allow you to run tests on individual data transformations (we will see this in later optional, but highly recommended sections).
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <p class="muted">
+                    See Exercise 1: (Optional) View SQL Tables as Object Classes in VS Code for more detailed instruction.
+
+                    To connect to IRIS via VS Code, click on the InterSystems logo on the left-side panel. Select your IRIS instance from the <code>All Servers</code> dropdown to connect (enter your IRIS for Health password when prompted).
+                  Click on the pencil icon next to your chosen namespace. Click on the top <code>Explorer</code> icon on the left-side panel to view the namespace as a directory in your workspace.</p>
+                  <img src="../assets/images/exercise3/1-vs-code.png" alt="Connect VS Code" />
+                </div>
+              </details>
+
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <p class="muted">
+                    Header for the Patient class.
+                    </p>
+                  <img src="../assets/images/exercise3/2-vs-code.png" alt="Edit class" />
+                </div>
+              </details>
             </span>
           </label>
 
+
           <label class="checklist__item">
-            <input type="checkbox" data-step="2" />
+            <input type="checkbox" data-step="6" />
             <span>
-              <strong>2.</strong> Create the following directory in your Google VM:
+              <strong>6.</strong> Create the following directory in your Google VM:
               <pre><code>sudo mkdir -p /isc/MessageIn/CCDA
 sudo chown -R &lt;USER&gt;:irisusr /isc/MessageIn/
 sudo chmod -R 775 /isc/MessageIn/</code></pre>
