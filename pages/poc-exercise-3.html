@@ -786,8 +786,8 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
               The parameters for the <code>Transform</code> function above are:
               <ul class="bullets">
                 <li><strong>pInput:</strong> the stream containing CDA data to transform (<code>cdaStream</code> above)</li>
-                <li><strong>pLocation:</strong> the relative filepath to your XSLT transformation (<code>"/SDA3/CCDAv21-to-SDA.xsl"</code>)</li>
-                <li><strong>pOutput:</strong> the stream to write the output SDA into, by reference (<code>.sdaStream</code>)</li>
+                <li><strong>pLocation:</strong> the relative filepath to your XSLT transformation (<code>"/SDA3/CCDAv21-to-SDA.xsl"</code> above)</li>
+                <li><strong>pOutput:</strong> the stream to write the output SDA into, by reference (<code>.sdaStream</code> above)</li>
               </ul>
             </span>
           </label>
@@ -803,7 +803,7 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
               The parameters for the <code>GetSDA</code> function above are:
               <ul class="bullets">
                 <li><strong>pRequest:</strong> the input HL7 message (<code>request</code> above)</li>
-                <li><strong>pXML:</strong> the stream to write the output SDA into, by reference (<code>.sdaStream</code>)</li>
+                <li><strong>pXML:</strong> the stream to write the output SDA into, by reference (<code>.sdaStream</code> above)</li>
               </ul>
             </span>
           </label>
@@ -819,8 +819,8 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
               The parameters for the <code>SendRequestSync</code> function above are:
               <ul class="bullets">
                 <li><strong>pTargetDispatchName:</strong> the downstream production component to send the message to (<code>..TargetConfigName</code> above)</li>
-                <li><strong>pRequest:</strong> the message to send (<code>outputMessage</code>)</li>
-                <li><strong>pResponse:</strong> the response returned by the downstream production component, by reference (<code>.tResponse</code>)</li>
+                <li><strong>pRequest:</strong> the message to send (<code>outputMessage</code> above)</li>
+                <li><strong>pResponse:</strong> the response returned by the downstream production component, by reference (<code>.tResponse</code> above)</li>
                 <li><strong>pTimeout</strong> timeout in seconds (<code>10</code> above)</li>
               </ul>
             </span>
