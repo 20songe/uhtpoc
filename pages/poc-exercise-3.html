@@ -599,14 +599,42 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
         <summary>Complete Business Process Classes</summary>
 
         <div class="details__content">
-          <p class="muted">We will leverage out-of-the-box transformations to complete our HL7v2-to-SDA and CDA-to-SDA transformations.</p>
+          <p class="muted">We will leverage out-of-the-box transformations to complete our HL7v2-to-SDA, CDA-to-SDA, and FHIR-to-SDA transformations within our business processes.</p>
         </div>
 
         <form class="checklist" data-checklist-id="exercise-3-complete-bp-classes">
           <label class="checklist__item">
             <input type="checkbox" data-step="1" />
             <span>
-              <strong>1.</strong> 
+              <strong>1.</strong> In VS Code, connect to your IRIS for Health Instance (refer to optional exercise in Exercise 1 for instructions on using VS Code with IRIS).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> In the Namespaces dropdown, select <code>UNITY</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>3.</strong> Navigate to your workspace (where your open directories are displayed).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Open <code>UNITYPKG.Process.MasterRouter.cls</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Open <code>UNITYPKG.Process.MasterRouter.cls</code>.
             </span>
           </label>
 
@@ -979,6 +1007,32 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
             <input type="checkbox" data-step="16" />
             <span><strong>16. </strong>In your VM terminal, run to view the new encounter entries: 
               <pre><code>PGPASSWORD='SYS' psql -h localhost -p 5432 -U superuser -d uhtpoc -c "SELECT * FROM Encounter;"</code></pre></span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">
+              We will view the successful conversion of CCDA to SDA to SQL through the Visual Trace.
+            </p>
+          </div>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="17" />
+            <span><strong>17.</strong> From the Home Page of the IRIS for Health Management Portal, navigate to Interoperability → Configure → Production.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="18" />
+            <span><strong>18.</strong> Click on the <code>CCDAFileIn</code> business service. In the right-side panel, click the <code>Messages</code> tab at the top.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="19" />
+            <span><strong>19.</strong> Click on the blue <code>Header</code> value of the top-most message. This opens up a Visual Trace in a new tab.</span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="20" />
+            <span><strong>20.</strong> From the left-side, you can click on different permutations of the message as it travelled through the interoperability production. To see the contents of each message, select the <code>Contents</code> tab at the top of the right-side panel.</span>
           </label>
 
           <div class="checklist__actions">
