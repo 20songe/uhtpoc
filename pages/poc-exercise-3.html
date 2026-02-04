@@ -288,6 +288,7 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
                 <li><strong>Name:</strong> SDAEncounterToSQLEncounter</li>
                 <li><strong>Source Type:</strong> <pre><code>HS.SDA3.Encounter</code></pre></li>
                 <li><strong>Target Type:</strong> <pre><code>uhtpoc.Encounter</code></pre></li>
+                <li>Click <code>OK</code>.</li>
               </ul>
             </span>
           </label>
@@ -295,11 +296,13 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4.</strong> Create a <code>set</code> action with the following configuration (the "aux" variable will be used later to pass additional variables into this data transformation from another class that is calling this transformation):
+              <strong>4.</strong> Create a <code>set</code> action with the following configuration:
               <ul class="bullets">
                 <li><strong>Property:</strong> <pre><code>target.mrn</code></pre></li>
                 <li><strong>Value:</strong> <pre><code>aux(1)</code></pre></li>
               </ul>
+
+              The "aux" variable is an array used to pass values into this data transformation from another class that is calling this transformation.
             </span>
           </label>
 
@@ -310,6 +313,13 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
                 <ul class="bullets">
                 <li><strong>Condition:</strong> <pre><code>target.data'=""</code></pre></li>
               </ul>
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise3/6-dtl.png" alt="If condition" />
+                </div>
+              </details>
             </span>
           </label>
 
