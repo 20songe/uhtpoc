@@ -1027,11 +1027,27 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="3" />
             <span>
-              <strong>3.</strong> Click on the existing <code>FHIRIn</code> service and configure the following (under Basic Settings):
+              <strong>3.</strong> Click on the existing <code>FHIRIn</code> service and configure the following:
               <ul class="bullets">
-                <li><strong>Target Config Name:</strong> MasterRouter (replace FHIRRouter)</li>
+                <li><strong>Under Informational Settings:</strong>
+                <ul class="bullets">
+                  <li><strong>Category:</strong> Add <code>Exercise 3</code></li>
+                </ul></li>
+                <li><strong>Under Basic Settings:</strong>
+                  <ul class="bullets">
+                    <li><strong>Target Config Name:</strong> MasterRouter (replace FHIRRouter)</li>
+                  </ul>
+                </li>
                 <li>Click <code>OK.</code></li>
               </ul>
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise3/17-informational-settings.png" alt="master router info settings" />
+                  <img src="../assets/images/exercise3/18-basic-settings.png" alt="master router basic settings" />
+                </div>
+              </details>
             </span>
           </label>
 
