@@ -145,7 +145,7 @@
 </Class>
 
 
-<Class name="UNITYPKG.Process.SDA3toSQLProcess">
+<Class name="UNITYPKG.Process.SDAtoSQLProcess">
 <Super>Ens.BusinessProcess</Super>
 <TimeChanged>67604,80601.7228305</TimeChanged>
 <TimeCreated>67604,56599.5355599</TimeCreated>
@@ -224,9 +224,9 @@
 
 <Storage name="Default">
 <Type>%Storage.Persistent</Type>
-<DefaultData>SDA3toSQLProcessDefaultData</DefaultData>
-<Data name="SDA3toSQLProcessDefaultData">
-<Subscript>"SDA3toSQLProcess"</Subscript>
+<DefaultData>SDAtoSQLProcessDefaultData</DefaultData>
+<Data name="SDAtoSQLProcessDefaultData">
+<Subscript>"SDAtoSQLProcess"</Subscript>
 <Value name="1">
 <Value>PatientTargetConfigName</Value>
 </Value>
