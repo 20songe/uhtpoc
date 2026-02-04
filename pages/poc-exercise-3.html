@@ -665,14 +665,121 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-              <strong>5.</strong> Use <code>CTRL+F</code> to find all the comments that start with <code>TODO</code>.
+              <strong>5.</strong> Use <code>CTRL+F</code> to find all the comments that start with <code>TODO</code>. There should be three in total. These are lines of code we need to fill in.
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
             <span>
-              <strong>6.</strong> Use <code>CTRL+F</code> to find all the comments that start with <code>TODO</code>.
+              <strong>6.</strong> The first <code>TODO</code> tells us to "Call the /SDA3/CCDAv21-to-SDA.xsl XSLT." 
+              We will use the transformer we instantiated (class: HS.Util.XSLTTransformer) three lines of code before to transform from CCDA to SDA using an XML stylesheet transformation (XSLT).
+              This XSLT comes out-of-the-box with your IRIS for Health Installation.
+              
+              Add the following line of code below the <code>TODO</code> comment:
+              <pre><code>Set status = transformer.Transform(cdaStream,"/SDA3/CCDAv21-to-SDA.xsl", .sdaStream)</code></pre>
+
+              The parameters for the <code>Transform</code> function above are:
+              <ul class="bullets">
+                <li><strong>pInput:</strong> the stream containing CDA data to transform (<code>cdaStream</code> above)</li>
+                <li><strong>pLocation:</strong> the relative filepath to your XSLT transformation (<code>"/SDA3/CCDAv21-to-SDA.xsl"</code>)</li>
+                <li><strong>pOutput:</strong> the stream to write the output SDA into, by reference (<code>.sdaStream</code>)</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> The second <code>TODO</code> tells us to "Call the HL7 to SDA3 transformation." 
+              
+              Add the following line of code below the <code>TODO</code> comment (for documentation, <code><a href="https://docs.intersystems.com/healthconnectlatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=HSLIB&CLASSNAME=HS.Gateway.HL7.HL7ToSDA3#METHOD_GetSDA" target="_blank">click here</a></code>):
+              <pre><code>Set status = ##class(HS.Gateway.HL7.HL7ToSDA3).GetSDA(request, .sdaStream)</code></pre>
+
+              The parameters for the <code>GetSDA</code> function above are:
+              <ul class="bullets">
+                <li><strong>pRequest:</strong> the input HL7 message (<code>request</code> above)</li>
+                <li><strong>pXML:</strong> the stream to write the output SDA into, by reference (<code>.sdaStream</code>)</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+              <strong>8.</strong> The third <code>TODO</code> tells us to "Send output message to downstream target." 
+              
+              Add the following line of code below the <code>TODO</code> comment (for documentation, <code><a href="https://docs.intersystems.com/healthconnect20253/csp/documatic/%25CSP.Documatic.cls?LIBRARY=ENSLIB&CLASSNAME=Ens.BusinessProcess#METHOD_SendRequestSync" target="_blank">click here</a></code>):
+              <pre><code>Set status = ..SendRequestSync(..TargetConfigName, outputMessage, .tResponse, 10)</code></pre>
+
+              The parameters for the <code>SendRequestSync</code> function above are:
+              <ul class="bullets">
+                <li><strong>pTargetDispatchName:</strong> the downstream production component to send the message to (<code>..TargetConfigName</code> above)</li>
+                <li><strong>pRequest:</strong> the message to send (<code>outputMessage</code>)</li>
+                <li><strong>pResponse:</strong> the response returned by the downstream production component, by reference (<code>.tResponse</code>)</li>
+                <li><strong>pTimeout</strong> timeout in seconds (<code>10</code> above)</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="9" />
+            <span>
+              <strong>9.</strong> Save the file (<code>CTRL+S</code>). This should also compile the class.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="10" />
+            <span>
+              <strong>10.</strong> Open <code>UNITYPKG.Process.SDAToSQLProcess.cls</code>. Use <code>CTRL+F</code> to find all the comments that start with <code>TODO</code>. There should be four in total. These are lines of code we need to fill in.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="11" />
+            <span>
+              <strong>11.</strong> The first <code>TODO</code> tells us to "Use the Transform method of the PatientTransformationClass setting." 
+              
+              Add the following line of code below the <code>TODO</code> comment (for documentation on the <code>$CLASSMETHOD</code> method below, <code><a href="https://docs.intersystems.com/healthconnect20253/csp/docbook/Doc.View.cls?KEY=RCOS_fclassmethod" target="_blank">click here</a></code>):
+              <pre><code>Set sc = $CLASSMETHOD(..PatientTransformationClass, "Transform", obj, .target)</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="12" />
+            <span>
+              <strong>12.</strong> The second <code>TODO</code> tells us to "Send the output from our SDA to SQL Patient transformation to the downstream target." 
+              
+              Add the following line of code below the <code>TODO</code> comment:
+              <pre><code>Set status = ..SendRequestSync(..PatientTargetConfigName, target, .response, 10)</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="13" />
+            <span>
+              <strong>13.</strong> The third <code>TODO</code> tells us to "Use the Transform method of the EncounterTransformationClass setting." 
+              
+              Add the following line of code below the <code>TODO</code> comment:
+              <pre><code>Set sc = $CLASSMETHOD(..EncounterTransformationClass, "Transform", obj, .target, .var)</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="14" />
+            <span>
+              <strong>14.</strong> The fourth <code>TODO</code> tells us to "Use the Transform method of the EncounterTransformationClass setting." 
+              
+              Add the following line of code below the <code>TODO</code> comment:
+              <pre><code>Set status = ..SendRequestSync(..EncounterTargetConfigName, target, .response, 10)</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="15" />
+            <span>
+              <strong>15.</strong> Save the file (<code>CTRL+S</code>). This should also compile the class.
             </span>
           </label>
 
