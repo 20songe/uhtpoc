@@ -83,6 +83,35 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
+              <strong>2.</strong> Click on the gear icon in the lower left-hand corner of VS Code. Select <code>Settings</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Search for "compile".
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Make sure the <strong>ObjectScript: Compile Flags</strong> setting is set to:
+              <pre><code>cukd</code></pre>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Make sure the <strong>ObjectScript: Compile On Save</strong> setting is checked.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
               <strong>2.</strong> Create the following directory in your Google VM:
               <pre><code>sudo mkdir -p /isc/MessageIn/CCDA
 sudo chown -R &lt;USER&gt;:irisusr /isc/MessageIn/
@@ -548,7 +577,9 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="1" />
             <span>
-              <strong>1.</strong> Download this export, which contains two partially completed business process classes. The UNITYPKG.
+              <strong>1.</strong> Download this export, which contains two partially completed business process classes. 
+              The <code>UNITYPKG.Process.MasterRouter</code> class includes logic for taking in any of the three types of inbound healthcare data standards and transforming them to the internal SDA data model.
+              The <code>UNITYPKG.Process.SDAToSQLProcess</code> class includes logic for taking in an SDA XML message and transforming it into custom SQL tables.
 
               <ul>
                 <li>exercise3_export.xml<a
@@ -634,7 +665,14 @@ sudo chmod -R 775 /isc/MessageIn/</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-              <strong>5.</strong> Open <code>UNITYPKG.Process.MasterRouter.cls</code>.
+              <strong>5.</strong> Use <code>CTRL+F</code> to find all the comments that start with <code>TODO</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Use <code>CTRL+F</code> to find all the comments that start with <code>TODO</code>.
             </span>
           </label>
 
