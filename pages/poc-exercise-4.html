@@ -81,7 +81,31 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
-              <strong>2.</strong> Have your data files from Exercise 3 available. We will ingest all of them again (the HL7v2 messages, CCDA document, and FHIR bundle).
+              <strong>2.</strong> Confirm GCE firewall/VPC rule allows inbound traffic on <strong>TCP:1972</strong> to the VM (see hint for configuration of policy).
+
+              Make sure your VM has the correct network tag for this firewall policy (this is from the Target Tags settings of the firewall rule).
+              
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/20-settings-firewall.png" alt="Firewall" />
+                </div>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/21-settings-firewall.png" alt="Firewall" />
+                </div>
+
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/22-network-tags.png" alt="Firewall" />
+                </div>
+              </details>
+
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Have your data files from Exercise 3 available. We will ingest all of them again (the HL7v2 messages, CCDA document, and FHIR bundle).
             </span>
           </label>
 
@@ -625,6 +649,13 @@
                 <li><strong>Package Name:</strong>uhtpoc (this can be anything, but these instructions will assume uhtpoc)</li>
                 <li>Click "Launch Projection."</li>
               </ul>
+
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/17-projection.png" alt="New projection" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -667,7 +698,13 @@
             <span>
               <strong>2.</strong> In the top left-corner, click on the "New Database Connection" icon (see hint).
             </span>
-            <!-- TODO: new database icon -->
+            
+            <details class="hint">
+              <summary>Output</summary>
+              <div class="hint__content">
+                <img src="../assets/images/exercise4/18-dbeaver-connect.png" alt="Dbeaver connection" />
+              </div>
+            </details>
           </label>
 
           <label class="checklist__item">
@@ -675,7 +712,13 @@
             <span>
               <strong>3.</strong> In the pop-up, search for InterSystems IRIS as your database (this may be in the "Popular" or the "SQL" section).
             </span>
-            <!-- TODO: new database icon -->
+            
+            <details class="hint">
+              <summary>Output</summary>
+              <div class="hint__content">
+                <img src="../assets/images/exercise4/19-iris-db.png" alt="Dbeaver connection" />
+              </div>
+            </details>
           </label>
 
           <label class="checklist__item">
