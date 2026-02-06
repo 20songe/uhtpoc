@@ -153,11 +153,18 @@
                 </li>
                 <li>Under Development and Debugging:
                   <ul class="bullets">
-                    <li><strong>TraceOperations:</strong> *FULL*</li>
+                    <li><strong>TraceOperations:</strong> *FULL* (this displays all FHIR bundles passing through this process within the Visual Trace)</li>
                   </ul>
                 </li>
-                <li>Save/apply these settings to the business process.</li>
+                <li>Save/apply these new settings to the business process.</li>
               </ul>
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/3-fhir-settings.png" alt="SDA to FHIR settings" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -165,6 +172,8 @@
             <input type="checkbox" data-step="5" />
             <span>
               <strong>5.</strong> Click on the MasterRouter component. In the right-side settings panel, change the "Target Config Name" (under Basic Settings) to SDAToFHIRProcess (replace SDAToSQLProcess).
+
+              Save/apply this new setting to the business process.
               
             </span>
           </label>
@@ -174,9 +183,14 @@
             <span>
               <strong>6.</strong> Now, we will ingest all the data from Exercise 3 through our pipeline again:
               <ul class="bullets">
-                <li>Run the POST request with the FHIR bundle from Exercise 3.</li>
-                <li>Copy the ADT messages to the <code>/isc/MessageIn/HL7/</code> directory in your Google VM.</li>
-                <li>Copy the CCDA to the <code>/isc/MessageIn/CCDA/</code> directory in your Google VM.</li>
+                <li>Makes sure the production is started.</li>
+                <li>Run the POST request with the FHIR bundle from Exercise 3 in Postman.</li>
+                <li>Copy the ADT messages to the <code>/isc/MessageIn/HL7/</code> directory in your Google VM.
+                
+                <pre><code>sudo cp ~/exercise3_* /isc/MessageIn/HL7</code></pre></li>
+                <li>Copy the CCDA to the <code>/isc/MessageIn/CCDA/</code> directory in your Google VM.
+                
+                <pre><code>sudo cp ~/CCDA.xml /isc/MessageIn/CCDA</code></pre></li>
               </ul>
             </span>
           </label>
@@ -266,7 +280,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4.</strong> Click on "Web Applications" at the top of the page to return to the Web Applications page (see hint).
+              <strong>4.</strong> Click on "Web Applications" at the top of the page to return to the Web Applications page (see hint) and enable the remaining web application if needed.
 
               <details class="hint">
                 <summary>Hint</summary>
