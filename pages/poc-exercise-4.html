@@ -346,7 +346,12 @@
             <span>
               <strong>3.</strong> On the left-side panel, click on the FHIR SQL Builder icon (should be second from the bottom).
 
-              <!-- TODO: include image of FHIR SQL Builder icon -->
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/5-fhir-sql-builder-access.png" alt="FHIR SQL Builder" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -355,7 +360,12 @@
             <span>
               <strong>4.</strong> In the "Analyses" section, click the "New" button on the right side.
 
-              <!-- TODO: include image of FHIR SQL Builder analysis new button -->
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/6-analysis-new.png" alt="New Analysis" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -366,7 +376,12 @@
               The same FHIR SQL Builder is able to work across multiple FHIR repositories on multiple IRIS instances, so this section of the configuration
               allows you to add multiple FHIR repository connections.
 
-              <!-- TODO: include image of FHIR SQL Builder New button -->
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/7-new-fhir-repo.png" alt="New FHIR Repository" />
+                </div>
+              </details>
             </span>
           </label>
 
@@ -382,17 +397,25 @@
                 <li><strong>SSL Configuration:</strong> &lt;Leave this blank&gt;</li>
                 <li><strong>Credentials:</strong> 
                 <ul class="bullets">
+                  <li>Click the "New" button and configure the following in the pop-up.</li>
                   <li><strong>Name:</strong> &lt;Any name for this set of credentials (i.e. SuperUser)&gt;</li>
                   <li><strong>Username:</strong> &lt;Your IRIS username (i.e. SuperUser)&gt;</li>
                   <li><strong>Password:</strong> &lt;Your IRIS password&gt;</li>
                   <li>Click "Save."</li>
                   <li>Make sure your newly created credentials are selected in the "Credentials" dropdown.</li>
                 </ul></li>
-                <li><strong>FHIR Repository URL:</strong> &lt;The dropdown should auto-populate with FHIR Repository URLs available to the IRIS instance you entered earlier. 
-                  These URLs will only populate if the connection to your IRIS instance from this SQL Builder was successful. Select the FHIR endpoint you created in Exercise 2&gt;</li>
+                <li><strong>FHIR Repository URL:</strong> &lt;Select the FHIR endpoint you created in Exercise 2. The dropdown should provide FHIR Repository URLs available to the IRIS instance you entered earlier. 
+                  These URLs will only appear in the dropdown if the FHIR SQL Builder's connection to your IRIS instance (based on your earlier configurations in this step) was successful.&gt;</li>
                 <li>Click "Save."</li>
                 </ul>
-              <!-- TODO: include image of FHIR SQL Builder analysis config -->
+              
+
+                <details class="hint">
+                  <summary>Hint</summary>
+                  <div class="hint__content">
+                    <img src="../assets/images/exercise4/8-fhir-repo-connection.png" alt="FHIR Repository configuration" />
+                  </div>
+                </details>
             </span>
           </label>
 
@@ -403,9 +426,17 @@
 
               Configure the following:
               <ul class="bullets">
-                <li><strong>FHIR Repository:</strong> &lt;the repository you just created in the previous step&gt;</li>
-                <li>Leave the other settings blank. Click "Launch Analysis Task."</li>
+                <li><strong>FHIR Repository:</strong> &lt;the repository you just created in the previous step, i.e. UNITY&gt;</li>
+                <li><strong>Selectivity Percentage:</strong> 100</li>
+                <li>Click "Launch Analysis Task."</li>
               </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+              <strong>8.</strong> Wait until the analysis task is 100% complete before proceeding to the next section.
             </span>
           </label>
 
