@@ -78,6 +78,128 @@
             </span>
           </label>
 
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Have your data files from Exercise 3 available. We will ingest all of them again (the HL7v2 messages, CCDA document, and FHIR bundle).
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+
+    </section>
+
+     <!-- Data Transformation and Ingestion -->
+     <section id="data-transformation-ingestion" class="section">
+      <div class="section__header">
+        <h2>Data Transformation and Ingestion</h2>
+        <p class="muted">Re-configure the interoperability production with out-of-the-box tools and re-ingest the Exercise 3 data to POST it to the FHIR Server.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Edit Interoperability Production</summary>
+        <br/>
+
+        <form class="checklist" data-checklist-id="exercise-1-prereqs">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> From the homepage of the Management Portal, select your namespace (i.e. <code>UNITY</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Navigate to Interoperability → Configure → Production.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Add a new business process. Configure the following:
+              <ul class="bullets">
+                <li><strong>Business Process Class:</strong> <pre><code>HS.FHIR.DTL.Util.HC.SDA3.FHIR.Process</code></pre></li>
+                <li><strong>Business Process Name:</strong> SDAToFHIRProcess</li>
+                <li><strong>Display Category:</strong> Exercise 4</li>
+                <li><strong>Enable Now:</strong> Checked</li>
+                <li>Click "OK."</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Click on the new SDAToFHIRProcess component. In the right-side settings panel, configure the following:
+              <ul class="bullets">
+                <li>Under Basic Settings:
+                  
+                  <ul class="bullets">
+                  <li><strong>Target Config Name:</strong> FHIROut</li>
+                </ul>
+                </li>
+                <li>Under Additional Settings:
+                  <ul class="bullets">
+                    <li><strong>FHIRMetadataSet:</strong> HL7v40 / FHIR R4 Core Specification</li>
+                    <li><strong>FHIREndpoint:</strong> /csp/healthshare/unity/fhir/r4 (pick the FHIR endpoint you created in Exercise 2)</li>
+                  </ul>
+                </li>
+                <li>Under Development and Debugging:
+                  <ul class="bullets">
+                    <li><strong>TraceOperations:</strong> *FULL*</li>
+                  </ul>
+                </li>
+                <li>Save/apply these settings to the business process.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Click on the MasterRouter component. In the right-side settings panel, change the "Target Config Name" (under Basic Settings) to SDAToFHIRProcess (replace SDAToSQLProcess).
+              
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Now, we will ingest all the data from Exercise 3 through our pipeline again:
+              <ul class="bullets">
+                <li>Run the POST request with the FHIR bundle from Exercise 3.</li>
+                <li>Copy the ADT messages to the <code>/isc/MessageIn/HL7/</code> directory in your Google VM.</li>
+                <li>Copy the CCDA to the <code>/isc/MessageIn/CCDA/</code> directory in your Google VM.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> In your Production Configuration page, check that all of the component statuses are still green (meaning the messages were processed successfully). You can drill down into individual Visual Traces by following the steps below:
+              <ul class="bullets">
+                <li>Click on the component you want to see messages for (i.e. HL7FileIn).</li>
+                <li>On the right-side panel, select the "Messages" tab.</li>
+                <li>Click the Header number of a completed message to open the Visual Trace in another window.</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+              <strong>8.</strong> In the Visual Trace, click on the orange message going to HS.Util.TraceOperations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
+            </span>
+          </label>
+
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
