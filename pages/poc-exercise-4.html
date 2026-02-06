@@ -84,6 +84,8 @@
               <strong>2.</strong> Confirm GCE firewall/VPC rule allows inbound traffic on <strong>TCP:1972</strong> to the VM (see hint for configuration of policy).
 
               Make sure your VM has the correct network tag for this firewall policy (this is from the Target Tags settings of the firewall rule).
+
+              This step is important for you DBeaver connection later.
               
               <details class="hint">
                 <summary>Hint</summary>
@@ -220,7 +222,15 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
             <span>
-              <strong>7.</strong> Now, we will ingest all the data from Exercise 3 through our pipeline again:
+              <strong>7.</strong> Click on the FHIRIn component. Change the <strong>Target Config Name</strong> to FHIROut (replace MasterRouter).
+              
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+              <strong>8.</strong> Now, we will ingest all the data from Exercise 3 through our pipeline again:
               <ul class="bullets">
                 <li>Makes sure the production is started.</li>
                 <li>Run the POST request with the FHIR bundle from Exercise 3 in Postman.</li>
@@ -235,9 +245,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
+            <input type="checkbox" data-step="9" />
             <span>
-              <strong>8.</strong> In your Production Configuration page, check that all of the component statuses are still green (meaning the messages were processed successfully). You can drill down into individual Visual Traces by following the steps below:
+              <strong>9.</strong> In your Production Configuration page, check that all of the component statuses are still green (meaning the messages were processed successfully). You can drill down into individual Visual Traces by following the steps below:
               <ul class="bullets">
                 <li>Click on the component you want to see messages for (i.e. HL7FileIn).</li>
                 <li>On the right-side panel, select the "Messages" tab.</li>
@@ -247,9 +257,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="9" />
+            <input type="checkbox" data-step="10" />
             <span>
-              <strong>9.</strong> In the Visual Trace, click on the orange message going to HS.Util.Trace.Operations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
+              <strong>10.</strong> In the Visual Trace, click on the orange message going to HS.Util.Trace.Operations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
             
               <details class="hint">
                 <summary>Hint</summary>
@@ -675,8 +685,40 @@
     <section id="dbeaver" class="section">
       <div class="section__header">
         <h2>Data Validation</h2>
-        <p class="muted">We will use DBeaver as a SQL client to view our SQL projection on the FHIR data.</p>
+        <p class="muted">We will use Postman and DBeaver to view our data as FHIR and SQL, respectively.</p>
       </div>
+
+      <details class="details details--accent">
+        <summary>SQL Client Connection and Validation</summary>
+
+        <div class="details__content">
+          <p class="muted">We will configure a new connection to IRIS in DBeaver and then query our data.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-import-business-processes">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> In Postman, run a GET request for Conditions where the patient name is David Kamp (see URL below):
+<pre><code>http://&lt;Google VM public IP&gt;/irishealth/csp/healthshare/&lt;namespace, i.e. unity&gt;/fhir/r4/Condition?subject:Patient.name=Kamp</code></pre>
+
+Use Basic authentication with your IRIS credentials. Make sure in the headers, Content-Type is application/fhir+json.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Examine the output. You should see Condition resources containing hyperlipidemia and hypertension as conditions for this patient (whose full name is David Kamp).
+            </span>
+          </label>
+
+      
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
 
       <details class="details details--accent">
         <summary>SQL Client Connection and Validation</summary>
@@ -784,6 +826,8 @@ ON uhtpocprojection.Patient.Key = uhtpocprojection.Encounter.PatientReference</c
 LEFT JOIN uhtpocprojection.Patient As p
 ON p.Key = c.ConditionSubjectReference
 WHERE ConditionCodeCodingDisplay LIKE 'Hyper%'</code></pre>
+
+These are the same conditions we queried in Postman earlier.
             </span>
           </label>
 
@@ -792,7 +836,7 @@ WHERE ConditionCodeCodingDisplay LIKE 'Hyper%'</code></pre>
           </div>
 
           <div class="details__content">
-            <p class="muted">Ysou have successfully queried on top of FHIR data using SQL!</p>
+            <p class="muted">You have successfully queried on top of FHIR data using SQL!</p>
           </div>
         </form>
       </details>
