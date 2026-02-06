@@ -646,7 +646,7 @@
               <ul class="bullets">
                 <li><strong>FHIR Repository:</strong> &lt;Select the FHIR repository you created earlier in the Analyses section, i.e. UNITY&gt;</li>
                 <li><strong>Transformation Specification:</strong> &lt;Select the transformation specification you created in the previous section, i.e. UNITYTransformation&gt;</li>
-                <li><strong>Package Name:</strong>uhtpoc (this can be anything, but these instructions will assume uhtpoc)</li>
+                <li><strong>Package Name:</strong>uhtpocprojection (this can be anything, but these instructions will assume uhtpocprojection)</li>
                 <li>Click "Launch Projection."</li>
               </ul>
 
@@ -767,9 +767,9 @@
             <input type="checkbox" data-step="6" />
             <span>
               <strong>6.</strong> Paste in the following query:
-              <pre><code>SELECT * FROM UNITYPKG.Encounter 
-LEFT JOIN UNITYPKG.Patient
-ON UNITYPKG.Patient.Key = UNITYPKG.Encounter.PatientReference</code></pre>
+              <pre><code>SELECT * FROM uhtpocprojection.Encounter
+LEFT JOIN uhtpocprojection.Patient
+ON uhtpocprojection.Patient.Key = uhtpocprojection.Encounter.PatientReference</code></pre>
 
 
               Execute this query by clicking the orange triangle to the left of the query.
@@ -779,17 +779,35 @@ ON UNITYPKG.Patient.Key = UNITYPKG.Encounter.PatientReference</code></pre>
           <label class="checklist__item">
             <input type="checkbox" data-step="7" />
             <span>
-              <strong>7.</strong> 
+              <strong>7.</strong> Try another query with Conditions:
+<pre><code>SELECT c.ConditionCodeCodingDisplay, p.PatientNameFamily , p.PatientNameGiven FROM uhtpocprojection.Condition As c
+LEFT JOIN uhtpocprojection.Patient As p
+ON p.Key = c.ConditionSubjectReference
+WHERE ConditionCodeCodingDisplay LIKE 'Hyper%'</code></pre>
             </span>
           </label>
 
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
           </div>
+
+          <div class="details__content">
+            <p class="muted">Ysou have successfully queried on top of FHIR data using SQL!</p>
+          </div>
         </form>
       </details>
     </section>
+
+    <section id="license" class="section">
+      <div class="section__header">
+        <h2>Congratulations 🎉</h2>
+        </div>
+        <p>
+          You have completed our POC!
+        </p>
+      </section>
   </main>
+  
 
   <footer class="footer">
     <div class="container footer__inner">
