@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exercise 4 Guide</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <img class="brand__mark" src="../assets/images/logo.svg" alt="POC Hub"/>
+        <div class="brand__text">
+          <div class="brand__title">POC Hub</div>
+          <div class="brand__subtitle">InterSystems IRIS for Health • Exercise 4</div>
+        </div>
+      </div>
+
+      <nav class="quicklinks" aria-label="Quick links">
+        <a class="chip" href="../index.html">Back to Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO (matches installation guide structure) -->
+    <section class="hero">
+      <h1>POC Exercise 4: FHI-SQL-Builder Pipeline</h1>
+      <p>
+        Use the instructions on this page to complete the exercise. The checklists can track progress (saved in browser).
+      </p>
+    </section>
+
+    <!-- OVERVIEW / SUCCESS -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Exercise Overview</h2>
+        <p class="muted">Unity Health Toronto is seeking to transform HL7v2 messages, FHIR resources, and CDA documents into FHIR (building on the intermediate data model transformation pipeline in Exercise Three). Building on FHIR as the foundational data model, Unity Health Toronto is seeking to access the FHIR data as relational tables.</p>
+        <br/>
+        <p class="muted">In this exercise, we will demonstrate how we can leverage the SDA internal data model to simplify the process of transforming multiple healthcare data standards without building point-to-point transformations. We will ingest the same data from Exercise Three, transform them through SDA into FHIR, and store the resulting FHIR resources in the IRIS FHIR Server. We will then leverage the built-in FHIR SQL Builder to create tabular projections on the FHIR data. We will examine the data using external SQL and REST clients.</p>
+        <br/>
+      </div>
+
+      <details class="details details--accent" >
+        <summary>Measures of Success</summary>
+        <div class="details__content">
+          <ul class="bullets">
+            <li>Successful ingestion of all three healthcare data standards</li>
+            <li>Successful transformation of this healthcare data into SDA and then into FHIR</li>
+            <li>Successful SQL projection on top of the FHIR data</li>
+            <li>Successful access to the same FHIR data through the FHIR endpoint and through the SQL projection</li>
+          </ul>
+          <p class="muted" style="margin-top:10px;">
+            Validation of this success will be accomplished using tools available through IRIS (Visual Trace), an external SQL client (DBeaver), and an external REST client (Postman).
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <!-- PRE-REQUISITES -->
+    <section id="prereqs" class="section">
+      <div class="section__header">
+        <h2>Pre-requisites</h2>
+        <p class="muted">Complete these prerequisites before building the interoperability pipeline.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Pre-requisites</summary>
+        <br/>
+
+        <form class="checklist" data-checklist-id="exercise-1-prereqs">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Make sure you have DBeaver Community Edition already installed on your local computer (outside of the Google VM).
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+
+    </section>
+
+    <!-- Enable the FHIR SQL Builder -->
+    <section id="enable-sql-builder" class="section">
+      <div class="section__header">
+        <h2>FHIR SQL Builder</h2>
+        <p class="muted">Use the FHIR SQL Builder to construct a SQL projection on top of your FHIR data. No data will be copied (it will still be stored as FHIR)--you will just gain a tabular view of the FHIR data. This saves on storage while still providing the benefits of running analysis on tabular data.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>Enable FHIR SQL Builder</summary>
+
+        <div class="details__content">
+          <p class="muted">We will enable web applications (endpoints) that will give us access to the FHIR SQL Builder capabilities and user interface.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-lookup-table">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> From the homepage of the Management Portal, select your namespace (i.e. <code>UNITY</code>).
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Navigate to System Administration → Security → Applications → Web Application.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> Ensure the following web applications are enabled (they should have "Yes" in the "Enabled" column): <code>/csp/fhirsql</code> and <code>/csp/fhirsql/api/ui</code>.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> If these two web applications are not yet enabled, you can enable both of them as follows:
+              <ul class="bullets">
+                <li>Click on the web application name (i.e. <code>/csp/fhirsql</code>)</li>
+                <li>Check the "Enable Application" box (see hint below if you have trouble finding it).</li>
+                <li>Click "Save" at the top of the page.</li>
+              </ul>
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/1-web-application.png" alt="FHIR SQL Builder Web Application" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Click on "Web Applications" at the top of the page to return to the Web Applications page (see hint).
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/2-web-application.png" alt="FHIR SQL Builder Web Application" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>Run SQL Analysis</summary>
+
+        <div class="details__content">
+          <p class="muted">We will use the FHIR SQL Builder to analyze the data in the FHIR repository (so the SQL Builder knows what types of resources/data fields exist).</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-encounter-transformation">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> From the homepage of the Management Portal, navigate to Health.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> Click "FHIR Server Management."
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> On the left-side panel, click on the FHIR SQL Builder icon (should be second from the bottom).
+
+              <!-- TODO: include image of FHIR SQL Builder icon -->
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> In the "Analyses" section, click the "New" button on the right side.
+
+              <!-- TODO: include image of FHIR SQL Builder analysis new button -->
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> In the pop-up, click the "New" button next to the FHIR Repository dropdown to configure your FHIR repository connection.
+              The same FHIR SQL Builder is able to work across multiple FHIR repositories on multiple IRIS instances, so this section of the configuration
+              allows you to add multiple FHIR repository connections.
+
+              <!-- TODO: include image of FHIR SQL Builder New button -->
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Configure the FHIR Repository Configuration as follows:
+              <ul class="bullets">
+                <li><strong>Name:</strong> UNITY (this can be anything)</li>
+                <li><strong>Host:</strong> localhost</li>
+                <li><strong>Port:</strong> 80</li>
+                <li><strong>URL Prefix:</strong> /irishealth</li>
+                <li><strong>SSL Configuration:</strong> &lt;Leave this blank&gt;</li>
+                <li><strong>Credentials:</strong> 
+                <ul class="bullets">
+                  <li><strong>Name:</strong> &lt;Any name for this set of credentials (i.e. SuperUser)&gt;</li>
+                  <li><strong>Username:</strong> &lt;Your IRIS username (i.e. SuperUser)&gt;</li>
+                  <li><strong>Password:</strong> &lt;Your IRIS password&gt;</li>
+                  <li>Click "Save."</li>
+                  <li>Make sure your newly created credentials are selected in the "Credentials" dropdown.</li>
+                </ul></li>
+                <li><strong>FHIR Repository URL:</strong> &lt;The dropdown should auto-populate with FHIR Repository URLs available to the IRIS instance you entered earlier. 
+                  These URLs will only populate if the connection to your IRIS instance from this SQL Builder was successful. Select the FHIR endpoint you created in Exercise 2&gt;</li>
+                <li>Click "Save."</li>
+                </ul>
+              <!-- TODO: include image of FHIR SQL Builder analysis config -->
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> You should have the "New FHIR Analysis" pop-up open still (if not, click on the "New" button for the Analyses section to open it again).
+
+              Configure the following:
+              <ul class="bullets">
+                <li><strong>FHIR Repository:</strong> &lt;the repository you just created in the previous step&gt;</li>
+                <li>Leave the other settings blank. Click "Launch Analysis Task."</li>
+              </ul>
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>Create Transformation Specification</summary>
+
+        <div class="details__content">
+          <p class="muted">Based on the resources/data fields discovered in the previous analysis step, we will specify fields and tables that will be included in our SQL projection. Each table corresponds to a resource type (such as Patient or Encounter).</p>
+        </div>
+
+        <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> 
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+          </form>
+      </details>
+
+      <details class="details details--accent">
+        <summary>Create SQL Projection</summary>
+        <div class="details__content">
+          <p class="muted">We will build the SQL projection using our transformation from the previous section.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-optional-dtl-test">
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> In the Projections section, click the "New" button on the right side.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> In the pop-up, configure the following:
+              <ul class="bullets">
+                <li><strong>FHIR Repository:</strong> &lt;Select the FHIR repository you created earlier&gt;</li>
+                <li><strong>Transformation Specification:</strong> &lt;Select the transformation specification you created in the previous section&gt;</li>
+                <li><strong>Package Name:</strong>UNITYPKG (this can be anything, but these instructions will assume UNITYPKG)</li>
+                <li>Click "Launch Projection."</li>
+              </ul>
+            </span>
+          </label>
+
+          <div class="details__content">
+            <p class="muted">You should see that a new projection is available. We can now connect to the projection using DBeaver!</p>
+          </div>
+          
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+        </details>
+    </section>
+
+    <!-- DBeaver -->
+    <section id="dbeaver" class="section">
+      <div class="section__header">
+        <h2>Data Validation</h2>
+        <p class="muted">We will use DBeaver as a SQL client to view our SQL projection on the FHIR data.</p>
+      </div>
+
+      <details class="details details--accent">
+        <summary>SQL Client Connection and Validation</summary>
+
+        <div class="details__content">
+          <p class="muted">We will configure a new connection to IRIS in DBeaver and then query our data.</p>
+        </div>
+
+        <form class="checklist" data-checklist-id="exercise-3-import-business-processes">
+          <label class="checklist__item">
+            <input type="checkbox" data-step="1" />
+            <span>
+              <strong>1.</strong> Open DBeaver Community on your local computer.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> In the top left-corner, click on the "New Database Connection" icon (see hint).
+            </span>
+            <!-- TODO: new database icon -->
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>3.</strong> In the pop-up, search for InterSystems IRIS as your database (this may be in the "Popular" or the "SQL" section).
+            </span>
+            <!-- TODO: new database icon -->
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> Double click on InterSystems IRIS to select it. In the pop-up, configure the following:
+
+              <ul class="bullets">
+                <li><strong>Connect by:</strong> host</li>
+                <li><strong>Host:</strong> &lt;Your Google VM public IP address&gt;</li>
+                <li><strong>Port:</strong> 1972</li>
+                <li><strong>Database/Schema:</strong> UNITY (or the name of your projection namespace as indicated in the FHIR SQL Builder)</li>
+                <li><strong>Username:</strong> &lt;Your IRIS username (i.e. SuperUser)&gt;</li>
+                <li><strong>Password:</strong> &lt;Your IRIS password&gt;</li>
+                <li>Click "Finish."</li>
+                </ul>
+
+                <!-- TODO: DBeaver config -->
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> On the left-side panel, navigate to Connections → UNITY (or name of your projection namespace) → UNITYPKG → Tables. This shows you all the tables that were created by our projection.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Open the "SQL Editor" menu at the top of the SQL Client application. Select "New SQL script."
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> Paste in the following query:
+              <pre><code>SELECT * FROM UNITYPKG.Encounter 
+LEFT JOIN UNITYPKG.Patient
+ON UNITYPKG.Patient.Key = UNITYPKG.Encounter.PatientReference</code></pre>
+
+
+              Execute this query by clicking the orange triangle to the left of the query.
+            </span>
+          </label>
+
+          <div class="checklist__actions">
+            <button class="btn" type="button" data-reset-checklist>Reset section</button>
+          </div>
+        </form>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">Exercise 4</span>
+      <span class="muted">Progress saved locally</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
