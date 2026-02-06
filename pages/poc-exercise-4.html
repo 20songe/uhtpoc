@@ -168,7 +168,7 @@
                 </li>
                 <li>Under Development and Debugging:
                   <ul class="bullets">
-                    <li><strong>TraceOperations:</strong> *FULL* (this displays all FHIR bundles passing through this process within the Visual Trace by sending them to HS.Util.TraceOperations)</li>
+                    <li><strong>TraceOperations:</strong> *FULL* (this displays all FHIR bundles passing through this process within the Visual Trace by sending them to HS.Util.Trace.Operations)</li>
                   </ul>
                 </li>
                 <li>Save/apply these new settings to the business process.</li>
@@ -225,7 +225,7 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="9" />
             <span>
-              <strong>9.</strong> In the Visual Trace, click on the orange message going to HS.Util.TraceOperations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
+              <strong>9.</strong> In the Visual Trace, click on the orange message going to HS.Util.Trace.Operations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
             
               <details class="hint">
                 <summary>Hint</summary>
@@ -456,9 +456,135 @@
         <label class="checklist__item">
             <input type="checkbox" data-step="1" />
             <span>
-              <strong>1.</strong> 
+              <strong>1.</strong> In the Transformation Specifications section, click the "New" button on the right.
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/9-transformation-specifications.png" alt="Transformation Specification" />
+                </div>
+              </details>
             </span>
           </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="2" />
+            <span>
+              <strong>2.</strong> In the pop-up, configure the following:
+              <ul class="bullets">
+                <li><strong>Name:</strong> UNITYTransformation (this can be anything)</li>
+                <li><strong>Analysis:</strong> &lt;Select the analysis created in the previous section, i.e. UNITY&gt;</li>
+                <li>Click "Create Transformation Specification."</li>
+              </ul>
+
+              This pulls up a new page, which is the no-code tools for selecting data to include in your SQL projection tables.
+              
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/10-transformation-specification.png" alt="Transformation Specification" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="3" />
+            <span>
+              <strong>3.</strong> On the left-side panel, select Encounter → subject → reference. This opens a configuration panel in the center of the screen where you choose to add the EncounterSubjectReference to your "Encounter" table.
+              
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/11-fhir-sql-builder.png" alt="Transformation Specification" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="4" />
+            <span>
+              <strong>4.</strong> To change the name of this column, configure the following:
+              <ul class="bullets">
+                <li><strong>Column Name:</strong> PatientReference</li>
+              </ul> 
+              
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/12-patient-reference.png" alt="Transformation Specification" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> To see a sample of the actual values in your data for this field of the Encounter FHIR resource, click on the "Show Histogram" button in the top right corner.
+
+              When done, click "Hide Histogram" to close out of the histogram view.
+              
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/13-histogram.png" alt="Transformation Specification Histogram" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="6" />
+            <span>
+              <strong>6.</strong> Click "Add to Projection" to finish adding this column to data to your SQL projection's Encounter table.
+              
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/14-add-projection.png" alt="Transformation Specification Add Projection" />
+                </div>
+              </details>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> Using the same process outlined above, add the following fields to your projection (you may rename these columns however you wish):
+              <ul class="bullets">
+                <li>Encounter → period → start</li>
+                <li>Encounter → identifier → value</li>
+                <li>Encounter → type → coding → display</li>
+                <li>Patient → identifier → value</li>
+                <li>Patient → name → family</li>
+                <li>Patient → name → given</li>
+                <li>Patient → telecom → value</li>
+                <li>Patient → gender</li>
+                <li>Patient → birthDate</li>
+                <li>Condition → subject → reference</li>
+                <li>Condition → encounter → reference</li>
+                <li>Condition → onsetDateTime</li>
+                <li>Condition → code → coding → display</li>
+              </ul>
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="8" />
+            <span>
+              <strong>8.</strong> Click "Done" in the top right corner to save your new transformation specification.
+
+              <details class="hint">
+                <summary>Output</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/15-done.png" alt="Save projection" />
+                </div>
+              </details>
+            </span>
+          </label>
+
 
           <div class="checklist__actions">
             <button class="btn" type="button" data-reset-checklist>Reset section</button>
