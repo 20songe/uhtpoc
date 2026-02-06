@@ -137,7 +137,22 @@
           <label class="checklist__item">
             <input type="checkbox" data-step="4" />
             <span>
-              <strong>4.</strong> Click on the new SDAToFHIRProcess component. In the right-side settings panel, configure the following:
+              <strong>4.</strong> Add a new business operation. Configure the following:
+              <ul class="bullets">
+                <li><strong>Business Operation Class:</strong> <pre><code>HS.Util.Trace.Operations</code></pre></li>
+                <li><strong>Business Operation Name:</strong> &lt;Leave this blank&gt;</li>
+                <li><strong>Display Category:</strong> Exercise 4</li>
+                <li><strong>Enable Now:</strong> Checked</li>
+                <li>Click "OK."</li>
+              </ul>
+            </span>
+          </label>
+          
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="5" />
+            <span>
+              <strong>5.</strong> Click on the new SDAToFHIRProcess component. In the right-side settings panel, configure the following:
               <ul class="bullets">
                 <li>Under Basic Settings:
                   
@@ -153,7 +168,7 @@
                 </li>
                 <li>Under Development and Debugging:
                   <ul class="bullets">
-                    <li><strong>TraceOperations:</strong> *FULL* (this displays all FHIR bundles passing through this process within the Visual Trace)</li>
+                    <li><strong>TraceOperations:</strong> *FULL* (this displays all FHIR bundles passing through this process within the Visual Trace by sending them to HS.Util.TraceOperations)</li>
                   </ul>
                 </li>
                 <li>Save/apply these new settings to the business process.</li>
@@ -169,9 +184,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="5" />
+            <input type="checkbox" data-step="6" />
             <span>
-              <strong>5.</strong> Click on the MasterRouter component. In the right-side settings panel, change the "Target Config Name" (under Basic Settings) to SDAToFHIRProcess (replace SDAToSQLProcess).
+              <strong>6.</strong> Click on the MasterRouter component. In the right-side settings panel, change the "Target Config Name" (under Basic Settings) to SDAToFHIRProcess (replace SDAToSQLProcess).
 
               Save/apply this new setting to the business process.
               
@@ -179,9 +194,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="6" />
+            <input type="checkbox" data-step="7" />
             <span>
-              <strong>6.</strong> Now, we will ingest all the data from Exercise 3 through our pipeline again:
+              <strong>7.</strong> Now, we will ingest all the data from Exercise 3 through our pipeline again:
               <ul class="bullets">
                 <li>Makes sure the production is started.</li>
                 <li>Run the POST request with the FHIR bundle from Exercise 3 in Postman.</li>
@@ -196,9 +211,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="7" />
+            <input type="checkbox" data-step="8" />
             <span>
-              <strong>7.</strong> In your Production Configuration page, check that all of the component statuses are still green (meaning the messages were processed successfully). You can drill down into individual Visual Traces by following the steps below:
+              <strong>8.</strong> In your Production Configuration page, check that all of the component statuses are still green (meaning the messages were processed successfully). You can drill down into individual Visual Traces by following the steps below:
               <ul class="bullets">
                 <li>Click on the component you want to see messages for (i.e. HL7FileIn).</li>
                 <li>On the right-side panel, select the "Messages" tab.</li>
@@ -208,9 +223,9 @@
           </label>
 
           <label class="checklist__item">
-            <input type="checkbox" data-step="8" />
+            <input type="checkbox" data-step="9" />
             <span>
-              <strong>8.</strong> In the Visual Trace, click on the orange message going to HS.Util.TraceOperations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
+              <strong>9.</strong> In the Visual Trace, click on the orange message going to HS.Util.TraceOperations. On the right-side panel, select the "Contents" tab to view the FHIR bundle being pushed to our FHIR Server.
             </span>
           </label>
 
