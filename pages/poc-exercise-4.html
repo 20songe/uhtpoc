@@ -566,7 +566,7 @@
               <strong>6.</strong> Click "Add to Projection" to finish adding this column to data to your SQL projection's Encounter table.
               
               <details class="hint">
-                <summary>Output</summary>
+                <summary>Hint</summary>
                 <div class="hint__content">
                   <img src="../assets/images/exercise4/14-add-projection.png" alt="Transformation Specification Add Projection" />
                 </div>
@@ -602,7 +602,7 @@
               <strong>8.</strong> Click "Done" in the top right corner to save your new transformation specification.
 
               <details class="hint">
-                <summary>Output</summary>
+                <summary>Hint</summary>
                 <div class="hint__content">
                   <img src="../assets/images/exercise4/15-done.png" alt="Save projection" />
                 </div>
@@ -631,7 +631,7 @@
               <strong>1.</strong> In the Projections section, click the "New" button on the right side.
 
               <details class="hint">
-                <summary>Output</summary>
+                <summary>Hint</summary>
                 <div class="hint__content">
                   <img src="../assets/images/exercise4/16-projections-new.png" alt="New projection" />
                 </div>
@@ -651,7 +651,7 @@
               </ul>
 
               <details class="hint">
-                <summary>Output</summary>
+                <summary>Hint</summary>
                 <div class="hint__content">
                   <img src="../assets/images/exercise4/17-projection.png" alt="New projection" />
                 </div>
@@ -697,28 +697,30 @@
             <input type="checkbox" data-step="2" />
             <span>
               <strong>2.</strong> In the top left-corner, click on the "New Database Connection" icon (see hint).
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/18-dbeaver-connect.png" alt="Dbeaver connection" />
+                </div>
+              </details>
             </span>
-            
-            <details class="hint">
-              <summary>Output</summary>
-              <div class="hint__content">
-                <img src="../assets/images/exercise4/18-dbeaver-connect.png" alt="Dbeaver connection" />
-              </div>
-            </details>
+          
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="2" />
             <span>
               <strong>3.</strong> In the pop-up, search for InterSystems IRIS as your database (this may be in the "Popular" or the "SQL" section).
+            
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/19-iris-db.png" alt="Dbeaver connection" />
+                </div>
+              </details>
             </span>
             
-            <details class="hint">
-              <summary>Output</summary>
-              <div class="hint__content">
-                <img src="../assets/images/exercise4/19-iris-db.png" alt="Dbeaver connection" />
-              </div>
-            </details>
           </label>
 
           <label class="checklist__item">
@@ -736,34 +738,48 @@
                 <li>Click "Finish."</li>
                 </ul>
 
-                <!-- TODO: DBeaver config -->
+                In the left-side panel, you should see a new connection made to the UNITY namespace.
+
+                <details class="hint">
+                  <summary>Hint</summary>
+                  <div class="hint__content">
+                    <img src="../assets/images/exercise4/23-jdbc.png" alt="Dbeaver connection" />
+                  </div>
+                </details>
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="5" />
             <span>
-              <strong>5.</strong> On the left-side panel, navigate to Connections → UNITY (or name of your projection namespace) → uhtpoc → Tables. This shows you all the tables that were created by our projection.
+              <strong>5.</strong> Open the "SQL Editor" menu at the top of the SQL Client application. Select "New SQL script." In the pop-up, select the UNITY data source.
+
+              <details class="hint">
+                <summary>Hint</summary>
+                <div class="hint__content">
+                  <img src="../assets/images/exercise4/24-new-sql-script.png" alt="Dbeaver SQL script" />
+                </div>
+              </details>
             </span>
           </label>
 
           <label class="checklist__item">
             <input type="checkbox" data-step="6" />
             <span>
-              <strong>6.</strong> Open the "SQL Editor" menu at the top of the SQL Client application. Select "New SQL script."
-            </span>
-          </label>
-
-          <label class="checklist__item">
-            <input type="checkbox" data-step="7" />
-            <span>
-              <strong>7.</strong> Paste in the following query:
+              <strong>6.</strong> Paste in the following query:
               <pre><code>SELECT * FROM UNITYPKG.Encounter 
 LEFT JOIN UNITYPKG.Patient
 ON UNITYPKG.Patient.Key = UNITYPKG.Encounter.PatientReference</code></pre>
 
 
               Execute this query by clicking the orange triangle to the left of the query.
+            </span>
+          </label>
+
+          <label class="checklist__item">
+            <input type="checkbox" data-step="7" />
+            <span>
+              <strong>7.</strong> 
             </span>
           </label>
 
